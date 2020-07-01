@@ -4,10 +4,11 @@ import { setUser, isLoggedIn } from "components/auth"
 import firebase from "firebase"
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
 import { Typography } from "@material-ui/core"
+import { Redirect } from "react-router-dom"
 
 const Login = () => {
   if (isLoggedIn()) {
-    navigate(`/`)
+    Redirect(`/`)
   }
 
   const getUiConfig = auth => {

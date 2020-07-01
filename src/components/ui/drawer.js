@@ -1,5 +1,5 @@
 import React from 'react'
-import { navigate, Link } from "@reach/router"
+import { Link, Redirect, BrowserRouter } from "react-router-dom"
 import { myFirebase as firebase } from 'utils/firebase'
 import { getUser, logout } from "components/auth"
 import { Typography, ClickAwayListener } from '@material-ui/core'
@@ -19,8 +19,7 @@ const adminMenu = [
   },
   {
     name: "Buckets",
-    slug: "/buckets",
-    admin: true
+    slug: "/buckets"
   },
   {
     name: "Help",
@@ -88,17 +87,17 @@ const Drawer = (props) => {
             Privacy Policy
           </Typography>
           <hr />
-          <a
-            href="/"
+          <Link
+            to="/login"
             onClick={event => {
               event.preventDefault()
-              logout(firebase).then(() => navigate(`/`))
+              logout(firebase)
             }}
           >
             <Typography variant="body2" align="center" color="secondary">
               Logout
             </Typography>
-          </a>
+          </Link>
         </div>
       </div>
     </ClickAwayListener>

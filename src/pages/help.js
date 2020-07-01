@@ -8,7 +8,6 @@ import Header from 'components/ui/header'
 const Help = (props) => {
   return (
     <>
-    <Header {...props} />
       <div className='row mt-5 mb-5'>
         <div className='col-md-8'>
           <Typography

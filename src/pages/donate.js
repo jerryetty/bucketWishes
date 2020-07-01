@@ -6,7 +6,6 @@ import Header from 'components/ui/header'
 const Donate = (props) => {
   return (
     <>
-    <Header {...props} />
       <div className="row mt-5">
         <div className="col-md-5 donate-title">
           <Typography variant="h4" color="secondary" align="center" className="w-5">

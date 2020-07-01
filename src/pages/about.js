@@ -5,7 +5,6 @@ import Header from "components/ui/header"
 const About = props => {
   return (
     <>
-    <Header {...props} />
       <div className="mt-5">
         <Typography variant="h4" color="secondary" align="left" className="w-5">
           Who we are

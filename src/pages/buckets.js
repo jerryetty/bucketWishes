@@ -140,7 +140,6 @@ const Buckets = (props) => {
 
   return (
     <>
-      <Header {...props} />
       <div>
         {openBucket && (
           <BucketOpen
