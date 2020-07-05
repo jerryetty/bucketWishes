@@ -114,7 +114,7 @@ const AddBucketCard = (props) => {
               {step === 2 && (
                 <>
                   <Typography variant="h6" color="primary" className="w-5">
-                    What is the story behind this bucket?
+                    Provide the purpose and instructions for those who will be adding wishes to the bucket.
                   </Typography>
                   <div className="mt-4">
                     <textarea
@@ -153,7 +153,7 @@ const AddBucketCard = (props) => {
               {step === 3 && (
                 <>
                   <Typography variant="h6" color="primary" className="w-5">
-                    Add a wish!
+                    Add your wish!
                   </Typography>
                   <div className="mt-4">
                     <textarea

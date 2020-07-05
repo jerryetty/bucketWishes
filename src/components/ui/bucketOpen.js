@@ -73,7 +73,11 @@ const BucketOpen = (props) => {
                       <Typography variant='h5' color='primary' className='w-5'>
                         {props.bucket.title}
                       </Typography>
-                      <Typography variant='body1' color='secondary'>
+                      <Typography
+                        variant='body2'
+                        className='mt-2'
+                        color='secondary'
+                      >
                         {props.bucket.description}
                       </Typography>
 
@@ -239,18 +243,23 @@ const BucketOpen = (props) => {
               )}
               {props.shared && (
                 <>
-                  <Typography variant='h5' color='primary' className='w-5'>
+                  <Typography variant='h5' className='w-5 text-success'>
                     Your bucket was sent successfully
                   </Typography>
-                  <Typography variant='body1' color='secondary'>
-                    Consider donating to Bucket wishes
+                  <Typography variant='body2' className="mt-2" color='secondary'>
+                    Thank you for using BucketWishes! We are excited to share in
+                    providing opportunities to encourage those in our world by
+                    letting them know they are LOVED and APPRECIATED!
+                    BucketWishes was also created as a means to bring awareness
+                    and provide additional financial resources necessary to care
+                    for children who have been orphaned, abused or are homeless.
+                    Listed below are a few options of ways you can join with us
+                    in helping and encouraging children who have experienced
+                    hardship in their lives.
                   </Typography>
-                  <div className='row mt-2 mb-2 text-center'>
-                    <div className='col-md-4'>
-                      <div
-                        className='donate-card'
-                        style={{ height: 220, boxShadow: 'none' }}
-                      >
+                  <div className='row mt-5 mb-5'>
+                    <div className='col-md-7'>
+                      <div className='donate-card'>
                         <Typography
                           variant='body1'
                           color='primary'
@@ -259,7 +268,14 @@ const BucketOpen = (props) => {
                           Join the Founding 500
                         </Typography>
                         <Typography variant='caption' color='secondary'>
-                          Donate $100/month for 5 years.
+                          500 individuals, organizations, businesses or churches
+                          who will make a five year commitment to give $1,200
+                          per year ($100/month). As a “Founding 500 Member” your
+                          name will forever be listed as a part of ENWR’s
+                          History in the Main Office as well as in the “Founding
+                          500 Home” (A home that will be built with a percentage
+                          of each gift given and honoring all those who have
+                          joined.)
                         </Typography>
                         <a
                           href='https://www.enwranch.org/founding-500.html'
@@ -269,11 +285,8 @@ const BucketOpen = (props) => {
                         </a>
                       </div>
                     </div>
-                    <div className='col-md-4'>
-                      <div
-                        className='donate-card'
-                        style={{ height: 220, boxShadow: 'none' }}
-                      >
+                    <div className='col-md-5'>
+                      <div className='donate-card'>
                         <Typography
                           variant='body1'
                           color='primary'
@@ -294,11 +307,8 @@ const BucketOpen = (props) => {
                         </a>
                       </div>
                     </div>
-                    <div className='col-md-4'>
-                      <div
-                        className='donate-card'
-                        style={{ height: 220, boxShadow: 'none' }}
-                      >
+                    <div className='col-md-5'>
+                      <div className='donate-card'>
                         <Typography
                           variant='body1'
                           color='primary'
@@ -307,7 +317,8 @@ const BucketOpen = (props) => {
                           Donate a one-time Gift
                         </Typography>
                         <Typography variant='caption' color='secondary'>
-                          Give any amount on a non-recurrent basis
+                          A gift of any amount is very helpful and will help us
+                          in caring for the children at ENWR.
                         </Typography>
                         <a
                           href='https://donorbox.org/development-campaign-for-eagle-s-nest-wilderness-ranch'
@@ -317,6 +328,33 @@ const BucketOpen = (props) => {
                         </a>
                       </div>
                     </div>
+                    <div className='col-md-7'>
+                      <div className='donate-card'>
+                        <Typography
+                          variant='body1'
+                          color='primary'
+                          className='w-7'
+                        >
+                          Send a Note of Encouragement to a child at Eagle’s
+                          Nest Wilderness Ranch
+                        </Typography>
+                        <Typography variant='caption' color='secondary'>
+                          A gift of any amount is very helpful and will help us
+                          in caring for the children at ENWR.
+                        </Typography>
+                        <a
+                          href='https://donorbox.org/development-campaign-for-eagle-s-nest-wilderness-ranch'
+                          target='blank'
+                        >
+                          <button className='bw-button'>Give Now</button>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bucket-actions text-center">
+                    <button className="bw-button" onClick={props.handleClose}>
+                      Close
+                    </button>
                   </div>
                 </>
               )}

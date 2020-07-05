@@ -7,7 +7,7 @@ exports.sendEmail = functions.https.onRequest((req, res) => {
   const name = req.body.name
   const bucketUrl = req.body.bucketUrl
 
-  res.header('Access-Control-Allow-Origin', 'https://bucketwishes.app')
+  res.header('Access-Control-Allow-Origin', '*')
   res.header('Access-Control-Allow-Headers', 'Content-Type')
 
   // async..await is not allowed in global scope, must use a wrapper

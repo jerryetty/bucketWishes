@@ -35,7 +35,7 @@ const SendBucketCard = props => {
             <div className="create-bucket-card p-3 text-center">
               <form onSubmit={formik.handleSubmit}>
                 <Typography variant="h6" color="primary" className="w-5">
-                  Send this bucket to your loved ones
+                  Send this Bucket to Recipient
                 </Typography>
                 <Typography variant="body2" color="primary" className="mt-2">
                   Enter their name

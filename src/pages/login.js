@@ -1,9 +1,9 @@
 import React from "react"
-import { setUser, isLoggedIn } from "components/auth"
+import { setUser } from "components/auth"
 import firebase from "firebase"
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
 import { Typography } from "@material-ui/core"
-import { Redirect } from "react-router-dom"
+import Logo from 'components/images/logo.png'
 
 const Login = () => {
   const getUiConfig = auth => {
@@ -24,26 +24,28 @@ const Login = () => {
 
   return (
     <>
-      <div className="main container">
-        <div className="row login-container">
-          <div className="col-md-6">
-            <div className="">
-              <Typography variant="h3" color="primary" className="w-5">
-                Welcome to Bucket Wishes
+      <div className='main container'>
+        <div className='row login-container'>
+          <div className='col-md-6'>
+            <div className=''>
+              <Typography variant='h3' color='primary' className='w-7'>
+                Welcome to Bucket Wishes!
               </Typography>
-              <Typography variant="body1" color="primary" className="mt-4">
-                Share well wishes with loved ones by creating buckets and
-                filling them with beautiful thoughts (wishes). Choose one of the
-                providers to signin and get started
+              <Typography variant='body2' color='primary' className='mt-4'>
+                Share words of encouragement with those who need to know they
+                are being thought of, loved and appreciated. Create a bucket for
+                special holidays or events and invite others to join you in
+                filling it with warm wishes of thanks, encouragement,
+                appreciation and love. So get ready…think outside of the
+                Bucket…and make someone’s day! Choose one of the providers to
+                sign in and get started.
               </Typography>
             </div>
           </div>
-          <div className="col-md-6">
-            <div className="">
-              <div className="login-card">
-                <Typography variant="h4" color="primary" className="w-7">
-                  Sign in
-                </Typography>
+          <div className='col-md-6'>
+            <div className=''>
+              <div className='login-card'>
+                <img src={Logo} alt='logo' id='login-logo' />
                 <div>
                   {firebase && (
                     <StyledFirebaseAuth
@@ -52,7 +54,7 @@ const Login = () => {
                     />
                   )}
                 </div>
-                <Typography variant="body2" color="primary" align="center">
+                <Typography variant='body2' color='primary' align='center'>
                   By signing in you agree to our Terms of use and privacy policy
                 </Typography>
               </div>
