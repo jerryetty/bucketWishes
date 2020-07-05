@@ -49,8 +49,18 @@ const BucketOpen = (props) => {
     } else return false
   }
 
+  const [showEditWishInput, setShowEditWishInput] = useState(false)
   const [showAddWishInput, setShowAddWishInput] = useState(false)
+  const [addedWish, setAddedWish] = useState(false)
   const [edit, setEdit] = useState(false)
+
+  const handleShowEditWishInput = () => {
+    setShowEditWishInput(true)
+  }
+
+  const handleHideEditWishInput = () => {
+    setShowEditWishInput(false)
+  }
 
   const handleShowAddWishInput = () => {
     setShowAddWishInput(true)
@@ -93,7 +103,14 @@ const BucketOpen = (props) => {
                   {edit && (
                     <ClickAwayListener onClickAway={() => setEdit(false)}>
                       <form onSubmit={formik.handleSubmit}>
-                        <TextField
+                        <Typography
+                          variant='body2'
+                          color='primary'
+                          className='mb-1'
+                        >
+                          Change the name of this Bucket
+                        </Typography>
+                        <input
                           type='text'
                           id='title'
                           name='title'
@@ -116,13 +133,19 @@ const BucketOpen = (props) => {
                               : null
                           }
                         />
-                        <TextField
+                        <Typography
+                          variant='body2'
+                          color='primary'
+                          className='mb-1'
+                        >
+                          Change the purpose of this Bucket
+                        </Typography>
+                        <textarea
                           type='text'
                           id='description'
                           name='description'
                           className='mb-3'
                           margin='dense'
-                          label='Edit the description of your bucket'
                           fullWidth
                           onBlur={formik.handleBlur}
                           onFocus={handleFocus}
@@ -139,18 +162,20 @@ const BucketOpen = (props) => {
                               ? formik.errors.description
                               : null
                           }
-                        />
-                        <button
-                          onClick={() => {
-                            setEdit(false)
-                          }}
-                          className='bw-button'
-                        >
-                          Cancel
-                        </button>
-                        <button type='submit' className='bw-button'>
-                          Save
-                        </button>
+                        ></textarea>
+                        <div>
+                          <button
+                            onClick={() => {
+                              setEdit(false)
+                            }}
+                            className='bw-button'
+                          >
+                            Cancel
+                          </button>
+                          <button type='submit' className='bw-button'>
+                            Save
+                          </button>
+                        </div>
                       </form>
                     </ClickAwayListener>
                   )}
@@ -159,14 +184,17 @@ const BucketOpen = (props) => {
                       <Wishes
                         {...props}
                         bucketOwner={setBucketOwner()}
+                        showEditWishInput={showEditWishInput}
                         showAddWishInput={showAddWishInput}
+                        setAddedWish={setAddedWish}
+                        handleShowEditWishInput={handleShowEditWishInput}
+                        handleHideEditWishInput={handleHideEditWishInput}
                         handleShowAddWishInput={handleShowAddWishInput}
                         handleHideAddWishInput={handleHideAddWishInput}
                       />
+                      <hr />
                     </div>
                   )}
-
-                  <hr />
                   {!props.preview && !props.bucket.restricted && (
                     <div className='bucket-actions'>
                       <div className='row'>
@@ -181,14 +209,26 @@ const BucketOpen = (props) => {
                           </Typography>
                         </div>
                         <div className='col-3 text-center'>
-                          <Typography
+                          {addedWish && (
+                            <Typography
+                            variant='caption'
+                            color='primary'
+                            className='c-pointer'
+                            onClick={handleShowEditWishInput}
+                          >
+                           Edit Wish
+                          </Typography>
+                          )}
+                          {!addedWish && (
+                            <Typography
                             variant='caption'
                             color='primary'
                             className='c-pointer'
                             onClick={handleShowAddWishInput}
                           >
-                            Add a wish
+                           Add Wish
                           </Typography>
+                          )}
                         </div>
                         <div className='col-3 text-center'>
                           <Typography
@@ -246,7 +286,11 @@ const BucketOpen = (props) => {
                   <Typography variant='h5' className='w-5 text-success'>
                     Your bucket was sent successfully
                   </Typography>
-                  <Typography variant='body2' className="mt-2" color='secondary'>
+                  <Typography
+                    variant='body2'
+                    className='mt-2'
+                    color='secondary'
+                  >
                     Thank you for using BucketWishes! We are excited to share in
                     providing opportunities to encourage those in our world by
                     letting them know they are LOVED and APPRECIATED!
@@ -351,8 +395,8 @@ const BucketOpen = (props) => {
                       </div>
                     </div>
                   </div>
-                  <div className="bucket-actions text-center">
-                    <button className="bw-button" onClick={props.handleClose}>
+                  <div className='bucket-actions text-center'>
+                    <button className='bw-button' onClick={props.handleClose}>
                       Close
                     </button>
                   </div>

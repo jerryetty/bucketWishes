@@ -1,27 +1,23 @@
-import React, { useState, useEffect } from "react"
-import { Typography, Tooltip, IconButton, TextField } from "@material-ui/core"
-import {myFirebase as firebase} from "utils/firebase"
-import { useFormik } from "formik"
-import * as Yup from "yup"
-import {
-  Delete as DeleteIcon,
-  Edit as EditIcon,
-  Send as SendIcon,
-} from "@material-ui/icons"
-import ConfirmDialog from "./confirmDialog"
-import PopupAlert from "./popupAlert"
+import React, { useState, useEffect } from 'react'
+import { Typography, Tooltip, IconButton } from '@material-ui/core'
+import { myFirebase as firebase } from 'utils/firebase'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import { Delete as DeleteIcon, Edit as EditIcon } from '@material-ui/icons'
+import ConfirmDialog from './confirmDialog'
+import PopupAlert from './popupAlert'
 
-const Wishes = props => {
+const Wishes = (props) => {
   const wishesRef = firebase
     .firestore()
-    .collection("buckets")
+    .collection('buckets')
     .doc(props.bucket.id)
-    .collection("wishes")
+    .collection('wishes')
 
   const validationSchema = Yup.object().shape({
     message: Yup.string()
-      .max(1000, "Character limit exceeded")
-      .required("Please enter a message"),
+      .max(1000, 'Character limit exceeded')
+      .required('Please enter a message')
   })
 
   const formik = useFormik({
@@ -30,7 +26,7 @@ const Wishes = props => {
       authorEmail: props.email,
       uid: props.uid,
       message: props.message,
-      createdAt: Date.now(),
+      createdAt: Date.now()
     },
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
@@ -38,11 +34,12 @@ const Wishes = props => {
       const data = values
       addWish(data)
       resetForm()
-      props.handleHideAddWishInput()
-    },
+      if(props.showAddWishInput) {props.handleHideAddWishInput()}
+      if(props.showEditWishInput) {props.handleHideEditWishInput()}
+    }
   })
 
-  const addWish = data => {
+  const addWish = (data) => {
     wishesRef
       .doc(props.uid)
       .set(data, { merge: true })
@@ -54,15 +51,15 @@ const Wishes = props => {
 
     useEffect(() => {
       wishesRef.onSnapshot(
-        snapshot => {
-          const newWishes = snapshot.docs.map(doc => ({
+        (snapshot) => {
+          const newWishes = snapshot.docs.map((doc) => ({
             id: doc.id,
-            ...doc.data(),
+            ...doc.data()
           }))
 
           setWishes(newWishes)
         },
-        err => {
+        (err) => {
           console.log(`Encountered error: ${err}`)
         }
       )
@@ -75,7 +72,7 @@ const Wishes = props => {
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
   const [wishIdToDelete, setWishIdToDelete] = useState(null)
   const [showAlert, setShowAlert] = useState(false)
-  
+
   const handleOpenConfirmDialog = () => {
     setOpenConfirmDialog(true)
   }
@@ -96,18 +93,26 @@ const Wishes = props => {
   }
 
   const handleHideAlert = (event, reason) => {
-    if (reason === "clickaway") {
+    if (reason === 'clickaway') {
       return
     }
 
     setShowAlert(false)
   }
 
-  const handleFocus = e => e.target.select()
-
-  const handleEdit = () => {}
+  const handleFocus = (e) => e.target.select()
 
   const wishes = useWishes()
+
+  const checkForUserWish = () => {
+    wishes.map((wish) => {
+      if (wish.id === props.uid) {
+        props.setAddedWish(true)
+      }
+    })
+  }
+
+  checkForUserWish()
 
   return (
     <>
@@ -115,118 +120,128 @@ const Wishes = props => {
         <ConfirmDialog
           open={openConfirmDialog}
           handleClose={handleCloseConfirmDialog}
-          message="Are you sure you want to delete?"
+          message='Are you sure you want to delete?'
           action={handleDelete}
         />
       )}
-      
+
       {showAlert && (
         <PopupAlert
           open={showAlert}
-          severity="error"
+          severity='error'
           dismiss={handleHideAlert}
-          message="Deleted!"
+          message='Deleted!'
         />
       )}
 
       {props.showAddWishInput && (
-        <div className="wish p-3 mt-3">
+        <div className='wish p-3 mt-3'>
           <form onSubmit={formik.handleSubmit}>
-            <div className="row">
-              <div className="col-10">
-                <TextField
-                  type="text"
-                  id="message"
-                  name="message"
-                  className="mb-3"
-                  margin="dense"
-                  label="Add a wish"
-                  fullWidth
-                  onBlur={formik.handleBlur}
-                  onFocus={handleFocus}
-                  onChange={formik.handleChange}
-                  defaultValue={props.message}
-                  error={
-                    formik.touched.message && formik.errors.message
-                      ? true
-                      : false
-                  }
-                  helperText={
-                    formik.touched.message && formik.errors.message
-                      ? formik.errors.message
-                      : null
-                  }
-                />
-              </div>
-              <div className="col-2">
-                <Tooltip title="Add a wish" aria-label="Add a wish">
-                  <span>
-                    <IconButton
-                      type="submit"
-                      className="mt-4"
-                      id="add-collaborator"
-                      color="primary"
-                      aria-label="Add a wish"
-                      size="small"
-                      disableFocusRipple
-                    >
-                      <SendIcon />
-                    </IconButton>
-                  </span>
-                </Tooltip>
-              </div>
+            <div className='edit-wish'>
+              <input
+                type='text'
+                id='message'
+                name='message'
+                className='mb-3'
+                onBlur={formik.handleBlur}
+                onFocus={handleFocus}
+                onChange={formik.handleChange}
+              />
+              <button type='submit' className='bw-button'>
+                Add
+              </button>
+              <button 
+                type='button'
+                onClick={props.handleHideAddWishInput}
+                className='bw-button'
+              >
+                Cancel
+              </button>
             </div>
           </form>
         </div>
       )}
 
-      {wishes.map(wish => (
-        <div className="wish p-3 mt-3 row" key={wish.id}>
-          <div className="col-9">
-            <Typography variant="body1" color="primary" className="w-5">
-              {wish.message}
-            </Typography>
-            <Typography variant="body2" color="secondary">
+      {wishes.map((wish) => (
+        <div className='wish p-3 mt-3 row' key={wish.id}>
+          <div className='col-12'>
+            {(!props.showEditWishInput || wish.id !== props.uid) && (
+              <Typography variant='body2' color='primary' className='mb-2'>
+                {wish.message}
+              </Typography>
+            )}
+            {(props.showEditWishInput && wish.id === props.uid) && (
+              <form onSubmit={formik.handleSubmit}>
+                <div className='edit-wish'>
+                  <input
+                    type='text'
+                    id={wish.id}
+                    name='message'
+                    className='mb-3'
+                    onBlur={formik.handleBlur}
+                    onFocus={handleFocus}
+                    onChange={formik.handleChange}
+                    defaultValue={wish.message}
+                  />
+                  <button type='submit' className='bw-button'>
+                    Update
+                  </button>
+                  <button
+                    onClick={props.handleHideEditWishInput}
+                    className='bw-button'
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+          <div className='col-8'>
+            <Typography variant='caption' color='secondary'>
               {wish.author}
             </Typography>
           </div>
-          {((props.bucketOwner || wish.id === props.uid) && !props.preview) && (
-            <div className="col-3 wish-actions">
-              <Tooltip title="Delete wish" aria-label="Delete wish">
-                <span>
-                  <IconButton
-                    onClick={() => {
-                      setWishIdToDelete(wish.id)
-                      handleOpenConfirmDialog()
-                    }}
-                    className="mt-2"
-                    id="add-collaborator"
-                    color="primary"
-                    aria-label="Delete wish"
-                    size="small"
-                    disableFocusRipple
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </span>
-              </Tooltip>
-              <Tooltip title="Edit wish" aria-label="Edit wish">
-                <span>
-                  <IconButton
-                    onClick={handleEdit}
-                    className="mt-2"
-                    id="add-collaborator"
-                    color="primary"
-                    aria-label="Edit wish"
-                    size="small"
-                    disableFocusRipple
-                  >
-                    <EditIcon />
-                  </IconButton>
-                </span>
-              </Tooltip>
-            </div>
-          )}
+          <div className='col-4'>
+            {((props.bucketOwner || wish.id === props.uid) && !props.preview) && (
+              <div className='wish-actions text-right'>
+                <Tooltip title='Delete wish' aria-label='Delete wish'>
+                  <span>
+                    <IconButton
+                      onClick={() => {
+                        setWishIdToDelete(wish.id)
+                        handleOpenConfirmDialog()
+                      }}
+                      className='mt-2 wish-action-icon'
+                      id='add-collaborator'
+                      color='secondary'
+                      aria-label='Delete wish'
+                      size='small'
+                      disableFocusRipple
+                      disableFocusOutline
+                    >
+                      <DeleteIcon className='wish-action-icon' />
+                    </IconButton>
+                  </span>
+                </Tooltip>
+                <Tooltip title='Edit wish' aria-label='Edit wish'>
+                  <span>
+                    <IconButton
+                      onClick={props.handleShowEditWishInput}
+                      className='mt-2 wish-action-icon'
+                      id='add-collaborator'
+                      color='secondary'
+                      aria-label='Edit wish'
+                      size='small'
+                      disableFocusRipple
+                      disabled={(wish.id !== props.uid) ? true : false}
+                    >
+                      <EditIcon className='wish-action-icon' />
+                    </IconButton>
+                  </span>
+                </Tooltip>
+              </div>
+            )}
+          </div>
         </div>
       ))}
     </>

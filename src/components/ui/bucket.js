@@ -5,6 +5,7 @@ import {
   Send as SendIcon,
   Help as HelpIcon,
 } from "@material-ui/icons"
+import { Link } from 'react-router-dom'
 import YellowBucket from "components/images/bucket.svg"
 import BlueBucket from "components/images/bucketBlue.svg"
 import GreyBucket from "components/images/bucketPink.svg"
@@ -16,11 +17,11 @@ const Bucket = props => {
       {props.regular && (
         <div className="single-bucket-container">
           <img src={props.blue ? BlueBucket : YellowBucket} alt="bucket" className="bucket-image" />
-          <div className="bucket-details">
+          <div className="bucket-details p-1">
             <Typography
-              variant="body1"
+              variant="subtitle2"
               color="primary"
-              className="w-7"
+              className="w-7 bucket-title"
               id="title"
             >
               {props.bucket.title}
@@ -103,6 +104,7 @@ const Bucket = props => {
                 title="Learn More"
                 aria-label="Learn More"
               >
+                <Link to="/about">
                 <span>
                   <IconButton
                     id="add-collaborator"
@@ -114,6 +116,7 @@ const Bucket = props => {
                     <HelpIcon />
                   </IconButton>
                 </span>
+                </Link>
               </Tooltip>
             </div>
           </div>

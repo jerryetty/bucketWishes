@@ -1,11 +1,11 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { myFirebase } from 'utils/firebase'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { ClickAwayListener, Typography } from '@material-ui/core'
 
 const AddBucketCard = (props) => {
-  const bucketDocRef = myFirebase.firestore().collection("buckets")
+  const bucketDocRef = myFirebase.firestore().collection('buckets')
   const [step, setStep] = useState(1)
   const [bucketId, setBucketId] = useState(null)
 
@@ -21,8 +21,8 @@ const AddBucketCard = (props) => {
 
   const formik = useFormik({
     initialValues: {
-      title: "",
-      description: "",
+      title: '',
+      description: '',
       restricted: false,
       author: props.uid,
       authorEmail: props.email,
@@ -30,7 +30,7 @@ const AddBucketCard = (props) => {
       createdAt: Date.now(),
       collaborators: {
         verified: [props.email],
-        pending: [],
+        pending: []
       }
     },
     validationSchema: validationSchema,
@@ -45,7 +45,7 @@ const AddBucketCard = (props) => {
           authorEmail: props.email,
           uid: props.uid,
           message: values.wish,
-          createdAt: Date.now(),
+          createdAt: Date.now()
         }
       }
 
@@ -54,11 +54,10 @@ const AddBucketCard = (props) => {
       resetForm()
       setStep(4)
       setSubmitting(false)
-    },
+    }
   })
 
   const createBucket = (data, wish) => {
-
     bucketDocRef.add(data).then((ref) => {
       if (wish) {
         bucketDocRef
@@ -74,23 +73,23 @@ const AddBucketCard = (props) => {
   }
 
   return (
-    <div className="row overlay">
-      <div className="col-md-6 mx-auto">
+    <div className='row overlay'>
+      <div className='col-md-6 mx-auto'>
         <ClickAwayListener onClickAway={props.handleClose}>
-          <div className="create-bucket-card p-3 text-center">
             <form onSubmit={formik.handleSubmit}>
+          <div className='create-bucket-card text-center p-3'>
               {step === 1 && (
                 <>
-                  <Typography variant="h6" color="primary" className="w-5">
+                  <Typography variant='body1' color='primary' className='w-5'>
                     Name Your Bucket
                   </Typography>
-                  <div className="mt-4">
+                  <div className='mt-4'>
                     <input
-                      type="text"
-                      id="title"
-                      name="title"
-                      className="mb-1 custom-font"
-                      margin="dense"
+                      type='text'
+                      id='title'
+                      name='title'
+                      className='mb-1 custom-font'
+                      margin='dense'
                       fullWidth
                       onBlur={formik.handleBlur}
                       onFocus={props.handleFocus}
@@ -104,8 +103,20 @@ const AddBucketCard = (props) => {
                       }
                     />
                   </div>
-                  <div className="mt-4">
-                    <button className="bw-button" onClick={() => setStep(2)}>
+                  <div className='text-danger mt-4'>
+                    {formik.touched.title && formik.errors.title
+                      ? formik.errors.title
+                      : null}
+                  </div>
+                  <div className='mt-4'>
+                    <button
+                      className='bw-button'
+                      onClick={() => {
+                        if (formik.touched.title && !formik.errors.title){
+                          setStep(2)
+                        }
+                      }}
+                    >
                       Next
                     </button>
                   </div>
@@ -113,10 +124,11 @@ const AddBucketCard = (props) => {
               )}
               {step === 2 && (
                 <>
-                  <Typography variant="h6" color="primary" className="w-5">
-                    Provide the purpose and instructions for those who will be adding wishes to the bucket.
+                  <Typography variant='body1' color='primary' className='w-5'>
+                    Provide the purpose and instructions <br/> for those who will be
+                    adding wishes to the bucket.
                   </Typography>
-                  <div className="mt-4">
+                  <div className='mt-4'>
                     <textarea
                       id='description'
                       name='description'
@@ -136,15 +148,24 @@ const AddBucketCard = (props) => {
                           ? formik.errors.description
                           : null
                       }
-                      cols="50"
-                      rows="5"
+                      cols='50'
+                      rows='5'
                     ></textarea>
                   </div>
-                  <div className="mt-4">
-                    <button className="bw-button" onClick={() => setStep(1)}>
+                  <div className='text-danger mt-4'>
+                    {formik.touched.description && formik.errors.description
+                      ? formik.errors.description
+                      : null}
+                  </div>
+                  <div className='mt-4'>
+                    <button className='bw-button' onClick={() => setStep(1)}>
                       Back
                     </button>
-                    <button className="bw-button" onClick={() => setStep(3)}>
+                    <button className='bw-button' onClick={() => {
+                        if (formik.touched.description && !formik.errors.description){
+                          setStep(3)
+                        }
+                      }}>
                       Next
                     </button>
                   </div>
@@ -152,10 +173,10 @@ const AddBucketCard = (props) => {
               )}
               {step === 3 && (
                 <>
-                  <Typography variant="h6" color="primary" className="w-5">
+                  <Typography variant='body1' color='primary' className='w-5'>
                     Add your wish!
                   </Typography>
-                  <div className="mt-4">
+                  <div className='mt-4'>
                     <textarea
                       id='wish'
                       name='wish'
@@ -164,46 +185,50 @@ const AddBucketCard = (props) => {
                       onBlur={formik.handleBlur}
                       onFocus={props.handleFocus}
                       onChange={formik.handleChange}
-                      cols="50"
-                      rows="5"
+                      cols='50'
+                      rows='5'
                     ></textarea>
                   </div>
-                  <div className="mt-4">
-                    <button className="bw-button" onClick={() => setStep(2)}>
+                  <div className='mt-4'>
+                    <button className='bw-button' onClick={() => setStep(2)}>
                       Back
                     </button>
-                    <button className="bw-button" type="submit">
+                    <button className='bw-button' type='submit'>
                       Finish
                     </button>
                   </div>
                 </>
               )}
-              {(step === 4 && bucketId) && (
+              {step === 4 && bucketId && (
                 <>
-                  <Typography variant="h6" className="w-5 text-success">
+                  <Typography variant='h6' className='w-5 text-success'>
                     Your Bucket was created successfully!
                   </Typography>
-                  <Typography variant="body2" color="secondary">
-                    Would you like to invite friends and family to add wishes to this bucket?
+                  <Typography variant='body2' color='secondary'>
+                    Would you like to invite friends and family to add wishes to
+                    this bucket?
                   </Typography>
-                  
-                  <div className="mt-4">
-                    <button className="bw-button" onClick={props.handleClose}>
+
+                  <div className='mt-4'>
+                    <button className='bw-button' onClick={props.handleClose}>
                       Later
                     </button>
-                    <button className="bw-button" onClick={(e) => {
-                      e.preventDefault()
-                      props.handleClose()
-                      props.handleSetActiveBucket({id: bucketId})
-                      props.handleOpenInviteCard()
-                    }}>
+                    <button
+                      className='bw-button'
+                      onClick={(e) => {
+                        e.preventDefault()
+                        props.handleClose()
+                        props.handleSetActiveBucket({ id: bucketId })
+                        props.handleOpenInviteCard()
+                      }}
+                    >
                       Sure
                     </button>
                   </div>
                 </>
               )}
-            </form>
           </div>
+            </form>
         </ClickAwayListener>
       </div>
     </div>
