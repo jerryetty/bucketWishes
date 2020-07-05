@@ -182,7 +182,7 @@ const Wishes = props => {
 
       {wishes.map(wish => (
         <div className="wish p-3 mt-3 row" key={wish.id}>
-          <div className="col-md-10">
+          <div className="col-9">
             <Typography variant="body1" color="primary" className="w-5">
               {wish.message}
             </Typography>
@@ -191,7 +191,7 @@ const Wishes = props => {
             </Typography>
           </div>
           {((props.bucketOwner || wish.id === props.uid) && !props.preview) && (
-            <div className="col-md-2">
+            <div className="col-3 wish-actions">
               <Tooltip title="Delete wish" aria-label="Delete wish">
                 <span>
                   <IconButton

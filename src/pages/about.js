@@ -1,6 +1,5 @@
 import React from "react"
 import { Typography } from "@material-ui/core"
-import Header from "components/ui/header"
 
 const About = props => {
   return (

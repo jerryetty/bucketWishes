@@ -1,9 +1,8 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { HashRouter as Router, Switch, Route } from 'react-router-dom'
 import { ThemeProvider } from '@material-ui/styles'
 import { createMuiTheme, makeStyles } from '@material-ui/core/styles'
 import { myFirebase } from 'utils/firebase'
-import { getUser, isLoggedIn } from 'components/auth'
 
 import './App.css'
 import 'normalize.css'
@@ -26,10 +25,40 @@ const theme = createMuiTheme({
   }
 })
 
+
+const useStyles = makeStyles((theme) => ({
+  loader: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    minHeight: '100vh'
+  }
+}))
+
+
 const App = (props) => {
+  const useUser = () => {
+    const [currentUser, setCurrentUser] = React.useState([])
+    React.useEffect(() => {
+      myFirebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+          setCurrentUser(user)
+        } else {
+          // User is signed out.
+          setCurrentUser(null)
+        }
+      })
+    }, [])
+    return currentUser
+  }
+
+  var user = useUser()
+  
   const [superUser, setSuperUser] = React.useState(false)
-  if (isLoggedIn()) {
-    const { email } = getUser()
+  if (user && user.email) {
+    const email = user.email
 
     const superUserRef = myFirebase.firestore().collection('super-users')
 
@@ -52,29 +81,48 @@ const App = (props) => {
       })
   }
 
+  const classes = useStyles()
+
   return (
     <div>
-      {!isLoggedIn() && (
+      {!user && (
         <div>
           <ThemeProvider theme={theme}>
-            <Login />
+            <Router>
+              <Switch>
+                <Route
+                  exact 
+                  path='/bucket/:id'
+                  render={(props) => <SharedBucket {...props} />}
+                />
+                <Route exact path="/login" component={Login} />
+                <Route path="/" component={Login} />
+              </Switch>
+            </Router>
            </ThemeProvider> 
         </div>
       )}
-      {isLoggedIn() && (
+      {user && !user.uid && (
+        <div className={classes.loader}>
+          <ThemeProvider theme={theme}>
+            <CircularProgress />
+          </ThemeProvider>
+        </div>
+      )}
+      {user && user.uid && (
         <div>
           <ThemeProvider theme={theme}>
             <Router {...props}>
               <Switch {...props}>
                 <Route
-                  path='/'
-                  render={(props) => (
-                    <Wrapper {...props} {...getUser()} superUser={superUser} />
-                  )}
-                />
-                <Route
                   path='/bucket/:id'
                   render={(props) => <SharedBucket {...props} />}
+                />
+                <Route
+                  path='/'
+                  render={(props) => (
+                    <Wrapper {...props} {...user} superUser={superUser} />
+                  )}
                 />
               </Switch>
             </Router>

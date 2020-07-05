@@ -45,7 +45,7 @@ const Bucket = props => {
                       props.setActiveBucket(props.bucket)
                       props.handleOpenInviteCard()
                     }}
-                    id="add-collaborator"
+                    id="invite-someone"
                     color="primary"
                     aria-label="add collaborators"
                     size="small"
@@ -63,7 +63,7 @@ const Bucket = props => {
                       props.setActiveBucket(props.bucket)
                       props.handleOpenSendBucketCard()
                     }}
-                    id="share-bucket"
+                    id="send-bucket"
                     color="primary"
                     aria-label="send"
                     size="small"

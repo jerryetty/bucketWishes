@@ -8,12 +8,22 @@ import AddBucketCard from 'components/ui/addBucketCard'
 import InviteCard from 'components/ui/invite'
 import SendBucketCard from 'components/ui/sendBucketCard'
 import request from 'request'
-import Header from 'components/ui/header'
+import Tour from 'reactour'
 
 const Home = (props) => {
   const bucketDocRef = myFirebase.firestore().collection('buckets')
-
   const { displayName, uid, email } = getUser()
+  
+  const cookie = localStorage.getItem(uid)
+
+  const checkFirstTimeUser = () => {
+    if (cookie) {
+      return false
+    } else {
+      localStorage.setItem(uid, true)
+      return true
+    }
+  }
 
   const useDefaultBuckets = () => {
     const [defaultBuckets, setDefaultBuckets] = useState([])
@@ -102,6 +112,7 @@ const Home = (props) => {
   const [activeBucket, setActiveBucket] = useState(null)
   const [openPreview, setOpenPreview] = useState(false)
   const [shared, setShared] = useState(false)
+  const [openTour, setOpenTour] = useState(checkFirstTimeUser())
   const [previewData, setPreviewData] = useState({})
 
   const handleOpenBucket = () => {
@@ -135,6 +146,14 @@ const Home = (props) => {
 
   const handleOpenSendBucketCard = () => {
     setOpenSendBucketCard(true)
+  }
+
+  const handleOpenTour = () => {
+    setOpenTour(true)
+  }
+
+  const handleCloseTour = () => {
+    setOpenTour(false)
   }
 
   const handleCloseSendBucketCard = () => {
@@ -184,6 +203,40 @@ const Home = (props) => {
     })
   }
 
+  const steps = [
+    {
+      selector: '#brand',
+      content:
+        "Welcome to bucket wishes. Here's a quick tutorial to get you started"
+    },
+    {
+      selector: '#create-bucket',
+      content: 'Click here to create your first bucket'
+    },
+    {
+      selector: '#buckets-area',
+      content:
+        'The buckets you create will be shown here. Click any of them to open'
+    },
+    {
+      selector: '#send-bucket',
+      content:
+        'Send a bucket full of wishes to someone. TIP: Try to send buckets after filling them with wishes'
+    },
+    {
+      selector: '#invite-someone',
+      content: 'Invite someone to add wishes to a bucket'
+    },
+    {
+      selector: '#appbar-menu',
+      content: 'Click here to open the navigation menu'
+    },
+    {
+      selector: '#appbar-menu',
+      content: 'You can always re-run this tutorial from the help section by clicking here'
+    }
+  ]
+
   return (
     <>
       <div>
@@ -217,6 +270,8 @@ const Home = (props) => {
             uid={uid}
             displayName={displayName}
             handleClose={handleCloseCreateBucket}
+            handleOpenInviteCard={handleOpenInviteCard}
+            handleSetActiveBucket={handleSetActiveBucket}
           />
         )}
         {openInviteCard && (
@@ -240,19 +295,30 @@ const Home = (props) => {
             handleOpenPreview={handleOpenPreview}
           />
         )}
+        {openTour && (
+          <Tour
+            steps={steps}
+            isOpen={openTour}
+            onRequestClose={() => {
+              handleCloseTour()
+            }}
+          />
+        )}
         <div className='row'>
           <div className='col-md-6 mx-auto'>
+            <input type="hidden" id="hiddenComponent"/>
             <input
               type='text'
               className='create-bucket-prompt'
               placeholder='Create a bucket'
+              id="create-bucket"
               onClick={handleOpenCreateBucket}
             />
           </div>
         </div>
 
         {(buckets || restrictedBuckets || pendingBuckets) && (
-          <div className='row mt-5'>
+          <div className='row mt-5' id="buckets-area">
             {pendingBuckets.map((bucket, count) => (
               <div className='col-md-3 text-center' key={count}>
                 <Bucket

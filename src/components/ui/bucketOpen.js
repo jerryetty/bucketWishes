@@ -1,32 +1,29 @@
-import React, { useState } from "react"
-import {myFirebase as firebase} from "utils/firebase"
-import { useFormik } from "formik"
-import * as Yup from "yup"
-import {
-  Typography,
-  ClickAwayListener,
-  TextField,
-} from "@material-ui/core"
-import Wishes from "./wishes"
+import React, { useState } from 'react'
+import { myFirebase as firebase } from 'utils/firebase'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import Moment from 'react-moment'
+import { Typography, ClickAwayListener, TextField } from '@material-ui/core'
+import Wishes from './wishes'
 
-const BucketOpen = props => {
+const BucketOpen = (props) => {
   const bucketDocRef = firebase
     .firestore()
-    .collection("buckets")
+    .collection('buckets')
     .doc(props.bucket.id)
 
   const validationSchema = Yup.object().shape({
     title: Yup.string()
-      .min(1, "Title is too short")
-      .max(140, "Character limit exceeded"),
-    description: Yup.string().min(1, "Description is too short"),
+      .min(1, 'Title is too short')
+      .max(140, 'Character limit exceeded'),
+    description: Yup.string().min(1, 'Description is too short')
   })
 
   const formik = useFormik({
     initialValues: {
       title: props.bucket.title,
       description: props.bucket.description,
-      updated: Date.now(),
+      updated: Date.now()
     },
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
@@ -35,16 +32,16 @@ const BucketOpen = props => {
       editBucket(data)
       setEdit(false)
       // setTimeout(props.handleClose, 2000)
-    },
+    }
   })
 
-  const editBucket = data => {
+  const editBucket = (data) => {
     bucketDocRef.update(data).then(() => {
-      console.log("Document updated")
+      console.log('Document updated')
     })
   }
 
-  const handleFocus = e => e.target.select()
+  const handleFocus = (e) => e.target.select()
 
   const setBucketOwner = () => {
     if (props.uid === props.bucket.author) {
@@ -65,19 +62,27 @@ const BucketOpen = props => {
 
   return (
     <>
-      <div className="row">
-        <div className="col-8 mx-auto">
+      <div className='row overlay'>
+        <div className='col-md-8 mx-auto'>
           <ClickAwayListener onClickAway={props.handleClose}>
-            <div className="bucket-open p-5">
+            <div className='bucket-open p-5'>
               {!props.shared && (
                 <>
                   {!edit && (
                     <>
-                      <Typography variant="h5" color="primary" className="w-5">
+                      <Typography variant='h5' color='primary' className='w-5'>
                         {props.bucket.title}
                       </Typography>
-                      <Typography variant="body1" color="secondary">
+                      <Typography variant='body1' color='secondary'>
                         {props.bucket.description}
+                      </Typography>
+
+                      <Typography variant='caption' color='secondary'>
+                        Author: {props.bucket.authorName}
+                        {' | '}
+                        <Moment format='YYYY/MM/DD'>
+                          {props.bucket.createdAt}
+                        </Moment>
                       </Typography>
                     </>
                   )}
@@ -85,12 +90,12 @@ const BucketOpen = props => {
                     <ClickAwayListener onClickAway={() => setEdit(false)}>
                       <form onSubmit={formik.handleSubmit}>
                         <TextField
-                          type="text"
-                          id="title"
-                          name="title"
-                          className="mb-3"
-                          margin="dense"
-                          label="Change the name of your bucket"
+                          type='text'
+                          id='title'
+                          name='title'
+                          className='mb-3'
+                          margin='dense'
+                          label='Change the name of your bucket'
                           fullWidth
                           onBlur={formik.handleBlur}
                           onFocus={handleFocus}
@@ -108,12 +113,12 @@ const BucketOpen = props => {
                           }
                         />
                         <TextField
-                          type="text"
-                          id="description"
-                          name="description"
-                          className="mb-3"
-                          margin="dense"
-                          label="Edit the description of your bucket"
+                          type='text'
+                          id='description'
+                          name='description'
+                          className='mb-3'
+                          margin='dense'
+                          label='Edit the description of your bucket'
                           fullWidth
                           onBlur={formik.handleBlur}
                           onFocus={handleFocus}
@@ -135,18 +140,18 @@ const BucketOpen = props => {
                           onClick={() => {
                             setEdit(false)
                           }}
-                          className="bw-button"
+                          className='bw-button'
                         >
                           Cancel
                         </button>
-                        <button type="submit" className="bw-button">
+                        <button type='submit' className='bw-button'>
                           Save
                         </button>
                       </form>
                     </ClickAwayListener>
                   )}
                   {!props.bucket.restricted && (
-                    <div className="wishes-container mt-4">
+                    <div className='wishes-container mt-4'>
                       <Wishes
                         {...props}
                         bucketOwner={setBucketOwner()}
@@ -159,33 +164,33 @@ const BucketOpen = props => {
 
                   <hr />
                   {!props.preview && !props.bucket.restricted && (
-                    <div className="bucket-actions">
-                      <div className="row">
-                        <div className="col-md-3 text-center">
+                    <div className='bucket-actions'>
+                      <div className='row'>
+                        <div className='col-3 text-center'>
                           <Typography
-                            variant="caption"
-                            color="primary"
-                            className="c-pointer"
+                            variant='caption'
+                            color='primary'
+                            className='c-pointer'
                             onClick={props.handleOpenInviteCard}
                           >
                             Invite others
                           </Typography>
                         </div>
-                        <div className="col-md-3 text-center">
+                        <div className='col-3 text-center'>
                           <Typography
-                            variant="caption"
-                            color="primary"
-                            className="c-pointer"
+                            variant='caption'
+                            color='primary'
+                            className='c-pointer'
                             onClick={handleShowAddWishInput}
                           >
                             Add a wish
                           </Typography>
                         </div>
-                        <div className="col-md-3 text-center">
+                        <div className='col-3 text-center'>
                           <Typography
-                            variant="caption"
-                            color="primary"
-                            className="c-pointer"
+                            variant='caption'
+                            color='primary'
+                            className='c-pointer'
                             onClick={() => {
                               setEdit(true)
                             }}
@@ -193,11 +198,11 @@ const BucketOpen = props => {
                             Edit Bucket
                           </Typography>
                         </div>
-                        <div className="col-md-3 text-center">
+                        <div className='col-3 text-center'>
                           <Typography
-                            variant="caption"
-                            color="primary"
-                            className="c-pointer"
+                            variant='caption'
+                            color='primary'
+                            className='c-pointer'
                             onClick={props.handleOpenSendBucketCard}
                           >
                             Send Bucket
@@ -207,19 +212,19 @@ const BucketOpen = props => {
                     </div>
                   )}
                   {props.preview && (
-                    <div className="bucket-actions">
-                      <div className="row">
-                        <div className="col-md-4 text-center">
-                          <Typography variant="caption" color="primary">
+                    <div className='bucket-actions'>
+                      <div className='row'>
+                        <div className='col-md-4 text-center'>
+                          <Typography variant='caption' color='primary'>
                             Close Preview
                           </Typography>
                         </div>
-                        <div className="col-md-4 text-center"></div>
-                        <div className="col-md-4 text-center">
+                        <div className='col-md-4 text-center'></div>
+                        <div className='col-md-4 text-center'>
                           <Typography
-                            variant="caption"
-                            color="primary"
-                            className="c-pointer"
+                            variant='caption'
+                            color='primary'
+                            className='c-pointer'
                             onClick={() => {
                               props.submit()
                             }}
@@ -234,81 +239,81 @@ const BucketOpen = props => {
               )}
               {props.shared && (
                 <>
-                  <Typography variant="h5" color="primary" className="w-5">
+                  <Typography variant='h5' color='primary' className='w-5'>
                     Your bucket was sent successfully
                   </Typography>
-                  <Typography variant="body1" color="secondary">
+                  <Typography variant='body1' color='secondary'>
                     Consider donating to Bucket wishes
                   </Typography>
-                  <div className="row mt-2 mb-2 text-center">
-                    <div className="col-md-4">
+                  <div className='row mt-2 mb-2 text-center'>
+                    <div className='col-md-4'>
                       <div
-                        className="donate-card"
-                        style={{ height: 220, boxShadow: "none" }}
+                        className='donate-card'
+                        style={{ height: 220, boxShadow: 'none' }}
                       >
                         <Typography
-                          variant="body1"
-                          color="primary"
-                          className="w-7"
+                          variant='body1'
+                          color='primary'
+                          className='w-7'
                         >
                           Join the Founding 500
                         </Typography>
-                        <Typography variant="caption" color="secondary">
+                        <Typography variant='caption' color='secondary'>
                           Donate $100/month for 5 years.
                         </Typography>
                         <a
-                          href="https://www.enwranch.org/founding-500.html"
-                          target="blank"
+                          href='https://www.enwranch.org/founding-500.html'
+                          target='blank'
                         >
-                          <button className="bw-button">Give Now</button>
+                          <button className='bw-button'>Give Now</button>
                         </a>
                       </div>
                     </div>
-                    <div className="col-md-4">
+                    <div className='col-md-4'>
                       <div
-                        className="donate-card"
-                        style={{ height: 220, boxShadow: "none" }}
+                        className='donate-card'
+                        style={{ height: 220, boxShadow: 'none' }}
                       >
                         <Typography
-                          variant="body1"
-                          color="primary"
-                          className="w-7"
+                          variant='body1'
+                          color='primary'
+                          className='w-7'
                         >
                           Donate a monthly Gift
                         </Typography>
-                        <Typography variant="caption" color="secondary">
+                        <Typography variant='caption' color='secondary'>
                           Gifts of $10, $25, $50 or more given on a consistent
                           monthly basis add up to a lot and will help make a
                           difference in the lives of children.
                         </Typography>
                         <a
-                          href="https://donorbox.org/development-campaign-for-eagle-s-nest-wilderness-ranch"
-                          target="blank"
+                          href='https://donorbox.org/development-campaign-for-eagle-s-nest-wilderness-ranch'
+                          target='blank'
                         >
-                          <button className="bw-button">Give Now</button>
+                          <button className='bw-button'>Give Now</button>
                         </a>
                       </div>
                     </div>
-                    <div className="col-md-4">
+                    <div className='col-md-4'>
                       <div
-                        className="donate-card"
-                        style={{ height: 220, boxShadow: "none" }}
+                        className='donate-card'
+                        style={{ height: 220, boxShadow: 'none' }}
                       >
                         <Typography
-                          variant="body1"
-                          color="primary"
-                          className="w-7"
+                          variant='body1'
+                          color='primary'
+                          className='w-7'
                         >
                           Donate a one-time Gift
                         </Typography>
-                        <Typography variant="caption" color="secondary">
+                        <Typography variant='caption' color='secondary'>
                           Give any amount on a non-recurrent basis
                         </Typography>
                         <a
-                          href="https://donorbox.org/development-campaign-for-eagle-s-nest-wilderness-ranch"
-                          target="blank"
+                          href='https://donorbox.org/development-campaign-for-eagle-s-nest-wilderness-ranch'
+                          target='blank'
                         >
-                          <button className="bw-button">Give Now</button>
+                          <button className='bw-button'>Give Now</button>
                         </a>
                       </div>
                     </div>

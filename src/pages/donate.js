@@ -1,7 +1,6 @@
 import React from 'react'
 import { Typography } from '@material-ui/core'
 import Gift from 'components/images/gift.svg'
-import Header from 'components/ui/header'
 
 const Donate = (props) => {
   return (

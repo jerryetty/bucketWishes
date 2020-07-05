@@ -1,11 +1,14 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+import { getUser } from 'components/auth'
 import { Typography } from '@material-ui/core'
 import YellowBucket from 'components/images/bucket.svg'
 import BlueBucket from 'components/images/bucketBlue.svg'
 import GreyBucket from 'components/images/bucketPink.svg'
-import Header from 'components/ui/header'
 
 const Help = (props) => {
+  const { uid } = getUser()
+
   return (
     <>
       <div className='row mt-5 mb-5'>
@@ -18,15 +21,7 @@ const Help = (props) => {
           >
             How to use Bucket Wishes
           </Typography>
-          <div
-            style={{
-              position: 'relative',
-              paddingBottom: '56.25%',
-              height: 0,
-              marginTop: '20px',
-              marginBottom: '20px'
-            }}
-          >
+          <div className='video'>
             <iframe
               title='video'
               src='https://www.loom.com/embed/8d3add1493a2452690a6a7d5bb4a1820'
@@ -93,30 +88,22 @@ const Help = (props) => {
           <button
             className='bw-button menu-button mt-5'
             onClick={() => {
-              // props.handleClose()
-              // props.setOpenPreview(true)
-            }}
-          >
-            Replay Tutorial
-          </button>
-          <button
-            className='bw-button menu-button'
-            onClick={() => {
-              // props.handleClose()
-              // props.setOpenPreview(true)
+              localStorage.removeItem(uid)
             }}
           >
             Contact Us
           </button>
-          <button
-            className='bw-button menu-button'
+          <Link
+            to='/'
             onClick={() => {
-              // props.handleClose()
-              // props.setOpenPreview(true)
+              localStorage.removeItem(uid)
             }}
           >
-            Visit our Website
-          </button>
+            <button className='bw-button menu-button'>Replay Tutorial</button>
+          </Link>
+          <a href='http://www.enwranch.org/'>
+            <button className='bw-button menu-button'>Visit our Website</button>
+          </a>
         </div>
       </div>
       <div className='row'>
@@ -125,7 +112,7 @@ const Help = (props) => {
             What the colors mean
           </Typography>
         </div>
-        <div className='col-md-4'>
+        <div className='col-md-4 help-bucket'>
           <img src={YellowBucket} alt='bucket' className='bucket-image' />
           <div className='bucket-details'>
             <Typography
@@ -139,7 +126,7 @@ const Help = (props) => {
             </Typography>
           </div>
         </div>
-        <div className='col-md-4'>
+        <div className='col-md-4 help-bucket'>
           <img src={BlueBucket} alt='bucket' className='bucket-image' />
           <div className='bucket-details'>
             <Typography
@@ -153,7 +140,7 @@ const Help = (props) => {
             </Typography>
           </div>
         </div>
-        <div className='col-md-4'>
+        <div className='col-md-4 help-bucket'>
           <img src={GreyBucket} alt='bucket' className='bucket-image' />
           <div className='bucket-details'>
             <Typography

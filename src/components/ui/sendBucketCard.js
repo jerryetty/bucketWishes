@@ -16,7 +16,7 @@ const SendBucketCard = props => {
     initialValues: {
       email: "",
       name: "",
-      bucketUrl: `/bucket/${props.id}`,
+      bucketUrl: `#/bucket/${props.id}`,
     },
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
@@ -29,7 +29,7 @@ const SendBucketCard = props => {
 
   return (
     <>
-      <div className="row">
+      <div className="row overlay">
         <div className="col-md-6 mx-auto">
           <ClickAwayListener onClickAway={props.handleClose}>
             <div className="create-bucket-card p-3 text-center">

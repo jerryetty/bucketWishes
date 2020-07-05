@@ -1,5 +1,4 @@
 import React from "react"
-import { navigate } from "@reach/router"
 import { setUser, isLoggedIn } from "components/auth"
 import firebase from "firebase"
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
@@ -7,10 +6,6 @@ import { Typography } from "@material-ui/core"
 import { Redirect } from "react-router-dom"
 
 const Login = () => {
-  if (isLoggedIn()) {
-    Redirect(`/`)
-  }
-
   const getUiConfig = auth => {
     return {
       signInFlow: "popup",
@@ -22,7 +17,6 @@ const Login = () => {
       callbacks: {
         signInSuccessWithAuthResult: result => {
           setUser(result.user)
-          navigate(`/`)
         },
       },
     }
@@ -31,9 +25,9 @@ const Login = () => {
   return (
     <>
       <div className="main container">
-        <div className="row">
+        <div className="row login-container">
           <div className="col-md-6">
-            <div className="login-container">
+            <div className="">
               <Typography variant="h3" color="primary" className="w-5">
                 Welcome to Bucket Wishes
               </Typography>
@@ -45,7 +39,7 @@ const Login = () => {
             </div>
           </div>
           <div className="col-md-6">
-            <div className="login-container">
+            <div className="">
               <div className="login-card">
                 <Typography variant="h4" color="primary" className="w-7">
                   Sign in

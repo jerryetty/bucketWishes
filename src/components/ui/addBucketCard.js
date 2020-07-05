@@ -7,6 +7,7 @@ import { ClickAwayListener, Typography } from '@material-ui/core'
 const AddBucketCard = (props) => {
   const bucketDocRef = myFirebase.firestore().collection("buckets")
   const [step, setStep] = useState(1)
+  const [bucketId, setBucketId] = useState(null)
 
   const validationSchema = Yup.object().shape({
     title: Yup.string()
@@ -35,7 +36,6 @@ const AddBucketCard = (props) => {
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
       setSubmitting(true)
-      console.log(values)
       const data = values
       let wish = null
 
@@ -50,14 +50,15 @@ const AddBucketCard = (props) => {
       }
 
       delete data.wish
-      createBucket(data, wish)
+      setBucketId(createBucket(data, wish))
       resetForm()
-      setStep(1)
+      setStep(4)
       setSubmitting(false)
     },
   })
 
   const createBucket = (data, wish) => {
+
     bucketDocRef.add(data).then((ref) => {
       if (wish) {
         bucketDocRef
@@ -67,12 +68,13 @@ const AddBucketCard = (props) => {
           .set(wish, { merge: true })
           .then(() => {})
       }
+      setBucketId(ref.id)
       console.log('Added document with ID: ', ref.id)
     })
   }
 
   return (
-    <div className="row">
+    <div className="row overlay">
       <div className="col-md-6 mx-auto">
         <ClickAwayListener onClickAway={props.handleClose}>
           <div className="create-bucket-card p-3 text-center">
@@ -153,10 +155,6 @@ const AddBucketCard = (props) => {
                   <Typography variant="h6" color="primary" className="w-5">
                     Add a wish!
                   </Typography>
-                  <Typography variant="body2" color="secondary">
-                    You can invite friends and family to add wishes too after
-                    creating the bucket
-                  </Typography>
                   <div className="mt-4">
                     <textarea
                       id='wish'
@@ -176,6 +174,30 @@ const AddBucketCard = (props) => {
                     </button>
                     <button className="bw-button" type="submit">
                       Finish
+                    </button>
+                  </div>
+                </>
+              )}
+              {(step === 4 && bucketId) && (
+                <>
+                  <Typography variant="h6" className="w-5 text-success">
+                    Your Bucket was created successfully!
+                  </Typography>
+                  <Typography variant="body2" color="secondary">
+                    Would you like to invite friends and family to add wishes to this bucket?
+                  </Typography>
+                  
+                  <div className="mt-4">
+                    <button className="bw-button" onClick={props.handleClose}>
+                      Later
+                    </button>
+                    <button className="bw-button" onClick={(e) => {
+                      e.preventDefault()
+                      props.handleClose()
+                      props.handleSetActiveBucket({id: bucketId})
+                      props.handleOpenInviteCard()
+                    }}>
+                      Sure
                     </button>
                   </div>
                 </>

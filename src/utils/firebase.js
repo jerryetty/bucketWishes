@@ -4,7 +4,7 @@ import 'firebase/firestore'
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyBQQdB0IcfoSWgNYnGcVD8IvOCHFkIBZAk',
-  authDomain: 'bucket-wishes.firebaseapp.com',
+  authDomain: 'bucketwishes.app',
   databaseURL: 'https://bucket-wishes.firebaseio.com',
   projectId: 'bucket-wishes',
   storageBucket: 'bucket-wishes.appspot.com',
