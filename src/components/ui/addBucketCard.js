@@ -125,7 +125,7 @@ const AddBucketCard = (props) => {
               {step === 2 && (
                 <>
                   <Typography variant='body1' color='primary' className='w-5'>
-                    Provide the purpose and instructions <br/> for those who will be
+                    Provide the purpose and instructions for those <br/> who will be
                     adding wishes to the bucket.
                   </Typography>
                   <div className='mt-4'>

@@ -142,10 +142,10 @@ a, a:hover{
 
 .bucket-open{
   background: #FFFEED;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.25), 
+  /* box-shadow: 2px 0 5px rgba(0, 0, 0, 0.25), 
               -2px 0 5px rgba(0, 0, 0, 0.25), 
               0 -2px 5px rgba(0, 0, 0, 0.25), 
-              0 2px 5px rgba(0, 0, 0, 0.25);
+              0 2px 5px rgba(0, 0, 0, 0.25); */
   border-radius: 15px;
   position: absolute;
   left: 50%;
@@ -198,15 +198,20 @@ a, a:hover{
   background: #FAF296;
 }
 
+.bucket-title{
+  display: flex;
+  justify-content: space-between;
+}
+
 .create-bucket-card{
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   background: #FFFEED;
-  box-shadow: 10px 0 10px rgba(0, 0, 0, 0.25), 
+  /* box-shadow: 10px 0 10px rgba(0, 0, 0, 0.25), 
               -10px 0 10px rgba(0, 0, 0, 0.25), 
               0 -10px 10px rgba(0, 0, 0, 0.25), 
-              0 10px 10px rgba(0, 0, 0, 0.25);
+              0 10px 10px rgba(0, 0, 0, 0.25); */
   border-radius: 15px;
   position: absolute;
   left: 50%;
@@ -269,6 +274,12 @@ input:focus, textarea:focus{
 .edit-wish{
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
+}
+
+.bucket-actions{
+  display: flex;
+  justify-content: space-evenly;
   align-items: baseline;
 }
 

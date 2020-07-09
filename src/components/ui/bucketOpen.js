@@ -3,8 +3,11 @@ import { myFirebase as firebase } from 'utils/firebase'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import Moment from 'react-moment'
-import { Typography, ClickAwayListener, TextField } from '@material-ui/core'
+import { Typography, ClickAwayListener, IconButton } from '@material-ui/core'
 import Wishes from './wishes'
+import ConfirmDialog from './confirmDialog'
+import PopupAlert from './popupAlert'
+import { Help, Group, Info } from '@material-ui/icons'
 
 const BucketOpen = (props) => {
   const bucketDocRef = firebase
@@ -28,8 +31,8 @@ const BucketOpen = (props) => {
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
       setSubmitting(true)
-      let data = values
-      editBucket(data)
+      editBucket(values)
+      setBucketDetails(values)
       setEdit(false)
       // setTimeout(props.handleClose, 2000)
     }
@@ -49,13 +52,46 @@ const BucketOpen = (props) => {
     } else return false
   }
 
+  const [bucketDetails, setBucketDetails] = useState({
+    title: props.bucket.title,
+    description: props.bucket.description
+  })
   const [showEditWishInput, setShowEditWishInput] = useState(false)
   const [showAddWishInput, setShowAddWishInput] = useState(false)
   const [addedWish, setAddedWish] = useState(false)
   const [edit, setEdit] = useState(false)
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
+  const [showAlert, setShowAlert] = useState(false)
 
   const handleShowEditWishInput = () => {
     setShowEditWishInput(true)
+  }
+  
+  const handleOpenConfirmDialog = () => {
+    setOpenConfirmDialog(true)
+  }
+
+  const handleCloseConfirmDialog = () => {
+    setOpenConfirmDialog(false)
+  }
+
+  // Delete a bucket passing id as a parameter
+  const handleDelete = () => {
+    bucketDocRef.delete()
+    // props.handleClose()
+    handleShowAlert()
+  }
+
+  const handleShowAlert = () => {
+    setShowAlert(true)
+  }
+
+  const handleHideAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setShowAlert(false)
   }
 
   const handleHideEditWishInput = () => {
@@ -72,6 +108,24 @@ const BucketOpen = (props) => {
 
   return (
     <>
+      {openConfirmDialog && (
+        <ConfirmDialog
+          open={openConfirmDialog}
+          handleClose={handleCloseConfirmDialog}
+          message='Are you sure you want to delete?'
+          action={handleDelete}
+        />
+      )}
+
+      {showAlert && (
+        <PopupAlert
+          open={showAlert}
+          severity='error'
+          dismiss={handleHideAlert}
+          message='Deleted!'
+        />
+      )}
+
       <div className='row overlay'>
         <div className='col-md-8 mx-auto'>
           <ClickAwayListener onClickAway={props.handleClose}>
@@ -80,15 +134,32 @@ const BucketOpen = (props) => {
                 <>
                   {!edit && (
                     <>
-                      <Typography variant='h5' color='primary' className='w-5'>
-                        {props.bucket.title}
-                      </Typography>
+                      <div className='bucket-title'>
+                        <Typography
+                          variant='h5'
+                          color='primary'
+                          className='w-5'
+                        >
+                          {bucketDetails.title}
+                        </Typography>
+                        <span>
+                          <IconButton
+                            id='add-collaborator'
+                            color='primary'
+                            aria-label='add collaborators'
+                            size='small'
+                            disableFocusRipple
+                          >
+                            <Info />
+                          </IconButton>
+                        </span>
+                      </div>
                       <Typography
                         variant='body2'
                         className='mt-2'
                         color='secondary'
                       >
-                        {props.bucket.description}
+                        {bucketDetails.description}
                       </Typography>
 
                       <Typography variant='caption' color='secondary'>
@@ -197,62 +268,73 @@ const BucketOpen = (props) => {
                   )}
                   {!props.preview && !props.bucket.restricted && (
                     <div className='bucket-actions'>
-                      <div className='row'>
-                        <div className='col-3 text-center'>
-                          <Typography
-                            variant='caption'
-                            color='primary'
-                            className='c-pointer'
-                            onClick={props.handleOpenInviteCard}
-                          >
-                            Invite others
-                          </Typography>
-                        </div>
-                        <div className='col-3 text-center'>
-                          {addedWish && (
-                            <Typography
-                            variant='caption'
-                            color='primary'
-                            className='c-pointer'
-                            onClick={handleShowEditWishInput}
-                          >
-                           Edit Wish
-                          </Typography>
-                          )}
-                          {!addedWish && (
-                            <Typography
-                            variant='caption'
-                            color='primary'
-                            className='c-pointer'
-                            onClick={handleShowAddWishInput}
-                          >
-                           Add Wish
-                          </Typography>
-                          )}
-                        </div>
-                        <div className='col-3 text-center'>
-                          <Typography
-                            variant='caption'
-                            color='primary'
-                            className='c-pointer'
-                            onClick={() => {
-                              setEdit(true)
-                            }}
-                          >
-                            Edit Bucket
-                          </Typography>
-                        </div>
-                        <div className='col-3 text-center'>
-                          <Typography
-                            variant='caption'
-                            color='primary'
-                            className='c-pointer'
-                            onClick={props.handleOpenSendBucketCard}
-                          >
-                            Send Bucket
-                          </Typography>
-                        </div>
+                      <div>
+                        <Typography
+                          variant='caption'
+                          color='primary'
+                          className='c-pointer'
+                          onClick={props.handleOpenInviteCard}
+                        >
+                          Invite others
+                        </Typography>
                       </div>
+                      {addedWish && (
+                        <Typography
+                          variant='caption'
+                          color='primary'
+                          className='c-pointer'
+                          onClick={handleShowEditWishInput}
+                        >
+                          Edit your Wish
+                        </Typography>
+                      )}
+                      {!addedWish && (
+                        <Typography
+                          variant='caption'
+                          color='primary'
+                          className='c-pointer'
+                          onClick={handleShowEditWishInput}
+                        >
+                          Add your Wish
+                        </Typography>
+                      )}
+
+                      {props.uid === props.bucket.author && (
+                        <>
+                          <div>
+                            <Typography
+                              variant='caption'
+                              color='primary'
+                              className='c-pointer'
+                              onClick={handleOpenConfirmDialog}
+                            >
+                              Delete Bucket
+                            </Typography>
+                          </div>
+                          <div>
+                            <Typography
+                              variant='caption'
+                              color='primary'
+                              className='c-pointer'
+                              onClick={() => {
+                                setEdit(true)
+                              }}
+                            >
+                              Edit Bucket
+                            </Typography>
+                          </div>
+                          <div>
+                            <Typography
+                              variant='caption'
+                              color='primary'
+                              className='c-pointer'
+                              onClick={props.handleOpenSendBucketCard}
+                            >
+                              Send Bucket
+                            </Typography>
+                          </div>
+                        </>
+                      )}
                     </div>
                   )}
                   {props.preview && (

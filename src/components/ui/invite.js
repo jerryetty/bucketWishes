@@ -110,7 +110,7 @@ const InviteCard = (props) => {
                   </div>
                   {duplicate && (
                     <div className="text-danger">
-                      User is already a collaborator
+                      That person already has access to this bucket
                     </div>
                   )}
                   <div className="mt-4">
@@ -130,6 +130,9 @@ const InviteCard = (props) => {
                     <Typography variant="h5">Invite Sent</Typography>
                   </div>
                   <div className="mt-4">
+                  <button className="bw-button" onClick={() => {setInvited(false)}}>
+                      Invite Someone Else
+                    </button>
                     <button className="bw-button" onClick={props.handleClose}>
                       Close
                     </button>

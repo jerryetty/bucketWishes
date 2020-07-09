@@ -310,7 +310,7 @@ const Home = (props) => {
             <input
               type='text'
               className='create-bucket-prompt'
-              placeholder='Create a bucket'
+              placeholder='Create a bucket...'
               id="create-bucket"
               onClick={handleOpenCreateBucket}
             />
