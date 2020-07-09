@@ -6,9 +6,9 @@ import {
   Help as HelpIcon,
 } from "@material-ui/icons"
 import { Link } from 'react-router-dom'
-import YellowBucket from "components/images/bucket.svg"
-import BlueBucket from "components/images/bucketBlue.svg"
-import GreyBucket from "components/images/bucketPink.svg"
+import YellowBucket from "components/images/bucket.png"
+import BlueBucket from "components/images/bucketBlue.png"
+import GreyBucket from "components/images/bucketGrey.png"
 
 const Bucket = props => {
   
