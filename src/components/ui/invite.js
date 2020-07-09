@@ -1,15 +1,16 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { myFirebase } from 'utils/firebase'
-import firebase from "firebase"
+import firebase from 'firebase'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import request from 'request'
 import { ClickAwayListener, Typography } from '@material-ui/core'
 
 const InviteCard = (props) => {
-  const bucketDocRef = myFirebase.firestore().collection("buckets")
+  const bucketDocRef = myFirebase.firestore().collection('buckets')
   const [invited, setInvited] = useState(false)
   const [duplicate, setDuplicate] = useState(false)
-  
+
   const useCollaborators = () => {
     const [collaborators, setCollaborators] = useState([])
     useEffect(() => {
@@ -36,20 +37,37 @@ const InviteCard = (props) => {
   const formik = useFormik({
     initialValues: {
       email: '',
-      name: null
+      senderName: props.displayName,
+      dateInvited: Date.now()
     },
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
       setSubmitting(true)
-      const data = values
-      
-      if (addCollaborator(data)) {
+      if (addCollaborator(values)) {
         resetForm()
+        sendData(values)
         setInvited(true)
       }
-      
     }
   })
+
+  
+  const sendData = async (data) => {
+    var options = {
+      method: 'POST',
+      url: 'https://us-central1-bucket-wishes.cloudfunctions.net/sendCollaboratorInvite',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      form: {
+        senderName: data.senderName,
+        email: data.email,
+      }
+    }
+    request(options, function (error, response) {
+      if (error) throw new Error(error)
+    })
+  }
 
   const addCollaborator = (data) => {
     if (checkForDuplicates(data.email)) {
@@ -58,7 +76,7 @@ const InviteCard = (props) => {
     } else {
       const FieldValue = firebase.firestore.FieldValue
       bucketDocRef.doc(props.id).update({
-        "collaborators.pending": FieldValue.arrayUnion(data.email)
+        'collaborators.pending': FieldValue.arrayUnion(data.email)
       })
       return true
     }
@@ -75,26 +93,26 @@ const InviteCard = (props) => {
   }
 
   return (
-    <div className="row overlay">
-      <div className="col-md-6 mx-auto">
+    <div className='row overlay'>
+      <div className='col-md-6 mx-auto'>
         <ClickAwayListener onClickAway={props.handleClose}>
-          <div className="create-bucket-card p-3 text-center">
+          <div className='create-bucket-card p-3 text-center'>
             <form onSubmit={formik.handleSubmit}>
               {!invited && (
                 <>
-                  <Typography variant="h6" color="primary" className="w-5">
+                  <Typography variant='h6' color='primary' className='w-5'>
                     Invite friends and family to add wishes to this bucket
                   </Typography>
-                  <Typography variant="body2" color="primary" className="mt-2">
+                  <Typography variant='body2' color='primary' className='mt-2'>
                     Enter their email
                   </Typography>
-                  <div className="mt-4">
+                  <div className='mt-4'>
                     <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      className="mb-1 custom-font"
-                      margin="dense"
+                      type='email'
+                      id='email'
+                      name='email'
+                      className='mb-1 custom-font'
+                      margin='dense'
                       fullWidth
                       onBlur={formik.handleBlur}
                       onFocus={props.handleFocus}
@@ -103,20 +121,20 @@ const InviteCard = (props) => {
                       error={!!(formik.touched.email && formik.errors.email)}
                     />
                   </div>
-                  <div className="text-danger">
+                  <div className='text-danger'>
                     {formik.touched.email && formik.errors.email
                       ? formik.errors.email
                       : null}
                   </div>
                   {duplicate && (
-                    <div className="text-danger">
+                    <div className='text-danger'>
                       That person already has access to this bucket
                     </div>
                   )}
-                  <div className="mt-4">
+                  <div className='mt-4'>
                     <button
-                      className="bw-button"
-                      type="submit"
+                      className='bw-button'
+                      type='submit'
                       disabled={formik.errors.email ? true : false}
                     >
                       Send Invite
@@ -126,14 +144,19 @@ const InviteCard = (props) => {
               )}
               {invited && (
                 <>
-                  <div className="text-success">
-                    <Typography variant="h5">Invite Sent</Typography>
+                  <div className='text-success'>
+                    <Typography variant='h5'>Invite Sent</Typography>
                   </div>
-                  <div className="mt-4">
-                  <button className="bw-button" onClick={() => {setInvited(false)}}>
+                  <div className='mt-4'>
+                    <button
+                      className='bw-button'
+                      onClick={() => {
+                        setInvited(false)
+                      }}
+                    >
                       Invite Someone Else
                     </button>
-                    <button className="bw-button" onClick={props.handleClose}>
+                    <button className='bw-button' onClick={props.handleClose}>
                       Close
                     </button>
                   </div>

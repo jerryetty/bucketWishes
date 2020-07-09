@@ -1,22 +1,22 @@
-import React, { useState } from "react"
-import { useFormik } from "formik"
-import * as Yup from "yup"
-import { ClickAwayListener, Typography } from "@material-ui/core"
+import React, { useState } from 'react'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import { ClickAwayListener, Typography } from '@material-ui/core'
 
-const SendBucketCard = props => {
+const SendBucketCard = (props) => {
   const [sent, setSent] = useState(false)
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
-      .email("Please enter a valid email")
-      .required("This field is required"),
+      .email('Please enter a valid email')
+      .required('This field is required')
   })
 
   const formik = useFormik({
     initialValues: {
-      email: "",
-      name: "",
-      bucketUrl: `#/bucket/${props.id}`,
+      email: '',
+      name: '',
+      bucketUrl: `#/bucket/${props.id}`
     },
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
@@ -24,30 +24,30 @@ const SendBucketCard = props => {
       props.handleClose()
       props.handleOpenPreview(values)
       resetForm()
-    },
+    }
   })
 
   return (
     <>
-      <div className="row overlay">
-        <div className="col-md-6 mx-auto">
+      <div className='row overlay'>
+        <div className='col-md-6 mx-auto'>
           <ClickAwayListener onClickAway={props.handleClose}>
-            <div className="create-bucket-card p-3 text-center">
+            <div className='create-bucket-card p-3 text-center'>
               <form onSubmit={formik.handleSubmit}>
-                <Typography variant="h6" color="primary" className="w-5">
+                <Typography variant='h6' color='primary' className='w-5'>
                   Send this Bucket to Recipient
                 </Typography>
-                <Typography variant="body2" color="primary" className="mt-2">
+                <Typography variant='body2' color='primary' className='mt-2'>
                   Enter their name
                 </Typography>
-                <div className="mt-1">
+                <div className='mt-1'>
                   <input
                     required
-                    type="text"
-                    id="name"
-                    name="name"
-                    className="mb-1 custom-font"
-                    margin="dense"
+                    type='text'
+                    id='name'
+                    name='name'
+                    className='mb-1 custom-font'
+                    margin='dense'
                     fullWidth
                     onBlur={formik.handleBlur}
                     onFocus={props.handleFocus}
@@ -61,17 +61,17 @@ const SendBucketCard = props => {
                     }
                   />
                 </div>
-                <Typography variant="body2" color="primary" className="mt-2">
+                <Typography variant='body2' color='primary' className='mt-2'>
                   Enter their email
                 </Typography>
-                <div className="mt-1">
+                <div className='mt-1'>
                   <input
                     required
-                    type="email"
-                    id="email"
-                    name="email"
-                    className="mb-1 custom-font"
-                    margin="dense"
+                    type='email'
+                    id='email'
+                    name='email'
+                    className='mb-1 custom-font'
+                    margin='dense'
                     fullWidth
                     onBlur={formik.handleBlur}
                     onFocus={props.handleFocus}
@@ -85,12 +85,9 @@ const SendBucketCard = props => {
                     }
                   />
                 </div>
-                <div className="mt-4">
+                <div className='mt-4'>
                   {!sent && (
-                    <button
-                      className="bw-button"
-                      type="submit"
-                    >
+                    <button className='bw-button' type='submit'>
                       Preview
                     </button>
                   )}

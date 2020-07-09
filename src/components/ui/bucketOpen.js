@@ -78,12 +78,8 @@ const BucketOpen = (props) => {
   // Delete a bucket passing id as a parameter
   const handleDelete = () => {
     bucketDocRef.delete()
-    // props.handleClose()
-    handleShowAlert()
-  }
-
-  const handleShowAlert = () => {
-    setShowAlert(true)
+    props.handleSetAlertMessage("Bucket Deleted")
+    props.handleShowAlert()
   }
 
   const handleHideAlert = (event, reason) => {
@@ -112,7 +108,7 @@ const BucketOpen = (props) => {
         <ConfirmDialog
           open={openConfirmDialog}
           handleClose={handleCloseConfirmDialog}
-          message='Are you sure you want to delete?'
+          message='Are you sure you want to delete this bucket?'
           action={handleDelete}
         />
       )}
@@ -121,7 +117,7 @@ const BucketOpen = (props) => {
         <PopupAlert
           open={showAlert}
           severity='error'
-          dismiss={handleHideAlert}
+          handleHideAlert={handleHideAlert}
           message='Deleted!'
         />
       )}
@@ -293,7 +289,7 @@ const BucketOpen = (props) => {
                           variant='caption'
                           color='primary'
                           className='c-pointer'
-                          onClick={handleShowEditWishInput}
+                          onClick={handleShowAddWishInput}
                         >
                           Add your Wish
                         </Typography>

@@ -9,6 +9,7 @@ import InviteCard from 'components/ui/invite'
 import SendBucketCard from 'components/ui/sendBucketCard'
 import request from 'request'
 import Tour from 'reactour'
+import PopupAlert from 'components/ui/popupAlert'
 
 const Home = (props) => {
   const bucketDocRef = myFirebase.firestore().collection('buckets')
@@ -114,6 +115,8 @@ const Home = (props) => {
   const [shared, setShared] = useState(false)
   const [openTour, setOpenTour] = useState(checkFirstTimeUser())
   const [previewData, setPreviewData] = useState({})
+  const [showAlert, setShowAlert] = useState(false)
+  const [alertMessage, setAlertMessage] = useState('')
 
   const handleOpenBucket = () => {
     setOpenBucket(true)
@@ -203,6 +206,22 @@ const Home = (props) => {
     })
   }
 
+  const handleShowAlert = () => {
+    setShowAlert(true)
+  }
+
+  const handleSetAlertMessage = (message) => {
+    setAlertMessage(message)
+  }
+
+  const handleHideAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setShowAlert(false)
+  }
+
   const steps = [
     {
       selector: '#brand',
@@ -240,6 +259,15 @@ const Home = (props) => {
   return (
     <>
       <div>
+        {showAlert && (
+          <PopupAlert
+            open={showAlert}
+            severity='error'
+            handleHideAlert={handleHideAlert}
+            message={alertMessage}
+          />
+        )}
+
         {openBucket && (
           <BucketOpen
             email={email}
@@ -249,6 +277,8 @@ const Home = (props) => {
             handleClose={handleCloseBucket}
             handleOpenInviteCard={handleOpenInviteCard}
             handleOpenSendBucketCard={handleOpenSendBucketCard}
+            handleSetAlertMessage={handleSetAlertMessage}
+            handleShowAlert={handleShowAlert}
           />
         )}
         {openPreview && (
