@@ -158,7 +158,7 @@ const BucketOpen = (props) => {
                         {bucketDetails.description}
                       </Typography>
 
-                      <Typography variant='caption' color='secondary'>
+                      <Typography variant='caption' color='textSecondary'>
                         Author: {props.bucket.authorName}
                         {' | '}
                         <Moment format='YYYY/MM/DD'>
