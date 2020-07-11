@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { myFirebase as firebase } from 'utils/firebase'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import Moment from 'react-moment'
-import { Typography, ClickAwayListener, IconButton } from '@material-ui/core'
+import { Typography, ClickAwayListener, IconButton, CircularProgress } from '@material-ui/core'
 import Wishes from './wishes'
 import ConfirmDialog from './confirmDialog'
 import PopupAlert from './popupAlert'
-import { Help, Group, Info } from '@material-ui/icons'
+import { Info as InfoIcon, Delete as DeleteIcon } from '@material-ui/icons'
 
 const BucketOpen = (props) => {
   const bucketDocRef = firebase
@@ -38,6 +38,43 @@ const BucketOpen = (props) => {
     }
   })
 
+  const useCollaborators = () => {
+    const [collaborators, setCollaborators] = useState([])
+    useEffect(() => {
+      bucketDocRef.onSnapshot(
+        (snapshot) => {
+          const collaborators = snapshot.data().collaborators.verified
+          setCollaborators(collaborators)
+        },
+        (err) => {
+          console.log(`Encountered error: ${err}`)
+        }
+      )
+    }, [])
+
+    return collaborators
+  }
+
+  const usePendingCollaborators = () => {
+    const [collaborators, setCollaborators] = useState([])
+    useEffect(() => {
+      bucketDocRef.onSnapshot(
+        (snapshot) => {
+          const collaborators = snapshot.data().collaborators.pending
+          setCollaborators(collaborators)
+        },
+        (err) => {
+          console.log(`Encountered error: ${err}`)
+        }
+      )
+    }, [])
+
+    return collaborators
+  }
+
+  const collaborators = useCollaborators()
+  const pendingCollaborators = usePendingCollaborators()
+
   const editBucket = (data) => {
     bucketDocRef.update(data).then(() => {
       console.log('Document updated')
@@ -62,11 +99,20 @@ const BucketOpen = (props) => {
   const [edit, setEdit] = useState(false)
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
   const [showAlert, setShowAlert] = useState(false)
+  const [showInfo, setShowInfo] = useState(false)
+
+  const handleToggleInfo = () => {
+    setShowInfo(!showInfo)
+  }
+
+  const handleHideInfo = () => {
+    setShowInfo(false)
+  }
 
   const handleShowEditWishInput = () => {
     setShowEditWishInput(true)
   }
-  
+
   const handleOpenConfirmDialog = () => {
     setOpenConfirmDialog(true)
   }
@@ -77,8 +123,9 @@ const BucketOpen = (props) => {
 
   // Delete a bucket passing id as a parameter
   const handleDelete = () => {
+    props.handleClose()
     bucketDocRef.delete()
-    props.handleSetAlertMessage("Bucket Deleted")
+    props.handleSetAlertMessage('Bucket Deleted')
     props.handleShowAlert()
   }
 
@@ -126,8 +173,125 @@ const BucketOpen = (props) => {
         <div className='col-md-8 mx-auto'>
           <ClickAwayListener onClickAway={props.handleClose}>
             <div className='bucket-open p-5'>
-              {!props.shared && (
+              {props.shared === 0 && (
                 <>
+                  {showInfo && (
+                    <ClickAwayListener onClickAway={handleHideInfo}>
+                      <div className='bucket-info'>
+                        <div className='details'>
+                          <div>
+                            <Typography
+                              variant='caption'
+                              color='primary'
+                              className='w-5'
+                            >
+                              Recipient
+                            </Typography>
+                            <Typography variant='caption' color='primary' className='c-pointer text-link text-info' onClick={props.handleOpenAddRecipientCard}>
+                             {props.bucket.recipient && props.bucket.recipient.name}
+                             {!props.bucket.recipient && (
+                               <span>
+                                Add a recipient
+                               </span>
+                             )}
+                            </Typography>
+                          </div>
+                          <div>
+                            <Typography
+                              variant='caption'
+                              color='primary'
+                              className='w-5'
+                            >
+                              Send by
+                            </Typography>
+                            <Typography variant='caption' color='primary' className='c-pointer text-link text-info' onClick={props.handleOpenAddRecipientCard}>
+                             {props.bucket.sendByDate && props.bucket.sendByDate}
+                             {!props.bucket.sendByDate && (
+                               <span>
+                                Choose a date
+                               </span>
+                             )}
+                            </Typography>
+                          </div>
+                          <div>
+                            <Typography
+                              variant='caption'
+                              color='primary'
+                              className='w-5'
+                            >
+                              Status
+                            </Typography>
+                            <Typography variant='caption' color='primary'>
+                             {props.bucket.sent && (
+                               <span className="text-success">
+                                 Sent
+                               </span>
+                             )}
+                             {!props.bucket.sent && (
+                               <span>
+                                Not Sent
+                               </span>
+                             )}
+                            </Typography>
+                          </div>
+                        </div>
+                        <div className='people mt-3'>
+                          <Typography
+                            variant='body2'
+                            color='primary'
+                            className='w-7'
+                          >
+                            People Invited
+                          </Typography>
+                          <hr />
+                          {collaborators.map((collaborator) => (
+                            <Typography
+                              key={collaborator}
+                              variant='caption'
+                              className='text-success'
+                            >
+                              {collaborator}
+                              <br />
+                            </Typography>
+                          ))}
+                          {pendingCollaborators.map((collaborator) => (
+                            <Typography
+                              key={collaborator}
+                              variant='caption'
+                              className='text-info'
+                            >
+                              {collaborator}
+                              <br />
+                            </Typography>
+                          ))}
+                        </div>
+                        <div className='actions'>
+                          {props.uid === props.bucket.author &&
+                            !props.preview &&
+                            !props.bucket.restricted && (
+                              <>
+                                <IconButton
+                                  id='add-collaborator'
+                                  className='w-5 text-danger'
+                                  aria-label='add collaborators'
+                                  size='small'
+                                  onClick={handleOpenConfirmDialog}
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                                <Typography
+                                  variant='caption'
+                                  className='w-5 text-danger c-pointer'
+                                  onClick={handleOpenConfirmDialog}
+                                >
+                                  Delete this Bucket
+                                </Typography>
+                              </>
+                            )}
+                        </div>
+                      </div>
+                    </ClickAwayListener>
+                  )}
                   {!edit && (
                     <>
                       <div className='bucket-title'>
@@ -144,9 +308,9 @@ const BucketOpen = (props) => {
                             color='primary'
                             aria-label='add collaborators'
                             size='small'
-                            disableFocusRipple
+                            onClick={handleToggleInfo}
                           >
-                            <Info />
+                            <InfoIcon />
                           </IconButton>
                         </span>
                       </div>
@@ -263,32 +427,22 @@ const BucketOpen = (props) => {
                     </div>
                   )}
                   {!props.preview && !props.bucket.restricted && (
-                    <div className='bucket-actions'>
+                    <div className='bucket-actions mt-3'>
                       <div>
                         <Typography
                           variant='caption'
                           color='primary'
-                          className='c-pointer'
+                          className='c-pointer w-5'
                           onClick={props.handleOpenInviteCard}
                         >
                           Invite others
                         </Typography>
                       </div>
-                      {addedWish && (
-                        <Typography
-                          variant='caption'
-                          color='primary'
-                          className='c-pointer'
-                          onClick={handleShowEditWishInput}
-                        >
-                          Edit your Wish
-                        </Typography>
-                      )}
                       {!addedWish && (
                         <Typography
                           variant='caption'
                           color='primary'
-                          className='c-pointer'
+                          className='c-pointer w-5'
                           onClick={handleShowAddWishInput}
                         >
                           Add your Wish
@@ -301,17 +455,7 @@ const BucketOpen = (props) => {
                             <Typography
                               variant='caption'
                               color='primary'
-                              className='c-pointer'
-                              onClick={handleOpenConfirmDialog}
-                            >
-                              Delete Bucket
-                            </Typography>
-                          </div>
-                          <div>
-                            <Typography
-                              variant='caption'
-                              color='primary'
-                              className='c-pointer'
+                              className='c-pointer w-5'
                               onClick={() => {
                                 setEdit(true)
                               }}
@@ -335,31 +479,30 @@ const BucketOpen = (props) => {
                   )}
                   {props.preview && (
                     <div className='bucket-actions'>
-                      <div className='row'>
-                        <div className='col-md-4 text-center'>
-                          <Typography variant='caption' color='primary'>
-                            Close Preview
-                          </Typography>
-                        </div>
-                        <div className='col-md-4 text-center'></div>
-                        <div className='col-md-4 text-center'>
-                          <Typography
-                            variant='caption'
-                            color='primary'
-                            className='c-pointer'
-                            onClick={() => {
-                              props.submit()
-                            }}
-                          >
-                            Send this Bucket
-                          </Typography>
-                        </div>
-                      </div>
+                      <Typography variant='caption' className='c-pointer' color='primary'>
+                        Close Preview
+                      </Typography>
+                      <Typography
+                        variant='caption'
+                        color='primary'
+                        className='c-pointer'
+                        onClick={() => {
+                          props.setShared(-1)
+                          props.submit()
+                        }}
+                      >
+                        Send this Bucket
+                      </Typography>
                     </div>
                   )}
                 </>
               )}
-              {props.shared && (
+              {props.shared === -1 && (
+                <div className='text-center'>
+                  <CircularProgress />
+                </div>
+              )}
+              {props.shared === 1 && (
                 <>
                   <Typography variant='h5' className='w-5 text-success'>
                     Your bucket was sent successfully

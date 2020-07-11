@@ -82,7 +82,6 @@ a, a:hover{
 
 .create-bucket-prompt{
   background: #FFFFFF;
-  /* box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25); */
   border-radius: 40px;
   width: 100%;
   padding: 2%;
@@ -142,10 +141,6 @@ a, a:hover{
 
 .bucket-open{
   background: #FFFEED;
-  /* box-shadow: 2px 0 5px rgba(0, 0, 0, 0.25), 
-              -2px 0 5px rgba(0, 0, 0, 0.25), 
-              0 -2px 5px rgba(0, 0, 0, 0.25), 
-              0 2px 5px rgba(0, 0, 0, 0.25); */
   border-radius: 15px;
   position: absolute;
   left: 50%;
@@ -165,7 +160,6 @@ a, a:hover{
 
 .wish{
   background: #FAF296;
-  /* box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.25); */
   border-radius: 10px;
   width: 99%;
 }
@@ -208,10 +202,7 @@ a, a:hover{
   flex-direction: column;
   justify-content: space-around;
   background: #FFFEED;
-  /* box-shadow: 10px 0 10px rgba(0, 0, 0, 0.25), 
-              -10px 0 10px rgba(0, 0, 0, 0.25), 
-              0 -10px 10px rgba(0, 0, 0, 0.25), 
-              0 10px 10px rgba(0, 0, 0, 0.25); */
+  padding: 2%;
   border-radius: 15px;
   position: absolute;
   left: 50%;
@@ -223,7 +214,6 @@ a, a:hover{
 
 input, textarea{
   background: #FFFFFF;
-  /* box-shadow: inset 4px 4px 4px rgba(0, 0, 0, 0.25); */
   border-radius: 10px;
   border: 1px solid #b9aa00;
   padding: 1%;
@@ -281,6 +271,45 @@ input:focus, textarea:focus{
   display: flex;
   justify-content: space-evenly;
   align-items: baseline;
+}
+
+.close-button{
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.close-button:hover{
+  transform: scale(1.5);
+  transition: .3s;
+}
+
+.bucket-info{
+  padding: 2%;
+  position: absolute;
+  right: 50px;
+  height: 75%;
+  width: 30%;
+  background: #faf296;
+  z-index: 1;
+  box-shadow: -5px 5px 5px 0px #00000030;
+  border-radius: 10px;
+  top: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.bucket-info .details div{
+  display: flex;
+  justify-content: space-between;
+}
+
+.text-link:hover{
+  text-decoration: underline;
+  transition: .2s;
 }
 
 @media only screen and (max-width:425px) { 

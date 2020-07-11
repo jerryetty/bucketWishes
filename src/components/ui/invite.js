@@ -5,6 +5,7 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import request from 'request'
 import { ClickAwayListener, Typography } from '@material-ui/core'
+import { Close } from '@material-ui/icons'
 
 const InviteCard = (props) => {
   const bucketDocRef = myFirebase.firestore().collection('buckets')
@@ -96,7 +97,10 @@ const InviteCard = (props) => {
     <div className='row overlay'>
       <div className='col-md-6 mx-auto'>
         <ClickAwayListener onClickAway={props.handleClose}>
-          <div className='create-bucket-card p-3 text-center'>
+          <div className='create-bucket-card text-center'>
+            <div className="close-button" onClick={props.handleClose}>
+              <Close />
+            </div>
             <form onSubmit={formik.handleSubmit}>
               {!invited && (
                 <>
