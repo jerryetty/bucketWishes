@@ -9,6 +9,8 @@ import InviteCard from 'components/ui/invite'
 import SendBucketCard from 'components/ui/sendBucketCard'
 import request from 'request'
 import Tour from 'reactour'
+import PopupAlert from 'components/ui/popupAlert'
+import AddRecipient from 'components/ui/addRecipient'
 
 const Home = (props) => {
   const bucketDocRef = myFirebase.firestore().collection('buckets')
@@ -108,19 +110,22 @@ const Home = (props) => {
   const [openBucket, setOpenBucket] = useState(false)
   const [openCreateBucket, setOpenCreateBucket] = useState(false)
   const [openInviteCard, setOpenInviteCard] = useState(false)
+  const [openAddRecipientCard, setOpenAddRecipientCard] = useState(false)
   const [openSendBucketCard, setOpenSendBucketCard] = useState(false)
   const [activeBucket, setActiveBucket] = useState(null)
   const [openPreview, setOpenPreview] = useState(false)
-  const [shared, setShared] = useState(false)
+  const [shared, setShared] = useState(0)
   const [openTour, setOpenTour] = useState(checkFirstTimeUser())
   const [previewData, setPreviewData] = useState({})
+  const [showAlert, setShowAlert] = useState(false)
+  const [alertMessage, setAlertMessage] = useState('')
 
   const handleOpenBucket = () => {
     setOpenBucket(true)
   }
 
   const handleClosePreview = () => {
-    setShared(false)
+    setShared(0)
     setOpenPreview(false)
   }
 
@@ -144,12 +149,16 @@ const Home = (props) => {
     setOpenInviteCard(false)
   }
 
-  const handleOpenSendBucketCard = () => {
-    setOpenSendBucketCard(true)
+  const handleOpenAddRecipientCard = () => {
+    setOpenAddRecipientCard(true)
   }
 
-  const handleOpenTour = () => {
-    setOpenTour(true)
+  const handleCloseAddRecipientCard = () => {
+    setOpenAddRecipientCard(false)
+  }
+
+  const handleOpenSendBucketCard = () => {
+    setOpenSendBucketCard(true)
   }
 
   const handleCloseTour = () => {
@@ -184,7 +193,10 @@ const Home = (props) => {
     }
     request(options, function (error, response) {
       if (error) throw new Error(error)
-      setShared(true)
+      bucketDocRef.doc(activeBucket.id).update({
+        sent: true
+      })
+      setShared(1)
     })
   }
 
@@ -201,6 +213,22 @@ const Home = (props) => {
     bucketDocRef.doc(id).update({
       'collaborators.pending': FieldValue.arrayRemove(email)
     })
+  }
+
+  const handleShowAlert = () => {
+    setShowAlert(true)
+  }
+
+  const handleSetAlertMessage = (message) => {
+    setAlertMessage(message)
+  }
+
+  const handleHideAlert = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setShowAlert(false)
   }
 
   const steps = [
@@ -240,6 +268,15 @@ const Home = (props) => {
   return (
     <>
       <div>
+        {showAlert && (
+          <PopupAlert
+            open={showAlert}
+            severity='error'
+            handleHideAlert={handleHideAlert}
+            message={alertMessage}
+          />
+        )}
+
         {openBucket && (
           <BucketOpen
             email={email}
@@ -249,6 +286,10 @@ const Home = (props) => {
             handleClose={handleCloseBucket}
             handleOpenInviteCard={handleOpenInviteCard}
             handleOpenSendBucketCard={handleOpenSendBucketCard}
+            handleOpenAddRecipientCard={handleOpenAddRecipientCard}
+            handleSetAlertMessage={handleSetAlertMessage}
+            handleShowAlert={handleShowAlert}
+            shared={shared}
           />
         )}
         {openPreview && (
@@ -271,6 +312,7 @@ const Home = (props) => {
             displayName={displayName}
             handleClose={handleCloseCreateBucket}
             handleOpenInviteCard={handleOpenInviteCard}
+            handleOpenAddRecipientCard={handleOpenAddRecipientCard}
             handleSetActiveBucket={handleSetActiveBucket}
           />
         )}
@@ -281,6 +323,16 @@ const Home = (props) => {
             displayName={displayName}
             id={activeBucket.id}
             handleClose={handleCloseInviteCard}
+          />
+        )}
+        {openAddRecipientCard && (
+          <AddRecipient
+            email={email}
+            uid={uid}
+            displayName={displayName}
+            id={activeBucket.id}
+            handleClose={handleCloseAddRecipientCard}
+            handleOpenInviteCard={handleOpenInviteCard}
           />
         )}
         {openSendBucketCard && (

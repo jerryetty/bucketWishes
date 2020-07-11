@@ -57,7 +57,8 @@ const Bucket = props => {
                 </span>
               </Tooltip>
               
-              <Tooltip title="Send this bucket" aria-label="share">
+              {!props.blue && (
+                <Tooltip title="Send this bucket" aria-label="share">
                 <span>
                   <IconButton
                     onClick={() => {
@@ -74,6 +75,7 @@ const Bucket = props => {
                   </IconButton>
                 </span>
               </Tooltip>
+              )}
             </div>
           </div>
         </div>

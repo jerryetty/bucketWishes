@@ -3,6 +3,7 @@ import { myFirebase } from 'utils/firebase'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { ClickAwayListener, Typography } from '@material-ui/core'
+import { Close as CloseIcon } from '@material-ui/icons'
 
 const AddBucketCard = (props) => {
   const bucketDocRef = myFirebase.firestore().collection('buckets')
@@ -31,12 +32,31 @@ const AddBucketCard = (props) => {
       collaborators: {
         verified: [props.email],
         pending: []
-      }
+      },
+      name: '',
+      email: '',
+      sent: false,
+      sendByDate: ''
     },
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
       setSubmitting(true)
-      const data = values
+      const data = {
+        title: values.title,
+        description: values.description,
+        restricted: values.restricted,
+        author: values.author,
+        authorEmail: values.authorEmail,
+        authorName: values.authorName,
+        createdAt: values.createdAt,
+        collaborators: values.collaborators,
+        recipient: {
+          name: values.name,
+          email: values.email,
+        },
+        sent: values.sent,
+        sendByDate: values.sendByDate,
+      }
       let wish = null
 
       if (values.wish) {
@@ -49,10 +69,10 @@ const AddBucketCard = (props) => {
         }
       }
 
-      delete data.wish
+      delete data.wish // Removes the wish from the other values since it is saved to a different collection
       setBucketId(createBucket(data, wish))
       resetForm()
-      setStep(4)
+      setStep(5)
       setSubmitting(false)
     }
   })
@@ -76,8 +96,11 @@ const AddBucketCard = (props) => {
     <div className='row overlay'>
       <div className='col-md-6 mx-auto'>
         <ClickAwayListener onClickAway={props.handleClose}>
-            <form onSubmit={formik.handleSubmit}>
-          <div className='create-bucket-card text-center p-3'>
+          <form onSubmit={formik.handleSubmit}>
+            <div className='create-bucket-card text-center p-3'>
+              <div className='close-button' onClick={props.handleClose}>
+                <CloseIcon />
+              </div>
               {step === 1 && (
                 <>
                   <Typography variant='body1' color='primary' className='w-5'>
@@ -112,7 +135,7 @@ const AddBucketCard = (props) => {
                     <button
                       className='bw-button'
                       onClick={() => {
-                        if (formik.touched.title && !formik.errors.title){
+                        if (formik.touched.title && !formik.errors.title) {
                           setStep(2)
                         }
                       }}
@@ -125,8 +148,8 @@ const AddBucketCard = (props) => {
               {step === 2 && (
                 <>
                   <Typography variant='body1' color='primary' className='w-5'>
-                    Provide the purpose and instructions for those <br/> who will be
-                    adding wishes to the bucket.
+                    Provide the purpose and instructions for those <br /> who
+                    will be adding wishes to the bucket.
                   </Typography>
                   <div className='mt-4'>
                     <textarea
@@ -161,11 +184,17 @@ const AddBucketCard = (props) => {
                     <button className='bw-button' onClick={() => setStep(1)}>
                       Back
                     </button>
-                    <button className='bw-button' onClick={() => {
-                        if (formik.touched.description && !formik.errors.description){
+                    <button
+                      className='bw-button'
+                      onClick={() => {
+                        if (
+                          formik.touched.description &&
+                          !formik.errors.description
+                        ) {
                           setStep(3)
                         }
-                      }}>
+                      }}
+                    >
                       Next
                     </button>
                   </div>
@@ -193,13 +222,75 @@ const AddBucketCard = (props) => {
                     <button className='bw-button' onClick={() => setStep(2)}>
                       Back
                     </button>
+                    <button className='bw-button' onClick={() => setStep(4)}>
+                      Next
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {step === 4 && (
+                <>
+                  <Typography variant='h6' color='primary' className='w-5'>
+                    Who shall we send this Bucket to?
+                  </Typography>
+                  <div className='mt-1'>
+                    <input
+                      required
+                      type='text'
+                      id='name'
+                      name='name'
+                      className='mb-1 custom-font'
+                      margin='dense'
+                      onBlur={formik.handleBlur}
+                      onFocus={props.handleFocus}
+                      onChange={formik.handleChange}
+                      value={formik.values.name}
+                      placeholder='Enter their name'
+                    />
+                  </div>
+                  <div className='mt-1'>
+                    <input
+                      required
+                      type='email'
+                      id='email'
+                      name='email'
+                      className='mb-1 custom-font'
+                      margin='dense'
+                      onBlur={formik.handleBlur}
+                      onFocus={props.handleFocus}
+                      onChange={formik.handleChange}
+                      value={formik.values.email}
+                      placeholder='Enter their email'
+                    />
+                  </div>
+                  <Typography variant='body2' color='primary' className='mt-2'>
+                    When would you like to send this bucket
+                  </Typography>
+                  <div className='mt-1'>
+                    <input
+                      required
+                      type='date'
+                      id='sendByDate'
+                      name='sendByDate'
+                      className='mb-1 custom-font'
+                      margin='dense'
+                      onBlur={formik.handleBlur}
+                      onFocus={props.handleFocus}
+                      onChange={formik.handleChange}
+                    />
+                  </div>
+                  <div className='mt-4'>
+                    <button className='bw-button' onClick={() => setStep(3)}>
+                      Back
+                    </button>
                     <button className='bw-button' type='submit'>
                       Finish
                     </button>
                   </div>
                 </>
               )}
-              {step === 4 && bucketId && (
+              {step === 5 && bucketId && (
                 <>
                   <Typography variant='h6' className='w-5 text-success'>
                     Your Bucket was created successfully!
@@ -227,8 +318,8 @@ const AddBucketCard = (props) => {
                   </div>
                 </>
               )}
-          </div>
-            </form>
+            </div>
+          </form>
         </ClickAwayListener>
       </div>
     </div>

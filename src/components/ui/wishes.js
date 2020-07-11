@@ -120,7 +120,7 @@ const Wishes = (props) => {
         <ConfirmDialog
           open={openConfirmDialog}
           handleClose={handleCloseConfirmDialog}
-          message='Are you sure you want to delete?'
+          message='Are you sure you want to delete this wish?'
           action={handleDelete}
         />
       )}
@@ -129,7 +129,7 @@ const Wishes = (props) => {
         <PopupAlert
           open={showAlert}
           severity='error'
-          dismiss={handleHideAlert}
+          handleHideAlert={handleHideAlert}
           message='Deleted!'
         />
       )}
@@ -232,7 +232,6 @@ const Wishes = (props) => {
                       color='secondary'
                       aria-label='Edit wish'
                       size='small'
-                      disableFocusRipple
                       disabled={(wish.id !== props.uid) ? true : false}
                     >
                       <EditIcon className='wish-action-icon' />
