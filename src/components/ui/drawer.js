@@ -73,7 +73,7 @@ const Drawer = (props) => {
               {props.superUser &&
                 adminMenu.map((item) => (
                   <Link key={item.slug} to={item.slug}>
-                    <button className='bw-button menu-button'>
+                    <button className='bw-button menu-button' onClick={props.handleClose}>
                       {item.name}
                     </button>
                   </Link>
@@ -81,7 +81,7 @@ const Drawer = (props) => {
               {!props.superUser &&
                 menu.map((item) => (
                   <Link key={item.slug} to={item.slug}>
-                    <button className='bw-button menu-button'>
+                    <button className='bw-button menu-button' onClick={props.handleClose}>
                       {item.name}
                     </button>
                   </Link>

@@ -21,7 +21,7 @@ const Bucket = props => {
             <Typography
               variant="subtitle2"
               color="secondary"
-              className="w-7 bucket-title text-white"
+              className="w-7 home-bucket text-center text-white"
               id="title"
             >
               {props.bucket.title}
@@ -87,7 +87,7 @@ const Bucket = props => {
             <Typography
               variant="subtitle2"
               color="secondary"
-              className="w-7 bucket-title text-white"
+              className="w-7 text-center home-bucket text-white"
               id="title"
             >
               {props.bucket.title}
@@ -131,7 +131,7 @@ const Bucket = props => {
             <Typography
               variant="subtitle2"
               color="secondary"
-              className="w-7 bucket-title text-white"
+              className="w-7 home-bucket text-center text-white"
               id="title"
             >
               {props.bucket.title}
