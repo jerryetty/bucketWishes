@@ -88,10 +88,10 @@ const Drawer = (props) => {
                 ))}
             </div>
             <div className='terms mt-3'>
-              <Typography variant='body2' align='center' color='secondary'>
+              <Typography variant='body2' align='center' color='primary'>
                 Terms of use
               </Typography>
-              <Typography variant='body2' align='center' color='secondary'>
+              <Typography variant='body2' align='center' color='primary'>
                 Privacy Policy
               </Typography>
               <hr />
@@ -102,7 +102,7 @@ const Drawer = (props) => {
                   logout(firebase)
                 }}
               >
-                <Typography variant='body2' align='center' color='secondary'>
+                <Typography variant='body2' align='center' color='primary'>
                   Logout
                 </Typography>
               </Link>

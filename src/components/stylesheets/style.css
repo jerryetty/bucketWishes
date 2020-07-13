@@ -96,7 +96,7 @@ a, a:hover{
 }
 
 .bucket-image{
-  width: 85%;
+  width: 90%;
   margin: 3% 0;
 }
 
@@ -106,9 +106,10 @@ a, a:hover{
 
 .bucket-details{
   position: absolute;
-  top: 60%;
+  top: 67%;
   left: 50%;
   transform: translate(-50%, -50%);
+  color: #FAF296!important;
 }
 
 .avatar{

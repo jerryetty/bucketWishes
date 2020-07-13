@@ -15,7 +15,7 @@ const Help = (props) => {
         <div className='col-md-8'>
           <Typography
             variant='h4'
-            color='secondary'
+            color='primary'
             align='left'
             className='w-5'
           >
@@ -42,7 +42,7 @@ const Help = (props) => {
         <div className='col-md-4'>
           <Typography
             variant='h4'
-            color='secondary'
+            color='primary'
             align='left'
             className='w-5'
           >
@@ -51,7 +51,7 @@ const Help = (props) => {
           <div className='mt-3'>
             <Typography
               variant='h6'
-              color='secondary'
+              color='primary'
               align='left'
               className='w-5'
             >
@@ -59,7 +59,7 @@ const Help = (props) => {
             </Typography>
             <Typography
               variant='body2'
-              color='secondary'
+              color='textPrimary'
               align='left'
               className=''
             >
@@ -69,7 +69,7 @@ const Help = (props) => {
             <br />
             <Typography
               variant='h6'
-              color='secondary'
+              color='primary'
               align='left'
               className='w-5'
             >
@@ -77,7 +77,7 @@ const Help = (props) => {
             </Typography>
             <Typography
               variant='body2'
-              color='secondary'
+              color='textPrimary'
               align='left'
               className=''
             >

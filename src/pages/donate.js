@@ -9,16 +9,16 @@ const Donate = (props) => {
         <div className='col-md-5 donate-title'>
           <Typography
             variant='h4'
-            color='secondary'
+            color='primary'
             align='center'
-            className='w-5'
+            className='w-7'
           >
             Donate to Bucket <br /> Wishes
           </Typography>
           <img src={Gift} alt='Donate' />
         </div>
         <div className='col-md-7 donate-content'>
-          <Typography variant='body1' color='primary' align='justify'>
+          <Typography variant='body1' color='textPrimary' align='justify'>
             We are currently working to develop funds to launch Eagle’s Nest
             Wilderness Ranch. We need to purchase a ranch property and begin to
             build homes for our children. In addition, we are also in need of
@@ -43,7 +43,7 @@ const Donate = (props) => {
             <Typography variant='body1' color='primary' className='w-7'>
               Join the Founding 500
             </Typography>
-            <Typography variant='caption' color='secondary'>
+            <Typography variant='caption' color='textPrimary'>
               500 individuals, organizations, businesses or churches who will
               make a five year commitment to give $1,200 per year ($100/month).
               As a “Founding 500 Member” your name will forever be listed as a
@@ -61,7 +61,7 @@ const Donate = (props) => {
             <Typography variant='body1' color='primary' className='w-7'>
               Donate a monthly Gift
             </Typography>
-            <Typography variant='caption' color='secondary'>
+            <Typography variant='caption' color='textPrimary'>
               Gifts of $10, $25, $50 or more given on a consistent monthly basis
               add up to a lot and will help make a difference in the lives of
               children.
@@ -79,7 +79,7 @@ const Donate = (props) => {
             <Typography variant='body1' color='primary' className='w-7'>
               Donate a one-time Gift
             </Typography>
-            <Typography variant='caption' color='secondary'>
+            <Typography variant='caption' color='textPrimary'>
               A gift of any amount is very helpful and will help us in caring
               for the children at ENWR.
             </Typography>
@@ -97,7 +97,7 @@ const Donate = (props) => {
               Send a Note of Encouragement to a child at Eagle’s Nest Wilderness
               Ranch
             </Typography>
-            <Typography variant='caption' color='secondary'>
+            <Typography variant='caption' color='textPrimary'>
               A gift of any amount is very helpful and will help us in caring
               for the children at ENWR.
             </Typography>

@@ -20,8 +20,8 @@ const Bucket = props => {
           <div className="bucket-details p-1">
             <Typography
               variant="subtitle2"
-              color="primary"
-              className="w-7 bucket-title"
+              color="secondary"
+              className="w-7 bucket-title text-white"
               id="title"
             >
               {props.bucket.title}
@@ -47,7 +47,7 @@ const Bucket = props => {
                       props.handleOpenInviteCard()
                     }}
                     id="invite-someone"
-                    color="primary"
+                    color="secondary"
                     aria-label="add collaborators"
                     size="small"
                     disableFocusRipple
@@ -66,7 +66,7 @@ const Bucket = props => {
                       props.handleOpenSendBucketCard()
                     }}
                     id="send-bucket"
-                    color="primary"
+                    color="secondary"
                     aria-label="send"
                     size="small"
                     disableFocusRipple
@@ -85,9 +85,9 @@ const Bucket = props => {
           <img src={GreyBucket} alt="bucket" className="bucket-image" />
           <div className="bucket-details">
             <Typography
-              variant="body1"
-              color="primary"
-              className="w-7"
+              variant="subtitle2"
+              color="secondary"
+              className="w-7 bucket-title text-white"
               id="title"
             >
               {props.bucket.title}
@@ -110,7 +110,7 @@ const Bucket = props => {
                 <span>
                   <IconButton
                     id="add-collaborator"
-                    color="primary"
+                    color="secondary"
                     aria-label="add collaborators"
                     size="small"
                     disableFocusRipple
@@ -129,9 +129,9 @@ const Bucket = props => {
           <img src={GreyBucket} alt="bucket" className="bucket-image" />
           <div className="bucket-details">
             <Typography
-              variant="body1"
-              color="primary"
-              className="w-7"
+              variant="subtitle2"
+              color="secondary"
+              className="w-7 bucket-title text-white"
               id="title"
             >
               {props.bucket.title}
