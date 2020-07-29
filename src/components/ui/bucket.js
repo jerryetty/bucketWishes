@@ -21,7 +21,7 @@ const Bucket = props => {
             <Typography
               variant="subtitle2"
               color="primary"
-              className="w-7 bucket-title"
+              className="w-7 home-bucket"
               id="title"
             >
               {props.bucket.title}
@@ -85,9 +85,9 @@ const Bucket = props => {
           <img src={GreyBucket} alt="bucket" className="bucket-image" />
           <div className="bucket-details">
             <Typography
-              variant="body1"
+              variant="subtitle2"
               color="primary"
-              className="w-7"
+              className="w-7 home-bucket"
               id="title"
             >
               {props.bucket.title}
@@ -131,7 +131,7 @@ const Bucket = props => {
             <Typography
               variant="body1"
               color="primary"
-              className="w-7"
+              className="w-7 home-bucket"
               id="title"
             >
               {props.bucket.title}

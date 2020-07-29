@@ -73,7 +73,7 @@ const Drawer = (props) => {
               {props.superUser &&
                 adminMenu.map((item) => (
                   <Link key={item.slug} to={item.slug}>
-                    <button className='bw-button menu-button'>
+                    <button className='bw-button menu-button' onClick={props.handleClose}>
                       {item.name}
                     </button>
                   </Link>
@@ -81,17 +81,17 @@ const Drawer = (props) => {
               {!props.superUser &&
                 menu.map((item) => (
                   <Link key={item.slug} to={item.slug}>
-                    <button className='bw-button menu-button'>
+                    <button className='bw-button menu-button' onClick={props.handleClose}>
                       {item.name}
                     </button>
                   </Link>
                 ))}
             </div>
             <div className='terms mt-3'>
-              <Typography variant='body2' align='center' color='secondary'>
+              <Typography variant='body2' align='center' color='primary'>
                 Terms of use
               </Typography>
-              <Typography variant='body2' align='center' color='secondary'>
+              <Typography variant='body2' align='center' color='primary'>
                 Privacy Policy
               </Typography>
               <hr />
@@ -102,7 +102,7 @@ const Drawer = (props) => {
                   logout(firebase)
                 }}
               >
-                <Typography variant='body2' align='center' color='secondary'>
+                <Typography variant='body2' align='center' color='primary'>
                   Logout
                 </Typography>
               </Link>

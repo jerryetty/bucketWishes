@@ -105,6 +105,15 @@ a, a:hover{
   top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
+  color: #FAF296!important;
+}
+
+.help-bucket-details{
+  position: absolute;
+  top: 67%;
+  left: 50%;
+  transform: translate(-60%, -50%);
+  color: #FAF296!important;
 }
 
 .avatar{
@@ -195,6 +204,11 @@ a, a:hover{
 .bucket-title{
   display: flex;
   justify-content: space-between;
+  font-size: 0.75em!important;
+}
+
+.home-bucket{
+  font-size: 0.75em!important;
 }
 
 .create-bucket-card{
@@ -255,10 +269,6 @@ input:focus, textarea:focus{
 
 .wish-action-icon{
   font-size: medium!important;
-}
-
-.bucket-title{
-  font-size: 0.75em!important;
 }
 
 .edit-wish{

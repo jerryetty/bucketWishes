@@ -124,13 +124,13 @@ const Home = (props) => {
     setOpenBucket(true)
   }
 
+  const handleCloseBucket = () => {
+    setOpenBucket(false)
+  }
+
   const handleClosePreview = () => {
     setShared(0)
     setOpenPreview(false)
-  }
-
-  const handleCloseBucket = () => {
-    setOpenBucket(false)
   }
 
   const handleOpenCreateBucket = () => {
