@@ -1,7 +1,10 @@
 @import './structure.css';
 
 body{
-  background: #FFFEED;
+  background-color: #FFFEED;
+  background-image: url('../images/bg-light.png');
+  background-size: cover;
+  background-repeat: repeat-y;
   font-family: 'poppins';
 }
 
@@ -93,7 +96,8 @@ a, a:hover{
 }
 
 .bucket-image{
-  width: 100%;
+  width: 90%;
+  margin: 3% 0;
 }
 
 .single-bucket-container{
@@ -102,7 +106,7 @@ a, a:hover{
 
 .bucket-details{
   position: absolute;
-  top: 60%;
+  top: 67%;
   left: 50%;
   transform: translate(-50%, -50%);
   color: #FAF296!important;

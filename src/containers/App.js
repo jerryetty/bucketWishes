@@ -14,10 +14,13 @@ import SharedBucket from 'pages/sharedBucket'
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#0F4203'
+      main: '#9a4b1c'
     },
     secondary: {
-      main: '#645C00'
+      main: '#ffc400'
+    },
+    accent: {
+      main: '#a6bf01'
     }
   },
   typography: {

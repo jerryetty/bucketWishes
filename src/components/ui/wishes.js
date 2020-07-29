@@ -197,7 +197,7 @@ const Wishes = (props) => {
             )}
           </div>
           <div className='col-8'>
-            <Typography variant='caption' color='secondary'>
+            <Typography variant='caption' color='textPrimary'>
               {wish.author}
             </Typography>
           </div>
@@ -213,7 +213,7 @@ const Wishes = (props) => {
                       }}
                       className='mt-2 wish-action-icon'
                       id='add-collaborator'
-                      color='secondary'
+                      color='primary'
                       aria-label='Delete wish'
                       size='small'
                       disableFocusRipple
@@ -229,7 +229,7 @@ const Wishes = (props) => {
                       onClick={props.handleShowEditWishInput}
                       className='mt-2 wish-action-icon'
                       id='add-collaborator'
-                      color='secondary'
+                      color='primary'
                       aria-label='Edit wish'
                       size='small'
                       disabled={(wish.id !== props.uid) ? true : false}

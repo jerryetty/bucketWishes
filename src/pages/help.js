@@ -2,9 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { getUser } from 'components/auth'
 import { Typography } from '@material-ui/core'
-import YellowBucket from 'components/images/bucket.svg'
-import BlueBucket from 'components/images/bucketBlue.svg'
-import GreyBucket from 'components/images/bucketPink.svg'
+import YellowBucket from 'components/images/bucket.png'
+import BlueBucket from 'components/images/bucketBlue.png'
+import GreyBucket from 'components/images/bucketGrey.png'
 
 const Help = (props) => {
   const { uid } = getUser()
@@ -21,11 +21,11 @@ const Help = (props) => {
         </div>
         <div className='col-md-4 help-bucket'>
           <img src={YellowBucket} alt='bucket' className='bucket-image' />
-          <div className='bucket-details text-center'>
+          <div className='help-bucket-details text-center'>
             <Typography
               variant='body1'
               color='primary'
-              className='w-5 home-bucket'
+              className='w-5 home-bucket text-white'
               id='title'
             >
               Buckets you created.
@@ -34,11 +34,11 @@ const Help = (props) => {
         </div>
         <div className='col-md-4 help-bucket'>
           <img src={BlueBucket} alt='bucket' className='bucket-image' />
-          <div className='bucket-details text-center'>
+          <div className='help-bucket-details text-center'>
             <Typography
               variant='body1'
               color='primary'
-              className='w-5 home-bucket'
+              className='w-5 home-bucket text-white'
               id='title'
             >
               Buckets you were invited to, but did not create.
@@ -47,11 +47,11 @@ const Help = (props) => {
         </div>
         <div className='col-md-4 help-bucket'>
           <img src={GreyBucket} alt='bucket' className='bucket-image' />
-          <div className='bucket-details text-center'>
+          <div className='help-bucket-details text-center'>
             <Typography
               variant='body1'
               color='primary'
-              className='w-5 home-bucket'
+              className='w-5 home-bucket text-white'
               id='title'
             >
               Buckets from the Admins at bucket wishes.
@@ -63,7 +63,7 @@ const Help = (props) => {
         <div className='col-md-4'>
           <Typography
             variant='h4'
-            color='secondary'
+            color='primary'
             align='left'
             className='w-5'
           >
@@ -72,7 +72,7 @@ const Help = (props) => {
           <div className='mt-3'>
             <Typography
               variant='h6'
-              color='secondary'
+              color='primary'
               align='left'
               className='w-5'
             >
@@ -80,7 +80,7 @@ const Help = (props) => {
             </Typography>
             <Typography
               variant='body2'
-              color='secondary'
+              color='textPrimary'
               align='left'
               className=''
             >
@@ -90,7 +90,7 @@ const Help = (props) => {
             <br />
             <Typography
               variant='h6'
-              color='secondary'
+              color='primary'
               align='left'
               className='w-5'
             >
@@ -98,7 +98,7 @@ const Help = (props) => {
             </Typography>
             <Typography
               variant='body2'
-              color='secondary'
+              color='textPrimary'
               align='left'
               className=''
             >
@@ -127,6 +127,7 @@ const Help = (props) => {
           </a>
         </div>
       </div>
+      
     </>
   )
 }

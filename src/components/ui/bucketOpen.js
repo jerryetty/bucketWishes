@@ -173,7 +173,7 @@ const BucketOpen = (props) => {
         <div className='col-md-8 mx-auto'>
           <ClickAwayListener onClickAway={props.handleClose}>
             <div className='bucket-open p-5'>
-              {props.shared === 0 && (
+              {(props.shared === 0 || !props.shared) && (
                 <>
                   {showInfo && (
                     <ClickAwayListener onClickAway={handleHideInfo}>
@@ -317,7 +317,7 @@ const BucketOpen = (props) => {
                       <Typography
                         variant='body2'
                         className='mt-2'
-                        color='secondary'
+                        color='textPrimary'
                       >
                         {bucketDetails.description}
                       </Typography>
@@ -510,7 +510,7 @@ const BucketOpen = (props) => {
                   <Typography
                     variant='body2'
                     className='mt-2'
-                    color='secondary'
+                    color='textPrimary'
                   >
                     Thank you for using BucketWishes! We are excited to share in
                     providing opportunities to encourage those in our world by
@@ -532,7 +532,7 @@ const BucketOpen = (props) => {
                         >
                           Join the Founding 500
                         </Typography>
-                        <Typography variant='caption' color='secondary'>
+                        <Typography variant='caption' color='textPrimary'>
                           500 individuals, organizations, businesses or churches
                           who will make a five year commitment to give $1,200
                           per year ($100/month). As a “Founding 500 Member” your
@@ -559,7 +559,7 @@ const BucketOpen = (props) => {
                         >
                           Donate a monthly Gift
                         </Typography>
-                        <Typography variant='caption' color='secondary'>
+                        <Typography variant='caption' color='textPrimary'>
                           Gifts of $10, $25, $50 or more given on a consistent
                           monthly basis add up to a lot and will help make a
                           difference in the lives of children.
@@ -581,7 +581,7 @@ const BucketOpen = (props) => {
                         >
                           Donate a one-time Gift
                         </Typography>
-                        <Typography variant='caption' color='secondary'>
+                        <Typography variant='caption' color='textPrimary'>
                           A gift of any amount is very helpful and will help us
                           in caring for the children at ENWR.
                         </Typography>
@@ -603,7 +603,7 @@ const BucketOpen = (props) => {
                           Send a Note of Encouragement to a child at Eagle’s
                           Nest Wilderness Ranch
                         </Typography>
-                        <Typography variant='caption' color='secondary'>
+                        <Typography variant='caption' color='textPrimary'>
                           A gift of any amount is very helpful and will help us
                           in caring for the children at ENWR.
                         </Typography>

@@ -10,7 +10,7 @@ export const firebaseConfig = {
   storageBucket: 'bucket-wishes.appspot.com',
   messagingSenderId: '677063529307',
   appId: '1:677063529307:web:e37005b8a303010102407e',
-  measurementId: 'G-D0F437C5NG'
+  measurementId: 'G-F2VB5TSNLX'
 }
 
 export const myFirebase = firebase.initializeApp(firebaseConfig)

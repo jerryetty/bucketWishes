@@ -6,9 +6,9 @@ import {
   Help as HelpIcon,
 } from "@material-ui/icons"
 import { Link } from 'react-router-dom'
-import YellowBucket from "components/images/bucket.svg"
-import BlueBucket from "components/images/bucketBlue.svg"
-import GreyBucket from "components/images/bucketPink.svg"
+import YellowBucket from "components/images/bucket.png"
+import BlueBucket from "components/images/bucketBlue.png"
+import GreyBucket from "components/images/bucketGrey.png"
 
 const Bucket = props => {
   
@@ -20,8 +20,8 @@ const Bucket = props => {
           <div className="bucket-details p-1">
             <Typography
               variant="subtitle2"
-              color="primary"
-              className="w-7 home-bucket"
+              color="secondary"
+              className="w-7 home-bucket text-center text-white"
               id="title"
             >
               {props.bucket.title}
@@ -47,7 +47,7 @@ const Bucket = props => {
                       props.handleOpenInviteCard()
                     }}
                     id="invite-someone"
-                    color="primary"
+                    color="secondary"
                     aria-label="add collaborators"
                     size="small"
                     disableFocusRipple
@@ -66,7 +66,7 @@ const Bucket = props => {
                       props.handleOpenSendBucketCard()
                     }}
                     id="send-bucket"
-                    color="primary"
+                    color="secondary"
                     aria-label="send"
                     size="small"
                     disableFocusRipple
@@ -86,8 +86,8 @@ const Bucket = props => {
           <div className="bucket-details">
             <Typography
               variant="subtitle2"
-              color="primary"
-              className="w-7 home-bucket"
+              color="secondary"
+              className="w-7 text-center home-bucket text-white"
               id="title"
             >
               {props.bucket.title}
@@ -110,7 +110,7 @@ const Bucket = props => {
                 <span>
                   <IconButton
                     id="add-collaborator"
-                    color="primary"
+                    color="secondary"
                     aria-label="add collaborators"
                     size="small"
                     disableFocusRipple
@@ -129,9 +129,9 @@ const Bucket = props => {
           <img src={GreyBucket} alt="bucket" className="bucket-image" />
           <div className="bucket-details">
             <Typography
-              variant="body1"
-              color="primary"
-              className="w-7 home-bucket"
+              variant="subtitle2"
+              color="secondary"
+              className="w-7 home-bucket text-center text-white"
               id="title"
             >
               {props.bucket.title}

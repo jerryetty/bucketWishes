@@ -5,12 +5,12 @@ const About = props => {
   return (
     <>
       <div className="mt-5">
-        <Typography variant="h4" color="secondary" align="left" className="w-5">
+        <Typography variant="h4" color="primary" align="left" className="w-7">
           Who we are
         </Typography>
       </div>
       <div className="mt-3">
-        <Typography variant="body1" color="primary" align="justify">
+        <Typography variant="body1" color="textPrimary" align="justify">
           Bucket Wishes is a service provided by Eagle’s Nest Wilderness Ranch
           (ENWR) which is a 501-c- 3 non-profit, privately funded Christian
           ranch providing individual family style homes for children who have
@@ -49,12 +49,12 @@ const About = props => {
         </Typography>
       </div>
       <div className="mt-5">
-        <Typography variant="h4" color="secondary" align="left" className="w-5">
+        <Typography variant="h4" color="primary" align="left" className="w-7">
           Story behind Bucket Wishes
         </Typography>
       </div>
       <div className="mt-3 mb-5">
-        <Typography variant="body1" color="primary" align="justify">
+        <Typography variant="body1" color="textPrimary" align="justify">
           It was called the “Best High School Prank Ever!”. A High School Senior
           went to her principle and gave him a five gallon bucket. She asked him
           to stand at a designated spot in the hall way at a specified time
