@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { myFirebase } from 'utils/firebase'
 import firebase from 'firebase'
+import QueryString from 'query-string'
 import { getUser } from 'components/auth'
 import Bucket from 'components/ui/bucket'
 import BucketOpen from 'components/ui/bucketOpen'
@@ -15,7 +16,7 @@ import AddRecipient from 'components/ui/addRecipient'
 const Home = (props) => {
   const bucketDocRef = myFirebase.firestore().collection('buckets')
   const { displayName, uid, email } = getUser()
-  
+
   const cookie = localStorage.getItem(uid)
 
   const checkFirstTimeUser = () => {
@@ -103,6 +104,36 @@ const Home = (props) => {
     return buckets
   }
 
+  const useBucket = (bucketId) => {
+    const [currentBucket, setCurrentBucket] = useState({})
+    useEffect(() => {
+      if (bucketId && bucketId !== undefined) {
+        bucketDocRef
+          .doc(bucketId)
+          .get()
+          .then((doc) => {
+            if (!doc.exists) {
+              // setLoading(0)
+              setCurrentBucket(null)
+              console.log('No such document!')
+            } else {
+              // setLoading(1)
+              setCurrentBucket({
+                ...doc.data(),
+                id: doc.id
+              })
+            }
+          })
+          .catch((err) => {
+            console.log('Error getting document', err)
+          })
+      } else {
+        console.log('We didnt see a bucket id')
+      }
+    }, [bucketId])
+    return currentBucket
+  }
+
   const buckets = useBuckets()
   const restrictedBuckets = useDefaultBuckets()
   const pendingBuckets = usePendingBuckets()
@@ -122,6 +153,10 @@ const Home = (props) => {
 
   const handleOpenBucket = () => {
     setOpenBucket(true)
+  }
+
+  const handleDeleteBucket = (id) => {
+    bucketDocRef.doc(id).delete()
   }
 
   const handleCloseBucket = () => {
@@ -188,7 +223,8 @@ const Home = (props) => {
       form: {
         name: data.name,
         email: data.email,
-        bucketUrl: data.bucketUrl
+        bucketUrl: data.bucketUrl,
+        senderName: displayName
       }
     }
     request(options, function (error, response) {
@@ -231,6 +267,31 @@ const Home = (props) => {
     setShowAlert(false)
   }
 
+  let queryBucketId
+
+  if (props.location.search) {
+    const queryValues = QueryString.parse(props.location.search)
+    queryBucketId = queryValues.bucket
+  } else {
+    queryBucketId = null
+  }
+
+  // console.log(queryBucketId)
+  const bucket = useBucket(queryBucketId)
+
+  useEffect(() => {
+    if (queryBucketId && queryBucketId !== 'undefined') {
+      // if (bucket) {
+        handleSetActiveBucket({...bucket, id: queryBucketId})
+        // setActiveBucket({id: queryBucketId})
+        handleOpenBucket()
+      // } else {
+      //   setActiveBucket({id: queryBucketId})
+      //   handleOpenBucket()
+      // }
+    }
+  }, [bucket, queryBucketId])
+
   const steps = [
     {
       selector: '#brand',
@@ -261,12 +322,14 @@ const Home = (props) => {
     },
     {
       selector: '#appbar-menu',
-      content: 'You can always re-run this tutorial from the help section by clicking here'
+      content:
+        'You can always re-run this tutorial from the help section by clicking here'
     }
   ]
 
   return (
     <>
+      {/* <Dialog /> */}
       <div>
         {showAlert && (
           <PopupAlert
@@ -279,6 +342,7 @@ const Home = (props) => {
 
         {openBucket && (
           <BucketOpen
+            {...props}
             email={email}
             uid={uid}
             displayName={displayName}
@@ -289,7 +353,11 @@ const Home = (props) => {
             handleOpenAddRecipientCard={handleOpenAddRecipientCard}
             handleSetAlertMessage={handleSetAlertMessage}
             handleShowAlert={handleShowAlert}
+            handleDeleteBucket={handleDeleteBucket}
+            useBucket={useBucket}
             shared={shared}
+            handleAcceptBucket={handleAcceptBucket}
+            handleRejectBucket={handleRejectBucket}
           />
         )}
         {openPreview && (
@@ -314,6 +382,7 @@ const Home = (props) => {
             handleOpenInviteCard={handleOpenInviteCard}
             handleOpenAddRecipientCard={handleOpenAddRecipientCard}
             handleSetActiveBucket={handleSetActiveBucket}
+            useBucket={useBucket}
           />
         )}
         {openInviteCard && (
@@ -322,6 +391,7 @@ const Home = (props) => {
             uid={uid}
             displayName={displayName}
             id={activeBucket.id}
+            bucket={activeBucket}
             handleClose={handleCloseInviteCard}
           />
         )}
@@ -358,21 +428,24 @@ const Home = (props) => {
         )}
         <div className='row'>
           <div className='col-md-6 mx-auto'>
-            <input type="hidden" id="hiddenComponent"/>
+            <input type='hidden' id='hiddenComponent' />
             <input
               type='text'
               className='create-bucket-prompt'
               placeholder='Create a bucket...'
-              id="create-bucket"
+              id='create-bucket'
               onClick={handleOpenCreateBucket}
             />
           </div>
         </div>
 
         {(buckets || restrictedBuckets || pendingBuckets) && (
-          <div className='row mt-5' id="buckets-area">
+          <div className='row mt-5' id='buckets-area'>
             {pendingBuckets.map((bucket, count) => (
-              <div className='col-md-3 text-center' key={count}>
+              <div
+                className='col-lg-4 col-md-6 col-sm-6  text-center'
+                key={count}
+              >
                 <Bucket
                   email={email}
                   uid={uid}
@@ -391,7 +464,10 @@ const Home = (props) => {
               </div>
             ))}
             {buckets.map((bucket, count) => (
-              <div className='col-md-3 text-center' key={count}>
+              <div
+                className='col-lg-4 col-sm-6 col-md-6 text-center'
+                key={count}
+              >
                 <Bucket
                   email={email}
                   uid={uid}
@@ -408,7 +484,10 @@ const Home = (props) => {
               </div>
             ))}
             {restrictedBuckets.map((bucket, count) => (
-              <div className='col-md-3 text-center' key={count}>
+              <div
+                className='col-lg-4 col-sm-6 col-md-6 text-center'
+                key={count}
+              >
                 <Bucket
                   email={email}
                   uid={uid}

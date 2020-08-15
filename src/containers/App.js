@@ -10,6 +10,7 @@ import Wrapper from 'containers/wrapper'
 import Login from 'pages/login'
 import { CircularProgress } from '@material-ui/core'
 import SharedBucket from 'pages/sharedBucket'
+import PreviewBucket from 'pages/previewBucket'
 
 const theme = createMuiTheme({
   palette: {
@@ -28,7 +29,6 @@ const theme = createMuiTheme({
   }
 })
 
-
 const useStyles = makeStyles((theme) => ({
   loader: {
     display: 'flex',
@@ -39,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
     minHeight: '100vh'
   }
 }))
-
 
 const App = (props) => {
   const useUser = () => {
@@ -58,7 +57,7 @@ const App = (props) => {
   }
 
   var user = useUser()
-  
+
   const [superUser, setSuperUser] = React.useState(false)
   if (user && user.email) {
     const email = user.email
@@ -94,15 +93,20 @@ const App = (props) => {
             <Router>
               <Switch>
                 <Route
-                  exact 
+                  exact
                   path='/bucket/:id'
                   render={(props) => <SharedBucket {...props} />}
                 />
-                <Route exact path="/login" component={Login} />
-                <Route path="/" component={Login} />
+                <Route
+                  exact
+                  path='/preview/:id'
+                  render={(props) => <PreviewBucket {...props} />}
+                />
+                <Route exact path='/login' component={Login} />
+                <Route path='/' component={Login} />
               </Switch>
             </Router>
-           </ThemeProvider> 
+          </ThemeProvider>
         </div>
       )}
       {user && !user.uid && (
@@ -120,6 +124,10 @@ const App = (props) => {
                 <Route
                   path='/bucket/:id'
                   render={(props) => <SharedBucket {...props} />}
+                />
+                <Route
+                  path='/preview/:id'
+                  render={(props) => <PreviewBucket {...props} />}
                 />
                 <Route
                   path='/'

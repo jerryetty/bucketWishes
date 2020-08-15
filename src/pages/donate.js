@@ -1,11 +1,11 @@
 import React from 'react'
 import { Typography } from '@material-ui/core'
-import Gift from 'components/images/gift.svg'
+import Gift from 'components/images/gift.png'
 
 const Donate = (props) => {
   return (
     <>
-      <div className='row mt-5'>
+      <div className='row content'>
         <div className='col-md-5 donate-title'>
           <Typography
             variant='h4'
@@ -13,12 +13,12 @@ const Donate = (props) => {
             align='center'
             className='w-7'
           >
-            Donate to Bucket <br /> Wishes
+            Donate and Change <br /> the World for a Child!
           </Typography>
-          <img src={Gift} alt='Donate' />
+          <img src={Gift} alt='Donate' style={{width: '90%'}} />
         </div>
         <div className='col-md-7 donate-content'>
-          <Typography variant='body1' color='textPrimary' align='justify'>
+          <Typography className='w-5' variant='body1' color='textPrimary' align='justify'>
             We are currently working to develop funds to launch Eagle’s Nest
             Wilderness Ranch. We need to purchase a ranch property and begin to
             build homes for our children. In addition, we are also in need of

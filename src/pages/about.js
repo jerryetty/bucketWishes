@@ -1,10 +1,11 @@
 import React from "react"
 import { Typography } from "@material-ui/core"
+import WhoWeAre from '../components/images/whoWeAre.jpg'
 
 const About = props => {
   return (
     <>
-      <div className="mt-5">
+      <div className="mt-5 content">
         <Typography variant="h4" color="primary" align="left" className="w-7">
           Who we are
         </Typography>
@@ -47,6 +48,9 @@ const About = props => {
           Rebuilding their Dreams. Restoring their Futures. Impacting future
           Generations…one life at a time.
         </Typography>
+      </div>
+      <div className="mt-5">
+        <img src={WhoWeAre} alt="Who we are montage" style={{width: '100%'}} />
       </div>
       <div className="mt-5">
         <Typography variant="h4" color="primary" align="left" className="w-7">

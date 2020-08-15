@@ -56,6 +56,7 @@ const AddBucketCard = (props) => {
         },
         sent: values.sent,
         sendByDate: values.sendByDate,
+        inviteCodes: []
       }
       let wish = null
 
@@ -92,8 +93,10 @@ const AddBucketCard = (props) => {
     })
   }
 
+  const bucket = props.useBucket(bucketId)
+
   return (
-    <div className='row overlay'>
+    <div className='overlay'>
       <div className='col-md-6 mx-auto'>
         <ClickAwayListener onClickAway={props.handleClose}>
           <form onSubmit={formik.handleSubmit}>
@@ -295,7 +298,7 @@ const AddBucketCard = (props) => {
                   <Typography variant='h6' className='w-5 text-success'>
                     Your Bucket was created successfully!
                   </Typography>
-                  <Typography variant='body2' color='secondary'>
+                  <Typography variant='body2' color='text-primary'>
                     Would you like to invite friends and family to add wishes to
                     this bucket?
                   </Typography>
@@ -309,7 +312,7 @@ const AddBucketCard = (props) => {
                       onClick={(e) => {
                         e.preventDefault()
                         props.handleClose()
-                        props.handleSetActiveBucket({ id: bucketId })
+                        props.handleSetActiveBucket(bucket)
                         props.handleOpenInviteCard()
                       }}
                     >

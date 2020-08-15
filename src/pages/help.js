@@ -11,11 +11,11 @@ const Help = (props) => {
 
   return (
     <>
-      <div className='row mt-5 mb-5'>
+      <div className='row mt-5 mb-5 content'>
         <div className='col-md-8'>
         <div className='row'>
-        <div className='col-12 mt-5'>
-          <Typography variant='h4' color='primary' align='left' className='w-5'>
+        <div className='col-12'>
+          <Typography variant='h4' color='primary' align='left' className='w-7'>
             What the colors mean
           </Typography>
         </div>
@@ -28,7 +28,7 @@ const Help = (props) => {
               className='w-5 home-bucket text-white'
               id='title'
             >
-              Buckets you created.
+              Buckets you <br/> created
             </Typography>
           </div>
         </div>
@@ -41,7 +41,7 @@ const Help = (props) => {
               className='w-5 home-bucket text-white'
               id='title'
             >
-              Buckets you were invited to, but did not create.
+              Buckets you were <br/> invited to, but did not create
             </Typography>
           </div>
         </div>
@@ -54,7 +54,7 @@ const Help = (props) => {
               className='w-5 home-bucket text-white'
               id='title'
             >
-              Buckets from the Admins at bucket wishes.
+              Buckets from <br/> the Admins at BucketWishes
             </Typography>
           </div>
         </div>
@@ -65,7 +65,7 @@ const Help = (props) => {
             variant='h4'
             color='primary'
             align='left'
-            className='w-5'
+            className='w-7'
           >
             FAQ
           </Typography>
@@ -105,9 +105,8 @@ const Help = (props) => {
               A wish is a message to a loved one that you place in a bucket.
             </Typography>
           </div>
-          <hr />
           <button
-            className='bw-button menu-button mt-5'
+            className='help-button menu-button mt-2' style={{backgroundColor: '#fbe29c'}}
             onClick={() => {
               localStorage.removeItem(uid)
             }}
@@ -120,10 +119,10 @@ const Help = (props) => {
               localStorage.removeItem(uid)
             }}
           >
-            <button className='bw-button menu-button'>Replay Tutorial</button>
+            <button className='help-button menu-button' style={{backgroundColor: '#fbe29c'}}>Replay Tutorial</button>
           </Link>
           <a href='http://www.enwranch.org/'>
-            <button className='bw-button menu-button'>Visit our Website</button>
+            <button className='help-button menu-button' style={{backgroundColor: '#fbe29c'}}>Visit our Website</button>
           </a>
         </div>
       </div>

@@ -5,16 +5,15 @@ import { myFirebase } from 'utils/firebase'
 import NotFound from 'components/images/404.svg'
 import Topbar from 'components/ui/topbar'
 
-const SharedBucket = (props) => {
-  console.log(props)
-  const bucket = props.match.params.id
+const PreviewBucket = (props) => {
+  const bucketId = props.match.params.id
   const bucketDocRef = myFirebase.firestore().collection('buckets')
 
   const useBucket = () => {
     const [currentBucket, setCurrentBucket] = useState([])
     useEffect(() => {
       bucketDocRef
-        .doc(bucket)
+        .doc(bucketId)
         .get()
         .then((doc) => {
           if (!doc.exists) {
@@ -38,7 +37,7 @@ const SharedBucket = (props) => {
 
     useEffect(() => {
       bucketDocRef
-        .doc(bucket)
+        .doc(bucketId)
         .collection('wishes')
         .onSnapshot(
           (snapshot) => {
@@ -60,39 +59,32 @@ const SharedBucket = (props) => {
   const currentBucket = useBucket()
   const wishes = useWishes()
 
-  return (
+  return ( 
     <>
       <div className='container'>
         <Topbar hideHumberger />
         {currentBucket && (
           <div className='row content'>
             <div className='col-md-8'>
-              <div className='col-12 mt-2'>
+              <div className='col-12'>
                 <Typography variant='h4' className='w-7' color='primary'>
                   {currentBucket.title}
                 </Typography>
               </div>
               <div className='col-12 mt-2'>
-                <Typography
-                  variant='body1'
-                  className='w-5'
-                  color='text-primary'
-                >
+                <Typography variant='body1' className='w-5' color='text-primary'>
                   {currentBucket.description}
                 </Typography>
               </div>
               <div className='col-12 mt-2'>
-                <Typography
-                  variant='caption'
-                  className='w-5'
-                  color='text-primary'
-                >
-                  {`This bucket was created by ${currentBucket.authorName}, ${currentBucket.authorEmail}`}
+                <Typography variant='caption' className='w-5' color='text-primary'>
+                  {currentBucket.recipient && `This bucket was created for ${currentBucket.recipient.name} by ${currentBucket.authorName}, ${currentBucket.authorEmail}`}
+                  {!currentBucket.recipient && `This bucket was created by ${currentBucket.authorName}, ${currentBucket.authorEmail}`}
                 </Typography>
               </div>
 
               <div className='col-12 mt-5'>
-                <Typography variant='h5' className='w-7' color='text-primary'>
+                <Typography variant='h5' color='text-primary' className='w-7'>
                   Wishes
                 </Typography>
                 {wishes.map((wish) => (
@@ -117,37 +109,22 @@ const SharedBucket = (props) => {
               </div>
             </div>
             <div className='col-md-4'>
-              <div className='col-12 mt-2'>
+              <div className='col-12'>
                 <Typography variant='h5' className='w-7' color='primary'>
-                  What is Bucket Wishes?
+                  What Next?
                 </Typography>
               </div>
               <div className='col-12 mt-3'>
-                <Typography
-                  variant='body2'
-                  color='text-primary'
-                  className='w-5'
-                >
-                  BucketWishes is an app that lets you send loved ones beautiful
-                  wishes in virtual containers(Buckets)
-                </Typography>
-                <br />
+                
                 <Typography variant='body2' color='text-primary' className='w-5'>
-                  Create an account to start sharing buckets today
+                  Click the "Add Wish" button below, Login or Create an account, accept the invite and add your wish!
                 </Typography>
-                <Link to='/'>
+                <Link to={`/?bucket=${bucketId}`}>
                   <button className='bw-button menu-button mt-5'>
-                    Create an account
+                   Add a wish
                   </button>
                 </Link>
-                <Link to='/'>
-                  <button className='bw-button menu-button'>Contact Us</button>
-                </Link>
-                <a
-                  href='https://www.enwranch.com'
-                  target='_blank'
-                  rel='noopener noreferer'
-                >
+                <a href='https://www.enwranch.com' rel='noopener noreferer' target='_blank'>
                   <button className='bw-button menu-button'>
                     Visit our Website
                   </button>
@@ -158,14 +135,12 @@ const SharedBucket = (props) => {
         )}
         {!currentBucket && (
           <div className='not-found'>
-            <img src={NotFound} alt='not found' />
-            <Typography variant='h5' className='w-7'>
+            <img src={NotFound} alt="not found" />
+            <Typography variant='h5'  className='w-7'>
               Oops! We couldn't find that Bucket
             </Typography>
             <Link to='/'>
-              <Typography variant='caption' className='w-5'>
-                Back to Home page
-              </Typography>
+              <Typography variant='caption' className='w-5'>Back to Home page</Typography>
             </Link>
           </div>
         )}
@@ -174,4 +149,4 @@ const SharedBucket = (props) => {
   )
 }
 
-export default SharedBucket
+export default PreviewBucket

@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, Redirect, BrowserRouter } from 'react-router-dom'
 import { myFirebase as firebase } from 'utils/firebase'
 import { getUser, logout } from 'components/auth'
-import { Typography, ClickAwayListener } from '@material-ui/core'
+import { Typography, ClickAwayListener, Button } from '@material-ui/core'
 
 const adminMenu = [
   {
@@ -87,14 +87,23 @@ const Drawer = (props) => {
                   </Link>
                 ))}
             </div>
-            <div className='terms mt-3'>
-              <Typography variant='body2' align='center' color='primary'>
-                Terms of use
-              </Typography>
-              <Typography variant='body2' align='center' color='primary'>
-                Privacy Policy
-              </Typography>
-              <hr />
+            <div className='terms mt-3 text-center'>
+              <a href="https://www.enwranch.org/uploads/4/5/1/2/45122889/enwrprivacypolicy2019.pdf">
+                <button className='btn btn-link'>
+                  <Typography variant='caption'>
+                    Privacy Policy
+                  </Typography>
+                </button>
+              </a>
+              <br/>
+              <a href="https://www.enwranch.org/uploads/4/5/1/2/45122889/enwrdonationdisclaimer2019.pdf">
+                <button className='btn btn-link'>
+                  <Typography variant='caption'>
+                    Donations Disclaimer
+                  </Typography>
+                </button>
+              </a>              
+              <br />
               <Link
                 to='/login'
                 onClick={(event) => {
@@ -102,9 +111,11 @@ const Drawer = (props) => {
                   logout(firebase)
                 }}
               >
-                <Typography variant='body2' align='center' color='primary'>
-                  Logout
-                </Typography>
+                <button className='btn btn-warning menu-button mb-3'>
+                  <Typography variant='caption'>
+                    Logout
+                  </Typography>
+                </button>
               </Link>
             </div>
           </div>

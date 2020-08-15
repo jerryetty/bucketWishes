@@ -4,6 +4,7 @@ import firebase from 'firebase'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import request from 'request'
+import otpGenerator from 'otp-generator'
 import { ClickAwayListener, Typography } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
 
@@ -15,7 +16,7 @@ const InviteCard = (props) => {
   const useCollaborators = () => {
     const [collaborators, setCollaborators] = useState([])
     useEffect(() => {
-      bucketDocRef.doc(props.id).onSnapshot(
+      bucketDocRef.doc(props.bucket.id).onSnapshot(
         (snapshot) => {
           const collaborators = snapshot.data().collaborators.verified
           setCollaborators(collaborators)
@@ -38,16 +39,21 @@ const InviteCard = (props) => {
   const formik = useFormik({
     initialValues: {
       email: '',
+      collaboratorName: '',
       senderName: props.displayName,
-      dateInvited: Date.now()
+      dateInvited: Date.now(),
+      bucketId: props.id,
+      otp: otpGenerator.generate(4, { alphabets: false, upperCase: false, specialChars: false })
     },
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
       setSubmitting(true)
       if (addCollaborator(values)) {
         resetForm()
-        sendData(values)
-        setInvited(true)
+        if (sendData(values)) {
+          setInvited(true)
+        }
+        
       }
     }
   })
@@ -63,6 +69,10 @@ const InviteCard = (props) => {
       form: {
         senderName: data.senderName,
         email: data.email,
+        recipientName: props.bucket.recipient ? props.bucket.recipient.name : 'No recipient set yet',
+        collaboratorName: data.collaboratorName,
+        bucketId: data.bucketId,
+        inviteCode: data.otp
       }
     }
     request(options, function (error, response) {
@@ -77,7 +87,8 @@ const InviteCard = (props) => {
     } else {
       const FieldValue = firebase.firestore.FieldValue
       bucketDocRef.doc(props.id).update({
-        'collaborators.pending': FieldValue.arrayUnion(data.email)
+        'collaborators.pending': FieldValue.arrayUnion(data.email),
+        'otps': FieldValue.arrayUnion(data.otp),
       })
       return true
     }
@@ -94,7 +105,7 @@ const InviteCard = (props) => {
   }
 
   return (
-    <div className='row overlay'>
+    <div className='overlay'>
       <div className='col-md-6 mx-auto'>
         <ClickAwayListener onClickAway={props.handleClose}>
           <div className='create-bucket-card text-center'>
@@ -108,6 +119,21 @@ const InviteCard = (props) => {
                     Invite friends and family to add wishes to this bucket
                   </Typography>
                   <Typography variant='body2' color='primary' className='mt-2'>
+                    Enter their name
+                  </Typography>
+                  <div className='mt-4'>
+                    <input
+                      type='text'
+                      id='collaboratorName'
+                      name='collaboratorName'
+                      className='mb-1 custom-font'
+                      onBlur={formik.handleBlur}
+                      onFocus={props.handleFocus}
+                      onChange={formik.handleChange}
+                      value={formik.values.collaboratorName}
+                    />
+                  </div>
+                  <Typography variant='body2' color='primary' className='mt-2'>
                     Enter their email
                   </Typography>
                   <div className='mt-4'>
@@ -116,8 +142,6 @@ const InviteCard = (props) => {
                       id='email'
                       name='email'
                       className='mb-1 custom-font'
-                      margin='dense'
-                      fullWidth
                       onBlur={formik.handleBlur}
                       onFocus={props.handleFocus}
                       onChange={formik.handleChange}

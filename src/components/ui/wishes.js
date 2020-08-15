@@ -143,6 +143,7 @@ const Wishes = (props) => {
                 id='message'
                 name='message'
                 className='mb-3'
+                placeholder='Please add your wish here'
                 onBlur={formik.handleBlur}
                 onFocus={handleFocus}
                 onChange={formik.handleChange}
@@ -196,12 +197,12 @@ const Wishes = (props) => {
               </form>
             )}
           </div>
-          <div className='col-8'>
+          <div className='col-9 col-md-8'>
             <Typography variant='caption' color='textPrimary'>
               {wish.author}
             </Typography>
           </div>
-          <div className='col-4'>
+          <div className='col-md-4 col-3'>
             {((props.bucketOwner || wish.id === props.uid) && !props.preview) && (
               <div className='wish-actions text-right'>
                 <Tooltip title='Delete wish' aria-label='Delete wish'>
@@ -217,7 +218,7 @@ const Wishes = (props) => {
                       aria-label='Delete wish'
                       size='small'
                       disableFocusRipple
-                      disableFocusOutline
+                      disableRipple
                     >
                       <DeleteIcon className='wish-action-icon' />
                     </IconButton>

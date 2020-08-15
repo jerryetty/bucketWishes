@@ -9,6 +9,7 @@ import Donate from 'pages/donate'
 import Help from 'pages/help'
 import Buckets from 'pages/buckets'
 import SharedBucket from 'pages/sharedBucket'
+import PreviewBucket from 'pages/previewBucket'
 
 const Wrapper = (props) => {
   const [openDrawer, setOpenDrawer] = useState(false)
@@ -35,6 +36,10 @@ const Wrapper = (props) => {
           path='/bucket/:id'
           render={(props) => <SharedBucket {...props} />}
         />
+        {/* <Route
+          path='/preview/:id'
+          render={(props) => <PreviewBucket {...props} />}
+        /> */}
         <Route exact path='/' render={(props) => <Home {...props} />} />
       </Switch>
     </div>

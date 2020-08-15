@@ -36,7 +36,7 @@ const AddRecipient = (props) => {
   console.log(props.id)
 
   return (
-    <div className='row overlay'>
+    <div className='overlay'>
       <div className='col-md-6 mx-auto'>
         <ClickAwayListener onClickAway={props.handleClose}>
           <div className='create-bucket-card text-center'>

@@ -25,11 +25,10 @@ a, a:hover{
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  padding: 2%;
 }
 
 .login-card{
-  background: #FAF296;
+  background: #fbe29c;
   box-shadow: 2px 0 5px rgba(179, 179, 179, 0.25), 
               -2px 0 5px rgba(179, 179, 179, 0.25), 
               0 -2px 5px rgba(179, 179, 179, 0.25), 
@@ -45,6 +44,18 @@ a, a:hover{
 
 .bw-button{
   background: #FFFEED!important;
+  box-shadow: 1px 1px 4px rgba(155, 155, 155, 0.25);
+  border: none;
+  border-radius: 10px!important;
+  padding: 10px;
+  /* width: 100%; */
+  margin: 5px;
+  font-size: .8em;
+  font-weight: bold;
+}
+
+.help-button{
+  background: #fbe29c!important;
   box-shadow: 1px 1px 4px rgba(155, 155, 155, 0.25);
   border: none;
   border-radius: 10px!important;
@@ -89,6 +100,7 @@ a, a:hover{
   width: 100%;
   padding: 2%;
   margin: 2%;
+  
 }
 
 .create-bucket-prompt:focus{
@@ -109,7 +121,7 @@ a, a:hover{
   top: 67%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #FAF296!important;
+  color: #FBE296!important;
 }
 
 .help-bucket-details{
@@ -117,7 +129,7 @@ a, a:hover{
   top: 67%;
   left: 50%;
   transform: translate(-60%, -50%);
-  color: #FAF296!important;
+  color: #FBE296!important;
 }
 
 .avatar{
@@ -146,10 +158,17 @@ a, a:hover{
   right: 10%;
   top: 5%;
   padding: 2%;
+  -webkit-animation-name: animateright;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animateright;
+  animation-duration: 0.4s
 }
 
 .drawer-content{
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
 .bucket-open{
@@ -163,7 +182,7 @@ a, a:hover{
 }
 
 .wishes-container{
-  height: 200px;
+  max-height: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -172,7 +191,7 @@ a, a:hover{
 }
 
 .wish{
-  background: #FAF296;
+  background: #FBE296;
   border-radius: 10px;
   width: 99%;
 }
@@ -202,7 +221,7 @@ a, a:hover{
   justify-content: space-between;
   height: 200px;
   padding: 4% 4%;
-  background: #FAF296;
+  background: #FBE296;
 }
 
 .bucket-title{
@@ -228,6 +247,10 @@ a, a:hover{
   min-height: 300px;
   z-index: 9;
   transform: translate(-50%, 0);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
 }
 
 input, textarea{
@@ -264,7 +287,12 @@ input:focus, textarea:focus{
 }
 
 #brand{
-  width: 15%;
+  width: 25%;
+  /* position: absolute; */
+}
+
+.content{
+  margin-top: 12%!important;
 }
 
 #login-logo{
@@ -303,14 +331,14 @@ input:focus, textarea:focus{
 .bucket-info{
   padding: 2%;
   position: absolute;
-  right: 50px;
-  height: 75%;
+  right: 20%;
+  min-height: 75%;
   width: 30%;
-  background: #faf296;
+  background: #FBE296;
   z-index: 1;
   box-shadow: -5px 5px 5px 0px #00000030;
   border-radius: 10px;
-  top: 80px;
+  top: 100px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -326,16 +354,139 @@ input:focus, textarea:focus{
   transition: .2s;
 }
 
-@media only screen and (max-width:425px) { 
+/* The Modal (background) */
+.bw-dialog {
+  /* display: none; Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding: 2% 0; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.bw-dialog-content {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 1% 0;
+  border: 1px solid #888;
+  border-radius: 10px;
+  width: 65%;
+  min-height: 100%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+@-webkit-keyframes animateright {
+  from {right:-300px; opacity:0} 
+  to {opacity:1}
+}
+
+@keyframes animateright {
+  from {right:-300px; opacity:0}
+  to {opacity:1}
+}
+
+/* The Close Button */
+.bw-dialog-close {
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.bw-dialog-close:hover,
+.bw-dialog-close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+  transform: scale(1.5);
+  transition: .3s;
+}
+
+.bw-dialog-header {
+  margin: 2% 4%;
+  /* flex: 1; */
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.bw-dialog-body {
+  margin: 0 4%;
+  flex: 4;
+}
+
+.bw-dialog-footer {
+  margin: 2% 4%;
+  /* flex: 1; */
+  display: flex;
+  align-items: flex-end;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2%;
+  margin-bottom: -80px;
+}
+
+.sendButton{
+  background-color: #fbe296!important;
+}
+
+/* Mobile screens */
+@media only screen and (max-width:768px) { 
   *{
     font-size: small;
   }
+
+  .bucket-top-actions{
+    display: flex;
+    justify-content: flex-end;
+  }
+
 	.top-bar{
     margin-bottom: 20px;
   }
 
+  .bucket-info{
+    width: 75%;
+    right: 4%;
+    min-height: 50%;
+    padding: 4%;
+  }
+
   .create-bucket-card{
-    width: 90%;
+    width: 100%;
+    min-height: 100vh;
+    justify-content: center;
+    border-radius: 0;
   }
 
   .create-bucket-prompt{
@@ -347,10 +498,14 @@ input:focus, textarea:focus{
     margin: auto;
   }
 
-  .bucket-open{
-    width: 90%;
-    padding: 2%!important;
-    text-align: center;
+  .bw-dialog-content{
+    padding: 5% 0;
+    width: 100%;
+    border-radius: 0;
+  }
+
+  .bw-dialog{
+    padding: 0!important;
   }
 
   .wish{
@@ -388,6 +543,34 @@ input:focus, textarea:focus{
     
   #brand{
     width: 30%;
+  }
+  
+  .bucket-title{
+    justify-content: center;
+  }
+
+  .drawer{
+    position: fixed;
+    height: 90vh;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background: #FFFEED;
+    border-radius: 15px;
+    z-index: 10;
+    right: 1%;
+    top: 1%;
+    padding: 2%;
+  }
+
+  .overlay{
+    padding: 0!important;
+  }
+
+  .bw-dialog-header{
+    display: block;
   }
 
 }

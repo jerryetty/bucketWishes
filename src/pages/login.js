@@ -12,6 +12,7 @@ const Login = () => {
       signInOptions: [
         auth.GoogleAuthProvider.PROVIDER_ID,
         auth.FacebookAuthProvider.PROVIDER_ID,
+        auth.EmailAuthProvider.PROVIDER_ID,
       ],
       
       callbacks: {
@@ -27,11 +28,11 @@ const Login = () => {
       <div className='main container'>
         <div className='row login-container'>
           <div className='col-md-6'>
-            <div className=''>
-              <Typography variant='h3' color='primary' className='w-7'>
-                Welcome to Bucket Wishes!
+            <div className='text-center text-md-left'>
+              <Typography variant='h3' color='primary' className='w-7 login-heading'>
+                Welcome to BucketWishes!
               </Typography>
-              <Typography variant='body2' color='primary' className='mt-4'>
+              <Typography variant='body1' color='text-primary' className='mt-4 w-5 login-desc'>
                 Share words of encouragement with those who need to know they
                 are being thought of, loved and appreciated. Create a bucket for
                 special holidays or events and invite others to join you in
@@ -42,8 +43,8 @@ const Login = () => {
               </Typography>
             </div>
           </div>
-          <div className='col-md-6'>
-            <div className=''>
+          <div className='col-md-6 '>
+            <div className='mt-4 mb-4'>
               <div className='login-card'>
                 <img src={Logo} alt='logo' id='login-logo' />
                 <div>
@@ -54,8 +55,8 @@ const Login = () => {
                     />
                   )}
                 </div>
-                <Typography variant='body2' color='primary' align='center'>
-                  By signing in you agree to our Terms of use and privacy policy
+                <Typography variant='body2' color='text-primary' align='center'>
+                  By signing in you agree to our <br/> Terms of use and privacy policy
                 </Typography>
               </div>
             </div>

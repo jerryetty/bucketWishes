@@ -41,7 +41,7 @@ const SendBucketCard = (props) => {
 
   return (
     <>
-      <div className='row overlay'>
+      <div className='overlay'>
         <div className='col-md-6 mx-auto'>
           <ClickAwayListener onClickAway={props.handleClose}>
             <div className='create-bucket-card p-3 text-center'>
@@ -101,10 +101,10 @@ const SendBucketCard = (props) => {
                     You are sending this bucket to
                   </Typography>
                   <Typography variant='body1' className='text-success mt-4'>
-                    Jerry Etiang
+                    {props.bucket.recipient.name}
                   </Typography>
                   <Typography variant='body1' className='text-success'>
-                    ettyje@gmail.com
+                    {props.bucket.recipient.email}
                   </Typography>
                   <div className='mt-4'>
                     <button className='bw-button' onClick={() => {setRecipient(false)}}>Edit Recipient</button>
