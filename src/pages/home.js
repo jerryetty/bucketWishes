@@ -281,14 +281,8 @@ const Home = (props) => {
 
   useEffect(() => {
     if (queryBucketId && queryBucketId !== 'undefined') {
-      // if (bucket) {
         handleSetActiveBucket({...bucket, id: queryBucketId})
-        // setActiveBucket({id: queryBucketId})
         handleOpenBucket()
-      // } else {
-      //   setActiveBucket({id: queryBucketId})
-      //   handleOpenBucket()
-      // }
     }
   }, [bucket, queryBucketId])
 
@@ -352,6 +346,7 @@ const Home = (props) => {
             handleOpenSendBucketCard={handleOpenSendBucketCard}
             handleOpenAddRecipientCard={handleOpenAddRecipientCard}
             handleSetAlertMessage={handleSetAlertMessage}
+            handleSetActiveBucket={handleSetActiveBucket}
             handleShowAlert={handleShowAlert}
             handleDeleteBucket={handleDeleteBucket}
             useBucket={useBucket}
@@ -401,7 +396,9 @@ const Home = (props) => {
             uid={uid}
             displayName={displayName}
             id={activeBucket.id}
+            bucket={activeBucket}
             handleClose={handleCloseAddRecipientCard}
+            handleSetActiveBucket={handleSetActiveBucket}
             handleOpenInviteCard={handleOpenInviteCard}
           />
         )}

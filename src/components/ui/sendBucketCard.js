@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
+import { myFirebase } from 'utils/firebase'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { ClickAwayListener, Typography } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
 
 const SendBucketCard = (props) => {
+  const bucketDocRef = myFirebase.firestore().collection('buckets')
   const [sent, setSent] = useState(false)
   const [recipient, setRecipient] = useState(true)
 
@@ -23,6 +25,12 @@ const SendBucketCard = (props) => {
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
       setSubmitting(true)
+      bucketDocRef.doc(props.id).update({
+        recipient: {
+          name: values.name,
+          email: values.email
+        },
+      })
       props.handleClose()
       props.handleOpenPreview(values)
       resetForm()
@@ -88,7 +96,7 @@ const SendBucketCard = (props) => {
 
                   <div className='mt-4'>
                     {!sent && (
-                      <button className='bw-button' type='submit'>
+                      <button className='bw-button sendButton' type='submit'>
                         Preview
                       </button>
                     )}
@@ -109,7 +117,7 @@ const SendBucketCard = (props) => {
                   <div className='mt-4'>
                     <button className='bw-button' onClick={() => {setRecipient(false)}}>Edit Recipient</button>
                     {!sent && (
-                      <button className='bw-button' onClick={handleSendBucket}>
+                      <button className='bw-button sendButton' onClick={handleSendBucket}>
                         Preview
                       </button>
                     )}

@@ -117,7 +117,7 @@ const PreviewBucket = (props) => {
               <div className='col-12 mt-3'>
                 
                 <Typography variant='body2' color='text-primary' className='w-5'>
-                  Click the "Add Wish" button below, Login or Create an account, accept the invite and add your wish!
+                  Click the "Add Wish" button below, Signin to get access to this bucket, and add your wish!
                 </Typography>
                 <Link to={`/?bucket=${bucketId}`}>
                   <button className='bw-button menu-button mt-5'>

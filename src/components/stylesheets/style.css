@@ -429,11 +429,6 @@ input:focus, textarea:focus{
 
 .bw-dialog-header {
   margin: 2% 4%;
-  /* flex: 1; */
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: flex-start;
-  justify-content: space-between;
 }
 
 .bw-dialog-body {
@@ -460,6 +455,10 @@ input:focus, textarea:focus{
   background-color: #fbe296!important;
 }
 
+.bucket-top-actions{
+  float: right;
+}
+
 /* Mobile screens */
 @media only screen and (max-width:768px) { 
   *{
@@ -469,6 +468,7 @@ input:focus, textarea:focus{
   .bucket-top-actions{
     display: flex;
     justify-content: flex-end;
+    float: initial;
   }
 
 	.top-bar{

@@ -159,21 +159,10 @@ const AddBucketCard = (props) => {
                       id='description'
                       name='description'
                       className='mb-1'
-                      margin='dense'
-                      label='Tell a story about your bucket *'
-                      fullWidth
                       onBlur={formik.handleBlur}
                       onFocus={props.handleFocus}
                       onChange={formik.handleChange}
                       value={formik.values.description}
-                      error={
-                        !!(formik.touched.title && formik.errors.description)
-                      }
-                      helperText={
-                        formik.touched.description && formik.errors.description
-                          ? formik.errors.description
-                          : null
-                      }
                       cols='50'
                       rows='5'
                     ></textarea>
@@ -212,11 +201,10 @@ const AddBucketCard = (props) => {
                     <textarea
                       id='wish'
                       name='wish'
-                      margin='dense'
-                      fullWidth
                       onBlur={formik.handleBlur}
                       onFocus={props.handleFocus}
                       onChange={formik.handleChange}
+                      value={formik.values.wish}
                       cols='50'
                       rows='5'
                     ></textarea>

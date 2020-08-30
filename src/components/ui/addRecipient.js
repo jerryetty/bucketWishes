@@ -15,9 +15,9 @@ const AddRecipient = (props) => {
 
   const formik = useFormik({
     initialValues: {
-      name: '',
-      email: '',
-      sendByDate: ''
+      name: props.bucket.recipient ? props.bucket.recipient.name : '',
+      email: props.bucket.recipient ? props.bucket.recipient.email : '',
+      sendByDate: Date.now()
     },
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
@@ -27,13 +27,11 @@ const AddRecipient = (props) => {
           name: values.name,
           email: values.email
         },
-        sendByDate: values.sendByDate
       })
       resetForm()
+      setSubmitting(false)
     }
   })
-
-  console.log(props.id)
 
   return (
     <div className='overlay'>
@@ -57,7 +55,6 @@ const AddRecipient = (props) => {
                   id='name'
                   name='name'
                   className='mb-1 custom-font'
-                  margin='dense'
                   onBlur={formik.handleBlur}
                   onFocus={props.handleFocus}
                   onChange={formik.handleChange}
@@ -74,19 +71,17 @@ const AddRecipient = (props) => {
                   id='email'
                   name='email'
                   className='mb-1 custom-font'
-                  margin='dense'
                   onBlur={formik.handleBlur}
                   onFocus={props.handleFocus}
                   onChange={formik.handleChange}
                   value={formik.values.email}
                 />
               </div>
-              <Typography variant='body2' color='primary' className='mt-2'>
+              {/* <Typography variant='body2' color='primary' className='mt-2'>
                 When would you like to send this bucket
               </Typography>
               <div className='mt-1'>
                 <input
-                  required
                   type='date'
                   id='sendByDate'
                   name='sendByDate'
@@ -96,7 +91,7 @@ const AddRecipient = (props) => {
                   onFocus={props.handleFocus}
                   onChange={formik.handleChange}
                 />
-              </div>
+              </div> */}
               <div className='mt-4'>
                 <button
                   className='bw-button'

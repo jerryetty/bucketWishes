@@ -8,15 +8,16 @@ import {
   Typography,
   ClickAwayListener,
   IconButton,
-  CircularProgress
+  CircularProgress,
+  Tooltip
 } from '@material-ui/core'
 import Wishes from './wishes'
 import ConfirmDialog from './confirmDialog'
 import PopupAlert from './popupAlert'
 import {
-  Info as InfoIcon,
+  InfoRounded as InfoIcon,
   Delete as DeleteIcon,
-  CloseRounded
+  Close as CloseIcon,
 } from '@material-ui/icons'
 
 const BucketOpen = (props) => {
@@ -128,7 +129,9 @@ const BucketOpen = (props) => {
 
   const [bucketDetails, setBucketDetails] = useState({
     title: activeBucket.title,
-    description: activeBucket.description
+    description: activeBucket.description,
+    recipientName: activeBucket.recipient ? activeBucket.recipient.name : 'No Recipient',
+    recipientEmail: activeBucket.recipient ? activeBucket.recipient.email : 'No Recipient',
   })
   const [showEditWishInput, setShowEditWishInput] = useState(false)
   const [showAddWishInput, setShowAddWishInput] = useState(false)
@@ -233,7 +236,7 @@ const BucketOpen = (props) => {
 
       <div className='dialog'>
         <div id='myModal' className='bw-dialog'>
-          {accepted === 1 && (
+          {(accepted === 1 || props.superuser || activeBucket.restricted) && (
             <>
               {(props.shared === 0 || !props.shared) && (
                 <>
@@ -263,14 +266,15 @@ const BucketOpen = (props) => {
                             </Typography> */}
                           </div>
                           <div>
-                            <Typography
+                             <Typography
                               variant='caption'
                               color='primary'
                               className='w-5'
                             >
                               Send by
                             </Typography>
-                            <Typography
+                            {activeBucket.author === props.uid && (
+                              <Typography
                               variant='caption'
                               color='primary'
                               className='c-pointer text-link text-info'
@@ -282,6 +286,20 @@ const BucketOpen = (props) => {
                                 <span>Choose a date</span>
                               )}
                             </Typography>
+                            )}
+                            {activeBucket.author !== props.uid && (
+                            <Typography
+                              variant='caption'
+                              color='primary'
+                              className='text-info'
+                            >
+                              {activeBucket.sendByDate &&
+                                activeBucket.sendByDate}
+                              {!activeBucket.sendByDate && (
+                                <span>Choose a date</span>
+                              )}
+                            </Typography>
+                            )}
                           </div>
                           <div>
                             <Typography
@@ -334,17 +352,19 @@ const BucketOpen = (props) => {
                             !props.preview &&
                             !activeBucket.restricted && (
                               <>
-                                <IconButton
-                                  id='add-collaborator'
-                                  className='w-5 text-danger'
-                                  aria-label='add collaborators'
-                                  size='small'
-                                  onClick={handleOpenConfirmDialog}
-                                  disableFocusRipple={true}
-                                  disableRipple={true}
-                                >
-                                  <DeleteIcon />
-                                </IconButton>
+                                <Tooltip title='Delete this bucket'>
+                                  <IconButton
+                                    id='add-collaborator'
+                                    className='w-5 text-danger'
+                                    aria-label='add collaborators'
+                                    size='small'
+                                    onClick={handleOpenConfirmDialog}
+                                    disableFocusRipple={true}
+                                    disableRipple={true}
+                                  >
+                                    <DeleteIcon />
+                                  </IconButton>
+                                </Tooltip>
                                 <Typography
                                   variant='caption'
                                   className='w-5 text-danger c-pointer'
@@ -364,20 +384,24 @@ const BucketOpen = (props) => {
                         <>
                           <div className='bucket-top-actions'>
                             <span onClick={handleToggleInfo}>
-                              <IconButton
-                                disableFocusRipple={true}
-                                disableRipple={true}
-                              >
-                                <InfoIcon className='bw-dialog-close' />
-                              </IconButton>
+                              <Tooltip title='More info about this bucket'>
+                                <IconButton
+                                  disableFocusRipple={true}
+                                  disableRipple={true}
+                                >
+                                  <InfoIcon className='bw-dialog-close' />
+                                </IconButton>
+                              </Tooltip>
                             </span>
                             <span onClick={props.handleClose}>
-                              <IconButton
-                                disableFocusRipple={true}
-                                disableRipple={true}
-                              >
-                                <CloseRounded className='bw-dialog-close' />
-                              </IconButton>
+                              <Tooltip title='Close'>
+                                <IconButton
+                                  disableFocusRipple={true}
+                                  disableRipple={true}
+                                >
+                                  <CloseIcon className='bw-dialog-close' />
+                                </IconButton>
+                              </Tooltip>
                             </span>
                           </div>
 
@@ -389,36 +413,59 @@ const BucketOpen = (props) => {
                             >
                               {bucketDetails.title || activeBucket.title}
                             </Typography>
-                            <Typography
-                              variant='body2'
-                              className='mt-2'
-                              color='textPrimary'
-                            >
-                              {bucketDetails.description ||
-                                activeBucket.description}
-                            </Typography>
+                            <Tooltip title='Purpose of this bucket'>
+                              <Typography
+                                variant='body2'
+                                className='mt-2'
+                                color='textPrimary'
+                              >
+                                {bucketDetails.description ||
+                                  activeBucket.description}
+                              </Typography>
+                            </Tooltip>
 
-                            <Typography variant='caption' color='textSecondary'>
-                              Author: {activeBucket.authorName}
-                              {' | '}
-                            </Typography>
-                            <Typography variant='caption' color='textSecondary'>
-                              <Moment format='YYYY/MM/DD'>
-                                {activeBucket.createdAt}
-                              </Moment>
-                            </Typography>
-                            <br />
-                            <Typography variant='caption' color='textSecondary'>
-                              Recipient: {activeBucket.recipient.name}
-                            </Typography>
-                            <br />
-                            <Typography variant='caption' color='textSecondary'>
-                              Status:{' '}
-                              {activeBucket.sent && (
-                                <span className='text-success'>Sent</span>
+                            <div className='mt-3'>
+                              <Typography
+                                variant='caption'
+                                color='textSecondary'
+                              >
+                                Author: {activeBucket.authorName}
+                                {' | '}
+                              </Typography>
+                              <Typography
+                                variant='caption'
+                                color='textSecondary'
+                              >
+                                <Moment format='YYYY/MM/DD'>
+                                  {activeBucket.createdAt}
+                                </Moment>
+                              </Typography>
+                              {!activeBucket.restricted && (
+                                <>
+                                  <Typography
+                                    variant='caption'
+                                    color='textSecondary'
+                                    component='p'
+                                  >
+                                    Recipient:{' '}
+                                    {bucketDetails.recipientName || activeBucket.recipient.name}
+                                  </Typography>
+                                  <Typography
+                                    variant='caption'
+                                    color='textSecondary'
+                                    component='p'
+                                  >
+                                    Status:{' '}
+                                    {activeBucket.sent && (
+                                      <span className='text-success'>Sent</span>
+                                    )}
+                                    {!activeBucket.sent && (
+                                      <span>Not Sent</span>
+                                    )}
+                                  </Typography>
+                                </>
                               )}
-                              {!activeBucket.sent && <span>Not Sent</span>}
-                            </Typography>
+                            </div>
                           </div>
                         </>
                       )}
@@ -558,10 +605,10 @@ const BucketOpen = (props) => {
                           className='bw-button'
                           onClick={props.handleClose}
                         >
-                          Close Preview
+                          Back
                         </button>
                         <button
-                          className='bw-button'
+                          className='bw-button sendButton'
                           onClick={() => {
                             props.setShared(-1)
                             props.submit()
@@ -579,20 +626,14 @@ const BucketOpen = (props) => {
                   <div className='bw-dialog-header'>
                     <div className='bucket-top-actions'>
                       <span onClick={props.handleClose}>
-                        <IconButton
-                          disableFocusRipple={true}
-                          disableRipple={true}
-                        >
-                          <InfoIcon className='bw-dialog-close' />
-                        </IconButton>
-                      </span>
-                      <span onClick={props.handleClose}>
-                        <IconButton
-                          disableFocusRipple={true}
-                          disableRipple={true}
-                        >
-                          <CloseRounded className='bw-dialog-close' />
-                        </IconButton>
+                        <Tooltip title='Close'>
+                          <IconButton
+                            disableFocusRipple={true}
+                            disableRipple={true}
+                          >
+                            <CloseIcon className='bw-dialog-close' />
+                          </IconButton>
+                        </Tooltip>
                       </span>
                     </div>
                   </div>
@@ -608,12 +649,14 @@ const BucketOpen = (props) => {
                   <div className='bw-dialog-header'>
                     <div className='text-right'>
                       <span onClick={props.handleClose}>
-                        <IconButton
-                          disableFocusRipple={true}
-                          disableRipple={true}
-                        >
-                          <CloseRounded className='bw-dialog-close' />
-                        </IconButton>
+                        <Tooltip>
+                          <IconButton
+                            disableFocusRipple={true}
+                            disableRipple={true}
+                          >
+                            <CloseIcon className='bw-dialog-close' />
+                          </IconButton>
+                        </Tooltip>
                       </span>
                     </div>
                     <div>
@@ -742,19 +785,19 @@ const BucketOpen = (props) => {
               )}
             </>
           )}
-          {accepted === 0 && (
+          {accepted === 0 && !props.superuser && (
             <div className='bw-dialog-content'>
               <div className='bw-dialog-header'>
                 <div className='bucket-top-actions'>
                   <span onClick={props.handleClose}>
-                    <IconButton disableFocusRipple={true} disableRipple={true}>
-                      <InfoIcon className='bw-dialog-close' />
-                    </IconButton>
-                  </span>
-                  <span onClick={props.handleClose}>
-                    <IconButton disableFocusRipple={true} disableRipple={true}>
-                      <CloseRounded className='bw-dialog-close' />
-                    </IconButton>
+                    <Tooltip title='Close'>
+                      <IconButton
+                        disableFocusRipple={true}
+                        disableRipple={true}
+                      >
+                        <CloseIcon className='bw-dialog-close' />
+                      </IconButton>
+                    </Tooltip>
                   </span>
                 </div>
               </div>
@@ -788,19 +831,19 @@ const BucketOpen = (props) => {
               </div>
             </div>
           )}
-          {accepted === -1 && (
+          {accepted === -1 && !props.superuser && !activeBucket.restricted && (
             <div className='bw-dialog-content'>
               <div className='bw-dialog-header'>
                 <div className='bucket-top-actions'>
                   <span onClick={props.handleClose}>
-                    <IconButton disableFocusRipple={true} disableRipple={true}>
-                      <InfoIcon className='bw-dialog-close' />
-                    </IconButton>
-                  </span>
-                  <span onClick={props.handleClose}>
-                    <IconButton disableFocusRipple={true} disableRipple={true}>
-                      <CloseRounded className='bw-dialog-close' />
-                    </IconButton>
+                    <Tooltip title='Close'>
+                      <IconButton
+                        disableFocusRipple={true}
+                        disableRipple={true}
+                      >
+                        <CloseIcon className='bw-dialog-close' />
+                      </IconButton>
+                    </Tooltip>
                   </span>
                 </div>
               </div>

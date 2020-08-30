@@ -108,20 +108,20 @@ const InviteCard = (props) => {
     <div className='overlay'>
       <div className='col-md-6 mx-auto'>
         <ClickAwayListener onClickAway={props.handleClose}>
-          <div className='create-bucket-card text-center'>
+          <div className='create-bucket-card text-center p-5'>
             <div className="close-button" onClick={props.handleClose}>
               <Close />
             </div>
             <form onSubmit={formik.handleSubmit}>
               {!invited && (
                 <>
-                  <Typography variant='h6' color='primary' className='w-5'>
+                  <Typography variant='body1' color='primary' className='w-5'>
                     Invite friends and family to add wishes to this bucket
                   </Typography>
                   <Typography variant='body2' color='primary' className='mt-2'>
                     Enter their name
                   </Typography>
-                  <div className='mt-4'>
+                  <div className='mt-1'>
                     <input
                       type='text'
                       id='collaboratorName'
@@ -136,7 +136,7 @@ const InviteCard = (props) => {
                   <Typography variant='body2' color='primary' className='mt-2'>
                     Enter their email
                   </Typography>
-                  <div className='mt-4'>
+                  <div className='mt-1'>
                     <input
                       type='email'
                       id='email'

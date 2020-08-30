@@ -15,7 +15,7 @@ import PreviewBucket from 'pages/previewBucket'
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#9a4b1c'
+      main: '#c36a2d'
     },
     secondary: {
       main: '#ffc400'

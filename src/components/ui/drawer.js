@@ -1,8 +1,9 @@
 import React from 'react'
-import { Link, Redirect, BrowserRouter } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { myFirebase as firebase } from 'utils/firebase'
 import { getUser, logout } from 'components/auth'
-import { Typography, ClickAwayListener, Button } from '@material-ui/core'
+import { Typography, ClickAwayListener } from '@material-ui/core'
+import FallbackAvatar from '../images/avatar.png'
 
 const adminMenu = [
   {
@@ -47,7 +48,6 @@ const menu = [
 
 const Drawer = (props) => {
   const { email, displayName, photoURL } = getUser()
-  console.log(photoURL)
   return (
     <div className='overlay'>
       <ClickAwayListener onClickAway={props.handleClose}>
@@ -55,7 +55,7 @@ const Drawer = (props) => {
           <div className='drawer-content'>
             <div className='profile'>
               <div className='avatar-container'>
-                <img src={photoURL} alt={displayName} className='avatar' />
+                <img src={photoURL ? photoURL : FallbackAvatar} alt={displayName} className='avatar' />
               </div>
               <Typography
                 variant='body1'

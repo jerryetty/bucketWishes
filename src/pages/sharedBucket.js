@@ -105,10 +105,7 @@ const SharedBucket = (props) => {
                       >
                         {wish.message}
                       </Typography>
-                      <Typography
-                        variant='caption'
-                        color='primary'
-                      >
+                      <Typography variant='caption' color='primary'>
                         {wish.author}
                       </Typography>
                     </div>
@@ -132,17 +129,25 @@ const SharedBucket = (props) => {
                   wishes in virtual containers(Buckets)
                 </Typography>
                 <br />
-                <Typography variant='body2' color='text-primary' className='w-5'>
-                  Create an account to start sharing buckets today
+                <Typography
+                  variant='body2'
+                  color='text-primary'
+                  className='w-5'
+                >
+                  Sign in to start sharing buckets today
                 </Typography>
                 <Link to='/'>
                   <button className='bw-button menu-button mt-5'>
-                    Create an account
+                    Sign in
                   </button>
                 </Link>
-                <Link to='/'>
+                <a
+                  href='https://www.enwranch.org/contact-us.html'
+                  target='_blank'
+                  rel='noopener noreferer'
+                >
                   <button className='bw-button menu-button'>Contact Us</button>
-                </Link>
+                </a>
                 <a
                   href='https://www.enwranch.com'
                   target='_blank'

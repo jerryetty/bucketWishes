@@ -8,9 +8,9 @@ import SendBucketCard from 'components/ui/sendBucketCard'
 import request from 'request'
 import PopupAlert from 'components/ui/popupAlert'
 import AddRecipient from 'components/ui/addRecipient'
-import { Typography } from '@material-ui/core'
+import { Typography, Button } from '@material-ui/core'
 
-const Home = (props) => {
+const AllBuckets = (props) => {
   const bucketDocRef = myFirebase.firestore().collection('buckets')
   const { displayName, uid, email } = getUser()
   
@@ -188,6 +188,7 @@ const Home = (props) => {
             handleSetAlertMessage={handleSetAlertMessage}
             handleShowAlert={handleShowAlert}
             shared={shared}
+            superuser={true}
           />
         )}
         {openPreview && (
@@ -203,7 +204,7 @@ const Home = (props) => {
             submit={postData}
           />
         )}
-        
+
         {openInviteCard && (
           <InviteCard
             email={email}
@@ -239,17 +240,45 @@ const Home = (props) => {
 
         {(buckets || restrictedBuckets) && (
           <div className='row mt-5' id='buckets-area'>
-            <div className='col-12'>
-              <Typography
-                variant='h5'
-                align='center'
-                className='w-7 mb-3'
-                color='primary'
-              >
-                Buckets created by users
-              </Typography>
+            <div className='table-responsive container mt-5'>
+              <table className='table table-hover table-striped'>
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {buckets.map((bucket, count) => (
+                    <tr key={count}>
+                      <td>
+                        <span
+                          onClick={() => {
+                            setActiveBucket(bucket)
+                            handleOpenBucket()
+                          }}
+                          className='w-5 c-pointer text-link'
+                        >
+                          {bucket.title}
+                        </span>
+                      </td>
+                      <td>{bucket.authorName}</td>
+                      <td>
+                        {/* <Button variant='text' color='primary' className='text-info'>Open</Button> */}
+                        <Button
+                          variant='text'
+                          color='primary'
+                          className='text-danger'
+                        >
+                          Delete
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-            {buckets.map((bucket, count) => (
+            {/* {buckets.map((bucket, count) => (
               <div
                 className='col-lg-4 col-sm-6 col-md-6 text-center'
                 key={count}
@@ -268,8 +297,8 @@ const Home = (props) => {
                   handleOpenSendBucketCard={handleOpenSendBucketCard}
                 />
               </div>
-            ))}
-            <div className='col-12'>
+            ))} */}
+            {/* <div className='col-12'>
               <Typography
                 variant='h5'
                 align='center'
@@ -295,7 +324,7 @@ const Home = (props) => {
                   handleCloseBucket={handleCloseBucket}
                 />
               </div>
-            ))}
+            ))} */}
           </div>
         )}
       </div>
@@ -303,4 +332,4 @@ const Home = (props) => {
   )
 }
 
-export default Home
+export default AllBuckets
