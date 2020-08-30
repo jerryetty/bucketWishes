@@ -18,8 +18,8 @@ const SendBucketCard = (props) => {
 
   const formik = useFormik({
     initialValues: {
-      email: '',
-      name: '',
+      email: props.bucket.recipient.email,
+      name: props.bucket.recipient.name,
       bucketUrl: `#/bucket/${props.id}`
     },
     validationSchema: validationSchema,
@@ -29,8 +29,16 @@ const SendBucketCard = (props) => {
         recipient: {
           name: values.name,
           email: values.email
-        },
+        }
       })
+      props.handleSetActiveBucket({
+        ...props.bucket,
+        recipient: {
+          name: values.name,
+          email: values.email
+        }
+      })
+      props.handleOpenBucket()
       props.handleClose()
       props.handleOpenPreview(values)
       resetForm()
@@ -56,7 +64,9 @@ const SendBucketCard = (props) => {
               <div className='close-button' onClick={props.handleClose}>
                 <Close />
               </div>
-              {(!props.bucket.recipient || !props.bucket.recipient.email || !recipient) && (
+              {(!props.bucket.recipient ||
+                !props.bucket.recipient.email ||
+                !recipient) && (
                 <form onSubmit={formik.handleSubmit}>
                   <Typography variant='h6' color='primary' className='w-5'>
                     Send this Bucket to Recipient
@@ -103,27 +113,39 @@ const SendBucketCard = (props) => {
                   </div>
                 </form>
               )}
-              {props.bucket.recipient && props.bucket.recipient.email && recipient && (
-                <div>
-                  <Typography variant='h6' color='primary' className='w-5'>
-                    You are sending this bucket to
-                  </Typography>
-                  <Typography variant='body1' className='text-success mt-4'>
-                    {props.bucket.recipient.name}
-                  </Typography>
-                  <Typography variant='body1' className='text-success'>
-                    {props.bucket.recipient.email}
-                  </Typography>
-                  <div className='mt-4'>
-                    <button className='bw-button' onClick={() => {setRecipient(false)}}>Edit Recipient</button>
-                    {!sent && (
-                      <button className='bw-button sendButton' onClick={handleSendBucket}>
-                        Preview
+              {props.bucket.recipient &&
+                props.bucket.recipient.email &&
+                recipient && (
+                  <div>
+                    <Typography variant='h6' color='primary' className='w-5'>
+                      You are sending this bucket to
+                    </Typography>
+                    <Typography variant='body1' className='text-success mt-4'>
+                      {props.bucket.recipient.name}
+                    </Typography>
+                    <Typography variant='body1' className='text-success'>
+                      {props.bucket.recipient.email}
+                    </Typography>
+                    <div className='mt-4'>
+                      <button
+                        className='bw-button'
+                        onClick={() => {
+                          setRecipient(false)
+                        }}
+                      >
+                        Edit Recipient
                       </button>
-                    )}
+                      {!sent && (
+                        <button
+                          className='bw-button sendButton'
+                          onClick={handleSendBucket}
+                        >
+                          Preview
+                        </button>
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
             </div>
           </ClickAwayListener>
         </div>

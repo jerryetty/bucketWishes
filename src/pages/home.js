@@ -128,7 +128,7 @@ const Home = (props) => {
             console.log('Error getting document', err)
           })
       } else {
-        console.log('We didnt see a bucket id')
+        // console.log('We didnt see a bucket id')
       }
     }, [bucketId])
     return currentBucket
@@ -276,13 +276,12 @@ const Home = (props) => {
     queryBucketId = null
   }
 
-  // console.log(queryBucketId)
   const bucket = useBucket(queryBucketId)
 
   useEffect(() => {
     if (queryBucketId && queryBucketId !== 'undefined') {
-        handleSetActiveBucket({...bucket, id: queryBucketId})
-        handleOpenBucket()
+      handleSetActiveBucket({ ...bucket, id: queryBucketId })
+      handleOpenBucket()
     }
   }, [bucket, queryBucketId])
 
@@ -343,6 +342,7 @@ const Home = (props) => {
             bucket={activeBucket}
             handleClose={handleCloseBucket}
             handleOpenInviteCard={handleOpenInviteCard}
+            handleOpenBucket={handleOpenBucket}
             handleOpenSendBucketCard={handleOpenSendBucketCard}
             handleOpenAddRecipientCard={handleOpenAddRecipientCard}
             handleSetAlertMessage={handleSetAlertMessage}
@@ -399,6 +399,7 @@ const Home = (props) => {
             bucket={activeBucket}
             handleClose={handleCloseAddRecipientCard}
             handleSetActiveBucket={handleSetActiveBucket}
+            handleOpenBucket={handleOpenBucket}
             handleOpenInviteCard={handleOpenInviteCard}
           />
         )}
@@ -409,6 +410,8 @@ const Home = (props) => {
             displayName={displayName}
             id={activeBucket.id}
             bucket={activeBucket}
+            handleOpenBucket={handleOpenBucket}
+            handleSetActiveBucket={handleSetActiveBucket}
             handleClose={handleCloseSendBucketCard}
             openPreview={openPreview}
             handleOpenPreview={handleOpenPreview}

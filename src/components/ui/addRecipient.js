@@ -26,9 +26,18 @@ const AddRecipient = (props) => {
         recipient: {
           name: values.name,
           email: values.email
-        },
+        }
       })
       resetForm()
+      props.handleClose()
+      props.handleSetActiveBucket({
+        ...props.bucket,
+        recipient: {
+          name: values.name,
+          email: values.email
+        }
+      })
+      props.handleOpenBucket()
       setSubmitting(false)
     }
   })

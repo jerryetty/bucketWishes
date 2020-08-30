@@ -6,7 +6,6 @@ import NotFound from 'components/images/404.svg'
 import Topbar from 'components/ui/topbar'
 
 const SharedBucket = (props) => {
-  console.log(props)
   const bucket = props.match.params.id
   const bucketDocRef = myFirebase.firestore().collection('buckets')
 
@@ -95,6 +94,9 @@ const SharedBucket = (props) => {
                 <Typography variant='h5' className='w-7' color='text-primary'>
                   Wishes
                 </Typography>
+                
+                {(!wishes || wishes.length < 1) && <div>No wishes here yet</div>}
+
                 {wishes.map((wish) => (
                   <div className='wish p-3 mt-3 row' key={wish.id}>
                     <div className='col-12'>

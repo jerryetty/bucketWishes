@@ -34,8 +34,12 @@ const Wishes = (props) => {
       const data = values
       addWish(data)
       resetForm()
-      if(props.showAddWishInput) {props.handleHideAddWishInput()}
-      if(props.showEditWishInput) {props.handleHideEditWishInput()}
+      if (props.showAddWishInput) {
+        props.handleHideAddWishInput()
+      }
+      if (props.showEditWishInput) {
+        props.handleHideEditWishInput()
+      }
     }
   })
 
@@ -72,6 +76,7 @@ const Wishes = (props) => {
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
   const [wishIdToDelete, setWishIdToDelete] = useState(null)
   const [showAlert, setShowAlert] = useState(false)
+  const [deleted, setDeleted] = useState(false)
 
   const handleOpenConfirmDialog = () => {
     setOpenConfirmDialog(true)
@@ -82,6 +87,8 @@ const Wishes = (props) => {
   }
 
   const handleDelete = () => {
+    setDeleted(true)
+    props.handleDeleteWish()
     wishesRef.doc(wishIdToDelete).delete()
     handleCloseConfirmDialog()
     setWishIdToDelete(null)
@@ -104,15 +111,15 @@ const Wishes = (props) => {
 
   const wishes = useWishes()
 
-  const checkForUserWish = () => {
+  useEffect(() => {
     wishes.map((wish) => {
-      if (wish.id === props.uid) {
-        props.setAddedWish(true)
+      if (wish.id === props.uid && !deleted) {
+        props.handleAddWish()
       }
     })
-  }
+  }, [deleted, props, wishes])
 
-  checkForUserWish()
+  console.log(wishes)
 
   return (
     <>
@@ -151,7 +158,7 @@ const Wishes = (props) => {
               <button type='submit' className='bw-button'>
                 Add
               </button>
-              <button 
+              <button
                 type='button'
                 onClick={props.handleHideAddWishInput}
                 className='bw-button'
@@ -163,6 +170,8 @@ const Wishes = (props) => {
         </div>
       )}
 
+      {wishes.length < 1 && <div>No wishes here yet</div>}
+
       {wishes.map((wish) => (
         <div className='wish p-3 mt-3 row' key={wish.id}>
           <div className='col-12'>
@@ -171,7 +180,7 @@ const Wishes = (props) => {
                 {wish.message}
               </Typography>
             )}
-            {(props.showEditWishInput && wish.id === props.uid) && (
+            {props.showEditWishInput && wish.id === props.uid && (
               <form onSubmit={formik.handleSubmit}>
                 <div className='edit-wish'>
                   <input
@@ -203,7 +212,7 @@ const Wishes = (props) => {
             </Typography>
           </div>
           <div className='col-md-4 col-3'>
-            {((props.bucketOwner || wish.id === props.uid) && !props.preview) && (
+            {(props.bucketOwner || wish.id === props.uid) && !props.preview && (
               <div className='wish-actions text-right'>
                 <Tooltip title='Delete wish' aria-label='Delete wish'>
                   <span>
@@ -233,7 +242,7 @@ const Wishes = (props) => {
                       color='primary'
                       aria-label='Edit wish'
                       size='small'
-                      disabled={(wish.id !== props.uid) ? true : false}
+                      disabled={wish.id !== props.uid ? true : false}
                     >
                       <EditIcon className='wish-action-icon' />
                     </IconButton>

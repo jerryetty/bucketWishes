@@ -59,7 +59,7 @@ const PreviewBucket = (props) => {
   const currentBucket = useBucket()
   const wishes = useWishes()
 
-  return ( 
+  return (
     <>
       <div className='container'>
         <Topbar hideHumberger />
@@ -72,14 +72,24 @@ const PreviewBucket = (props) => {
                 </Typography>
               </div>
               <div className='col-12 mt-2'>
-                <Typography variant='body1' className='w-5' color='text-primary'>
+                <Typography
+                  variant='body1'
+                  className='w-5'
+                  color='text-primary'
+                >
                   {currentBucket.description}
                 </Typography>
               </div>
               <div className='col-12 mt-2'>
-                <Typography variant='caption' className='w-5' color='text-primary'>
-                  {currentBucket.recipient && `This bucket was created for ${currentBucket.recipient.name} by ${currentBucket.authorName}, ${currentBucket.authorEmail}`}
-                  {!currentBucket.recipient && `This bucket was created by ${currentBucket.authorName}, ${currentBucket.authorEmail}`}
+                <Typography
+                  variant='caption'
+                  className='w-5'
+                  color='text-primary'
+                >
+                  {currentBucket.recipient &&
+                    `This bucket was created for ${currentBucket.recipient.name} by ${currentBucket.authorName}, ${currentBucket.authorEmail}`}
+                  {!currentBucket.recipient &&
+                    `This bucket was created by ${currentBucket.authorName}, ${currentBucket.authorEmail}`}
                 </Typography>
               </div>
 
@@ -87,6 +97,9 @@ const PreviewBucket = (props) => {
                 <Typography variant='h5' color='text-primary' className='w-7'>
                   Wishes
                 </Typography>
+
+                {wishes.length < 1 && <div>No wishes here yet</div>}
+
                 {wishes.map((wish) => (
                   <div className='wish p-3 mt-3 row' key={wish.id}>
                     <div className='col-12'>
@@ -97,10 +110,7 @@ const PreviewBucket = (props) => {
                       >
                         {wish.message}
                       </Typography>
-                      <Typography
-                        variant='caption'
-                        color='primary'
-                      >
+                      <Typography variant='caption' color='primary'>
                         {wish.author}
                       </Typography>
                     </div>
@@ -115,16 +125,24 @@ const PreviewBucket = (props) => {
                 </Typography>
               </div>
               <div className='col-12 mt-3'>
-                
-                <Typography variant='body2' color='text-primary' className='w-5'>
-                  Click the "Add Wish" button below, Signin to get access to this bucket, and add your wish!
+                <Typography
+                  variant='body2'
+                  color='text-primary'
+                  className='w-5'
+                >
+                  Click the "Add Wish" button below, Signin to get access to
+                  this bucket, and add your wish!
                 </Typography>
                 <Link to={`/?bucket=${bucketId}`}>
                   <button className='bw-button menu-button mt-5'>
-                   Add a wish
+                    Add a wish
                   </button>
                 </Link>
-                <a href='https://www.enwranch.com' rel='noopener noreferer' target='_blank'>
+                <a
+                  href='https://www.enwranch.com'
+                  rel='noopener noreferer'
+                  target='_blank'
+                >
                   <button className='bw-button menu-button'>
                     Visit our Website
                   </button>
@@ -135,12 +153,14 @@ const PreviewBucket = (props) => {
         )}
         {!currentBucket && (
           <div className='not-found'>
-            <img src={NotFound} alt="not found" />
-            <Typography variant='h5'  className='w-7'>
+            <img src={NotFound} alt='not found' />
+            <Typography variant='h5' className='w-7'>
               Oops! We couldn't find that Bucket
             </Typography>
             <Link to='/'>
-              <Typography variant='caption' className='w-5'>Back to Home page</Typography>
+              <Typography variant='caption' className='w-5'>
+                Back to Home page
+              </Typography>
             </Link>
           </div>
         )}

@@ -17,7 +17,7 @@ import PopupAlert from './popupAlert'
 import {
   InfoRounded as InfoIcon,
   Delete as DeleteIcon,
-  Close as CloseIcon,
+  Close as CloseIcon
 } from '@material-ui/icons'
 
 const BucketOpen = (props) => {
@@ -130,8 +130,12 @@ const BucketOpen = (props) => {
   const [bucketDetails, setBucketDetails] = useState({
     title: activeBucket.title,
     description: activeBucket.description,
-    recipientName: activeBucket.recipient ? activeBucket.recipient.name : 'No Recipient',
-    recipientEmail: activeBucket.recipient ? activeBucket.recipient.email : 'No Recipient',
+    recipientName: activeBucket.recipient
+      ? activeBucket.recipient.name
+      : 'No Recipient',
+    recipientEmail: activeBucket.recipient
+      ? activeBucket.recipient.email
+      : 'No Recipient'
   })
   const [showEditWishInput, setShowEditWishInput] = useState(false)
   const [showAddWishInput, setShowAddWishInput] = useState(false)
@@ -141,6 +145,14 @@ const BucketOpen = (props) => {
   const [showAlert, setShowAlert] = useState(false)
   const [showInfo, setShowInfo] = useState(false)
   const [accepted, setAccepted] = useState(-1)
+
+  const handleAddWish = () => {
+    setAddedWish(true)
+  }
+
+  const handleDeleteWish = (params) => {
+    setAddedWish(false)
+  }
 
   const handleAccepted = (value) => {
     return setAccepted(value)
@@ -266,7 +278,7 @@ const BucketOpen = (props) => {
                             </Typography> */}
                           </div>
                           <div>
-                             <Typography
+                            <Typography
                               variant='caption'
                               color='primary'
                               className='w-5'
@@ -275,30 +287,33 @@ const BucketOpen = (props) => {
                             </Typography>
                             {activeBucket.author === props.uid && (
                               <Typography
-                              variant='caption'
-                              color='primary'
-                              className='c-pointer text-link text-info'
-                              onClick={props.handleOpenAddRecipientCard}
-                            >
-                              {activeBucket.sendByDate &&
-                                activeBucket.sendByDate}
-                              {!activeBucket.sendByDate && (
-                                <span>Choose a date</span>
-                              )}
-                            </Typography>
+                                variant='caption'
+                                color='primary'
+                                className='c-pointer text-link text-info'
+                                onClick={() => {
+                                  props.handleClose()
+                                  props.handleOpenAddRecipientCard()
+                                }}
+                              >
+                                {activeBucket.sendByDate &&
+                                  activeBucket.sendByDate}
+                                {!activeBucket.sendByDate && (
+                                  <span>Choose a date</span>
+                                )}
+                              </Typography>
                             )}
                             {activeBucket.author !== props.uid && (
-                            <Typography
-                              variant='caption'
-                              color='primary'
-                              className='text-info'
-                            >
-                              {activeBucket.sendByDate &&
-                                activeBucket.sendByDate}
-                              {!activeBucket.sendByDate && (
-                                <span>Choose a date</span>
-                              )}
-                            </Typography>
+                              <Typography
+                                variant='caption'
+                                color='primary'
+                                className='text-info'
+                              >
+                                {activeBucket.sendByDate &&
+                                  activeBucket.sendByDate}
+                                {!activeBucket.sendByDate && (
+                                  <span>Choose a date</span>
+                                )}
+                              </Typography>
                             )}
                           </div>
                           <div>
@@ -448,7 +463,8 @@ const BucketOpen = (props) => {
                                     component='p'
                                   >
                                     Recipient:{' '}
-                                    {bucketDetails.recipientName || activeBucket.recipient.name}
+                                    {bucketDetails.recipientName ||
+                                      activeBucket.recipient.name}
                                   </Typography>
                                   <Typography
                                     variant='caption'
@@ -536,7 +552,9 @@ const BucketOpen = (props) => {
                             bucketOwner={setBucketOwner()}
                             showEditWishInput={showEditWishInput}
                             showAddWishInput={showAddWishInput}
-                            setAddedWish={setAddedWish}
+                            handleDeleteWish={handleDeleteWish}
+                            handleAddWish={handleAddWish}
+                            addedWish={addedWish}
                             handleShowEditWishInput={handleShowEditWishInput}
                             handleHideEditWishInput={handleHideEditWishInput}
                             handleShowAddWishInput={handleShowAddWishInput}
@@ -649,7 +667,7 @@ const BucketOpen = (props) => {
                   <div className='bw-dialog-header'>
                     <div className='text-right'>
                       <span onClick={props.handleClose}>
-                        <Tooltip>
+                        <Tooltip title='Close'>
                           <IconButton
                             disableFocusRipple={true}
                             disableRipple={true}
