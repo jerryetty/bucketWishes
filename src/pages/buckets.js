@@ -1,175 +1,182 @@
-import React, { useState, useEffect } from 'react'
-import { myFirebase } from 'utils/firebase'
-import { getUser } from 'components/auth'
-import Bucket from 'components/ui/bucket'
-import BucketOpen from 'components/ui/bucketOpen'
-import InviteCard from 'components/ui/invite'
-import SendBucketCard from 'components/ui/sendBucketCard'
-import request from 'request'
-import PopupAlert from 'components/ui/popupAlert'
-import AddRecipient from 'components/ui/addRecipient'
-import { Typography, Button } from '@material-ui/core'
+import React, { useState, useEffect } from "react";
+import { myFirebase } from "utils/firebase";
+import { myFirebase as firebase } from "utils/firebase";
+import { getUser } from "components/auth";
+import Bucket from "components/ui/bucket";
+import BucketOpen from "components/ui/bucketOpen";
+import InviteCard from "components/ui/invite";
+import SendBucketCard from "components/ui/sendBucketCard";
+import request from "request";
+import PopupAlert from "components/ui/popupAlert";
+import AddRecipient from "components/ui/addRecipient";
+import { Typography, Button } from "@material-ui/core";
+
 
 const AllBuckets = (props) => {
-  const bucketDocRef = myFirebase.firestore().collection('buckets')
-  const { displayName, uid, email } = getUser()
-  
+  const bucketDocRef = myFirebase.firestore().collection("buckets");
+  const { displayName, uid, email } = getUser();
+
   const useDefaultBuckets = () => {
-    const [defaultBuckets, setDefaultBuckets] = useState([])
+    const [defaultBuckets, setDefaultBuckets] = useState([]);
 
     useEffect(() => {
       bucketDocRef
-        .where('restricted', '==', true)
-        .orderBy('createdAt', 'desc')
+        .where("restricted", "==", true)
+        .orderBy("createdAt", "desc")
         .onSnapshot(
           (snapshot) => {
             const newBuckets = snapshot.docs.map((doc) => ({
               id: doc.id,
-              ...doc.data()
-            }))
+              ...doc.data(),
+            }));
 
-            setDefaultBuckets(newBuckets)
+            setDefaultBuckets(newBuckets);
           },
           (err) => {
-            console.log(`Encountered error: ${err}`)
+            console.log(`Encountered error: ${err}`);
           }
-        )
-    }, [])
-    return defaultBuckets
-  }
+        );
+    }, []);
+    return defaultBuckets;
+  };
 
   const useBuckets = () => {
-    const [buckets, setBuckets] = useState([])
+    const [buckets, setBuckets] = useState([]);
 
     // fetch all buckets inside useEffect
     useEffect(() => {
-      bucketDocRef
-        .orderBy('createdAt', 'desc')
-        .onSnapshot(
-          (snapshot) => {
-            const newBuckets = snapshot.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data()
-            }))
+      bucketDocRef.orderBy("createdAt", "desc").onSnapshot(
+        (snapshot) => {
+          const newBuckets = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
 
-            setBuckets(newBuckets)
-          },
-          (err) => {
-            console.log(`Encountered error: ${err}`)
-          }
-        )
-    }, [])
+          setBuckets(newBuckets);
+          console.log(buckets);
+        },
+        (err) => {
+          console.log(`Encountered error: ${err}`);
+        }
+      );
+    }, []);
 
-    return buckets
-  }
+    return buckets;
+  };
 
-  const buckets = useBuckets()
-  const restrictedBuckets = useDefaultBuckets()
+  const buckets = useBuckets();
+  const restrictedBuckets = useDefaultBuckets();
 
-  const [openBucket, setOpenBucket] = useState(false)
-  const [openInviteCard, setOpenInviteCard] = useState(false)
-  const [openAddRecipientCard, setOpenAddRecipientCard] = useState(false)
-  const [openSendBucketCard, setOpenSendBucketCard] = useState(false)
-  const [activeBucket, setActiveBucket] = useState(null)
-  const [openPreview, setOpenPreview] = useState(false)
-  const [shared, setShared] = useState(0)
-  const [previewData, setPreviewData] = useState({})
-  const [showAlert, setShowAlert] = useState(false)
-  const [alertMessage, setAlertMessage] = useState('')
+  const [openBucket, setOpenBucket] = useState(false);
+  const [openInviteCard, setOpenInviteCard] = useState(false);
+  const [openAddRecipientCard, setOpenAddRecipientCard] = useState(false);
+  const [openSendBucketCard, setOpenSendBucketCard] = useState(false);
+  const [activeBucket, setActiveBucket] = useState(null);
+  const [openPreview, setOpenPreview] = useState(false);
+  const [shared, setShared] = useState(0);
+  const [previewData, setPreviewData] = useState({});
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  
 
   const handleOpenBucket = () => {
-    setOpenBucket(true)
-  }
+    setOpenBucket(true);
+  };
 
   const handleCloseBucket = () => {
-    setOpenBucket(false)
-  }
+    setOpenBucket(false);
+  };
 
   const handleClosePreview = () => {
-    setShared(0)
-    setOpenPreview(false)
-  }
+    setShared(0);
+    setOpenPreview(false);
+  };
 
   const handleOpenInviteCard = () => {
-    setOpenInviteCard(true)
-  }
+    setOpenInviteCard(true);
+  };
 
   const handleCloseInviteCard = () => {
-    setOpenInviteCard(false)
-  }
+    setOpenInviteCard(false);
+  };
 
   const handleOpenAddRecipientCard = () => {
-    setOpenAddRecipientCard(true)
-  }
+    setOpenAddRecipientCard(true);
+  };
 
   const handleCloseAddRecipientCard = () => {
-    setOpenAddRecipientCard(false)
-  }
+    setOpenAddRecipientCard(false);
+  };
 
   const handleOpenSendBucketCard = () => {
-    setOpenSendBucketCard(true)
-  }
+    setOpenSendBucketCard(true);
+  };
 
   const handleCloseSendBucketCard = () => {
-    setOpenSendBucketCard(false)
-  }
+    setOpenSendBucketCard(false);
+  };
 
   const handleOpenPreview = (data) => {
-    setPreviewData(data)
-    setOpenPreview(true)
-  }
+    setPreviewData(data);
+    setOpenPreview(true);
+  };
 
   const handleSetActiveBucket = (bucket) => {
-    setActiveBucket(bucket)
-  }
+    setActiveBucket(bucket);
+  };
 
   const postData = async (data = previewData) => {
     var options = {
-      method: 'POST',
-      url: 'https://us-central1-bucket-wishes.cloudfunctions.net/sendEmail',
+      method: "POST",
+      url: "https://us-central1-bucket-wishes.cloudfunctions.net/sendEmail",
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        "Content-Type": "application/x-www-form-urlencoded",
       },
       form: {
         name: data.name,
         email: data.email,
         bucketUrl: data.bucketUrl,
-        senderName: displayName
-      }
-    }
+        senderName: displayName,
+      },
+    };
     request(options, function (error, response) {
-      if (error) throw new Error(error)
+      if (error) throw new Error(error);
       bucketDocRef.doc(activeBucket.id).update({
-        sent: true
-      })
-      setShared(1)
-    })
-  }
+        sent: true,
+      });
+      setShared(1);
+    });
+  };
 
   const handleShowAlert = () => {
-    setShowAlert(true)
-  }
+    setShowAlert(true);
+  };
 
   const handleSetAlertMessage = (message) => {
-    setAlertMessage(message)
-  }
+    setAlertMessage(message);
+  };
 
   const handleHideAlert = (event, reason) => {
-    if (reason === 'clickaway') {
-      return
+    if (reason === "clickaway") {
+      return;
     }
 
-    setShowAlert(false)
-  }
+    setShowAlert(false);
+  };
+
+  const deleteStorage = (id, collection) => {
+    firebase.firestore().collection(collection).doc(id).delete();
+  };
 
   return (
     <>
       {/* <Dialog /> */}
+
       <div>
         {showAlert && (
           <PopupAlert
             open={showAlert}
-            severity='error'
+            severity="error"
             handleHideAlert={handleHideAlert}
             message={alertMessage}
           />
@@ -239,9 +246,9 @@ const AllBuckets = (props) => {
         )}
 
         {(buckets || restrictedBuckets) && (
-          <div className='row mt-5' id='buckets-area'>
-            <div className='table-responsive container mt-5'>
-              <table className='table table-hover table-striped'>
+          <div className="row mt-5" id="buckets-area">
+            <div className="table-responsive container mt-5">
+              <table className="table table-hover table-striped">
                 <thead>
                   <tr>
                     <th>Title</th>
@@ -254,10 +261,10 @@ const AllBuckets = (props) => {
                       <td>
                         <span
                           onClick={() => {
-                            setActiveBucket(bucket)
-                            handleOpenBucket()
+                            setActiveBucket(bucket);
+                            handleOpenBucket();
                           }}
-                          className='w-5 c-pointer text-link'
+                          className="w-5 c-pointer text-link"
                         >
                           {bucket.title}
                         </span>
@@ -266,9 +273,10 @@ const AllBuckets = (props) => {
                       <td>
                         {/* <Button variant='text' color='primary' className='text-info'>Open</Button> */}
                         <Button
-                          variant='text'
-                          color='primary'
-                          className='text-danger'
+                          variant="text"
+                          color="primary"
+                          className="text-danger"
+                          onClick={() => deleteStorage(bucket.id, "buckets")}
                         >
                           Delete
                         </Button>
@@ -329,7 +337,7 @@ const AllBuckets = (props) => {
         )}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default AllBuckets
+export default AllBuckets;
